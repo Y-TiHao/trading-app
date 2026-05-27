@@ -95,7 +95,8 @@
         [data-theme="dark"] .stat-card::before { opacity: 0.2; background: linear-gradient(135deg, var(--accent) 0%, transparent 60%); }
         [data-theme="dark"] .stat-label { color: var(--text-secondary); }
         [data-theme="dark"] .stat-val { color: var(--text-primary); }
-        [data-theme="dark"] .rate-item { background: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .rate-item { background: rgba(61, 90, 128, 0.1); }
+        [data-theme="dark"] .rate-item:focus-within { background: rgba(61, 90, 128, 0.18); border-color: var(--accent); }
         [data-theme="dark"] .rate-item input { color: var(--text-primary); }
         [data-theme="dark"] .rate-item input::placeholder { color: var(--text-tertiary); }
         [data-theme="dark"] th { background: rgba(61, 90, 128, 0.25); color: var(--text-secondary); }
@@ -109,7 +110,8 @@
         [data-theme="dark"] .perf-card { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.2); }
         [data-theme="dark"] .perf-card h3 { color: var(--col-head); border-left-color: var(--accent); }
         [data-theme="dark"] .footnote { background: rgba(26, 31, 46, 0.8); color: var(--text-secondary); }
-        [data-theme="dark"] .del-btn { background: rgba(220, 38, 38, 0.15); color: #ef4444; }
+        [data-theme="dark"] .del-btn { border-color: rgba(128, 128, 128, 0.25); opacity: 0.45; background: transparent; color: var(--text-tertiary); }
+        [data-theme="dark"] .del-btn:hover { opacity: 1; color: #ef4444; border-color: #ef4444; background: rgba(220, 38, 38, 0.12); }
         [data-theme="dark"] .reset-btn { background: rgba(220, 38, 38, 0.15); color: #ef4444; }
         [data-theme="dark"] .warning-bar { border-left-color: var(--warning-text); background: var(--warning-bg); }
         [data-theme="dark"] .header-row { border-bottom-color: var(--col-head); }
@@ -449,7 +451,7 @@
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             padding: 14px 16px;
             margin-bottom: 16px;
             display: grid;
@@ -459,16 +461,19 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         }
         .rate-item {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.35);
             border-radius: var(--radius-md);
             padding: 10px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
             min-width: 0;
-            border: 0.5px solid rgba(0, 122, 255, 0.08);
+            border: 0.5px solid rgba(128, 128, 128, 0.12);
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+        .rate-item:focus-within {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: var(--primary);
         }
         .rate-item label {
             font-size: 0.7rem;
@@ -513,17 +518,7 @@
         .reset-btn:active { transform: scale(0.97); opacity: 0.8; }
 
         /* 交易区块 - iOS 26 毛玻璃卡片 */
-        .blotter-section {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-xl);
-            padding: 16px 14px;
-            margin-bottom: 16px;
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        }
-        .section {
+        .blotter-section, .section {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -552,10 +547,10 @@
             color: var(--primary);
             border: none;
             padding: 0;
-            width: 32px;
-            height: 32px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            font-size: 1.3rem;
+            font-size: 1.6rem;
             font-weight: 300;
             cursor: pointer;
             display: inline-flex;
@@ -647,16 +642,19 @@
             cursor: pointer;
             position: relative;
         }
-        /* 完全隐藏Webkit浏览器的日期选择器图标 */
+        /* 显示日期选择器图标，点击可弹出日历 */
         input[type="date"]::-webkit-calendar-picker-indicator {
-            display: none;
-            -webkit-appearance: none;
+            display: block;
+            cursor: pointer;
+            opacity: 0.6;
         }
         /* Firefox */
         input[type="date"]::-moz-calendar-picker-indicator {
-            display: none;
+            display: block;
+            cursor: pointer;
+            opacity: 0.6;
         }
-        /* 确保整个输入框可点击 */
+        /* 日期输入框悬停效果 */
         input[type="date"].input-text:hover {
             background: rgba(30, 58, 95, 0.04);
         }
@@ -667,21 +665,29 @@
             color: #1C1C1E;
         }
         .del-btn {
-            background: rgba(255, 59, 48, 0.1);
-            color: var(--danger);
-            border: none;
-            padding: 4px 10px;
-            border-radius: 12px;
+            background: transparent;
+            color: var(--text-tertiary);
+            border: 0.5px solid rgba(128, 128, 128, 0.25);
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             cursor: pointer;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 400;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 28px;
-            min-height: 28px;
+            opacity: 0.45;
+            transition: all 0.2s ease;
         }
-        .del-btn:active { transform: scale(0.95); opacity: 0.8; }
+        .del-btn:hover {
+            opacity: 1;
+            color: var(--danger);
+            border-color: var(--danger);
+            background: rgba(255, 59, 48, 0.08);
+        }
+        .del-btn:active { transform: scale(0.9); opacity: 0.8; }
 
         /* 绩效卡片网格 - iOS 26 玻璃拟态 */
         .performance-grid {
@@ -861,7 +867,7 @@
             table { font-size: 0.8rem; }
             .input-text { font-size: 0.8rem; }
             .header-row h2 { font-size: 1.05rem; }
-            .action-btn { width: 28px; height: 28px; font-size: 1.1rem; }
+            .action-btn { width: 32px; height: 32px; font-size: 1.3rem; }
         }
 
         /* ── iPad mini 6 (744px ~ 833px) ── */
@@ -906,8 +912,8 @@
             th { padding: 6px 3px; font-size: 0.65rem; }
             td { padding: 6px 3px; }
             .header-row h2 { font-size: 0.9rem; }
-            .action-btn { width: 26px; height: 26px; font-size: 1rem; }
-            .del-btn { padding: 3px 8px; font-size: 0.6rem; }
+            .action-btn { width: 30px; height: 30px; font-size: 1.2rem; }
+            .del-btn { width: 24px; height: 24px; font-size: 0.7rem; }
             .page-title { font-size: 1rem; }
             .page-header-actions { gap: 6px; }
             .glass-menu-btn, .theme-toggle-btn { padding: 6px 10px; min-width: 38px; min-height: 38px; font-size: 1rem; }
@@ -960,7 +966,7 @@
             th { padding: 5px 2px; font-size: 0.58rem; }
             td { padding: 5px 2px; }
             .header-row h2 { font-size: 0.85rem; }
-            .action-btn { width: 24px; height: 24px; font-size: 0.95rem; }
+            .action-btn { width: 28px; height: 28px; font-size: 1.1rem; }
             .page-title { font-size: 0.9rem; }
             .glass-menu-btn, .theme-toggle-btn { padding: 5px 8px; min-width: 36px; min-height: 36px; font-size: 0.95rem; }
             .top-dropdown-item { padding: 9px 12px; font-size: 0.75rem; }
@@ -1098,7 +1104,7 @@
 
     <!-- 费率参数 -->
     <div class="rates-panel">
-        <div class="rate-item"><label>股票代码</label><input type="text" id="tickerInput" placeholder="600036"></div>
+        <div class="rate-item"><label>股票代码</label><input type="text" id="tickerInput" placeholder="输入代码"></div>
         <div class="rate-item"><label>现价</label><input type="number" id="currentPriceInput" inputmode="decimal" step="0.01" placeholder="市价"></div>
         <div class="rate-item"><label>佣金%</label><input type="number" id="commissionRate" inputmode="decimal" step="0.001" value="0.025"></div>
         <div class="rate-item"><label>印花税%</label><input type="number" id="stampTaxRate" inputmode="decimal" step="0.01" value="0.1"></div>
@@ -1106,7 +1112,7 @@
     </div>
 
     <!-- 自定义确认弹框 -->
-    <div id="confirmModal" class="modal-overlay">
+    <div id="confirmModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmModalMsg">
         <div class="modal-box">
             <div class="modal-icon">!</div>
             <div class="modal-msg" id="confirmModalMsg"></div>
@@ -1118,7 +1124,7 @@
     </div>
 
     <!-- 自定义提示弹框 -->
-    <div id="toastModal" class="toast-overlay">
+    <div id="toastModal" class="toast-overlay" role="dialog" aria-modal="true" aria-labelledby="toastModalMsg">
         <div class="toast-box">
             <div class="toast-icon" id="toastModalIcon">✅</div>
             <div class="toast-msg" id="toastModalMsg"></div>
@@ -1155,7 +1161,7 @@
             <div class="perf-row"><span class="perf-label">累计回收价值</span><span id="totalRecoverCard" class="perf-value">0.00</span></div>
             <div class="perf-row"><span class="perf-label">已实现收益净额</span><span id="realizedProfitDetailCard" class="perf-value">0.00</span></div>
             <div class="perf-row"><span class="perf-label">组合总收益率</span><span id="totalYieldCard" class="perf-value">0.00%</span></div>
-            <div class="perf-row"><span class="perf-label">几何年化收益率 (CAGR)</span><span id="geoAnnualCard" class="perf-value">0.00%</span></div>
+            <div class="perf-row"><span class="perf-label">几何年化收益率 (CAGR)</span><span id="geoAnnualCard" class="perf-value" title="持仓不足一年时年化仅供参考">0.00%</span></div>
         </div>
         <div class="perf-card">
             <h3>估值校验</h3>
@@ -1236,7 +1242,9 @@ class DataService {
         if (!raw) return this.getDefaultData();
         try {
             let d = JSON.parse(raw);
-            if (d.version !== this.SCHEMA_VERSION) {
+            let currentVer = parseFloat(d.version || '1.0');
+            let targetVer = parseFloat(this.SCHEMA_VERSION);
+            if (currentVer < targetVer) {
                 d = this.migrate(d);
             }
             return d;
@@ -1455,8 +1463,10 @@ class CalcService {
         }
         let totalDays = firstBuyDate ? Utils.daysBetween(firstBuyDate) : 0;
         let geoAnnual = 0;
+        let geoAnnualShortTerm = false;
         if (totalDays > 0 && totalInvested > 0 && totalRecover > 0) {
             let years = totalDays / 365;
+            geoAnnualShortTerm = years < 1;
             geoAnnual = Math.pow(totalRecover / totalInvested, 1 / years) - 1;
             if (isNaN(geoAnnual)) geoAnnual = 0;
         }
@@ -1469,7 +1479,7 @@ class CalcService {
             remainShares, remainCost, remainMarket, remainFloatProfit, remainYield, avgCostPerShare,
             totalRealizedProfit, totalInvested, totalRecover, totalProfit, totalYield, geoAnnual,
             totalDays, weightedAvgDays, diffPrice, assistDiff, checkValid,
-            warningMessages, closedTradePnLs, sellPnLMap
+            warningMessages, closedTradePnLs, sellPnLMap, geoAnnualShortTerm
         };
     }
 }
@@ -1647,7 +1657,7 @@ class ViewRenderer {
             let dd = peak - running;
             if (dd > mdd) mdd = dd;
         });
-        mddEl.innerText = '¥' + mdd.toFixed(2);
+        mddEl.innerText = mdd.toFixed(2);
         mddEl.className = 'analytics-val ' + (mdd === 0 ? 'positive' : 'negative');
     }
 
@@ -1667,7 +1677,9 @@ class ViewRenderer {
         this.els.realizedProfitDetail.className = `perf-value ${stats.totalRealizedProfit >= 0 ? 'positive' : 'negative'}`;
         this.els.totalYield.innerText = Utils.formatPercent(stats.totalYield);
         this.els.totalYield.className = `perf-value ${stats.totalYield >= 0 ? 'positive' : 'negative'}`;
-        this.els.geoAnnual.innerText = Utils.formatPercent(stats.geoAnnual);
+        this.els.geoAnnual.innerText = Utils.formatPercent(stats.geoAnnual) + (stats.geoAnnualShortTerm ? ' ⚠' : '');
+        this.els.geoAnnual.className = `perf-value ${stats.geoAnnual >= 0 ? 'positive' : 'negative'}`;
+        this.els.geoAnnual.title = stats.geoAnnualShortTerm ? '持仓不足一年，年化收益率仅供参考' : '几何年化收益率 (CAGR)';
         this.els.geoAnnual.className = `perf-value ${stats.geoAnnual >= 0 ? 'positive' : 'negative'}`;
 
         this.els.totalDays.innerText = stats.totalDays + " 天";
@@ -1886,9 +1898,11 @@ class TradingTerminal {
     detectMarket(code) {
         if (!code || !code.trim()) return 'cn';
         const c = code.trim().toUpperCase();
-        // 美股：纯字母或含小数点（如 AAPL, TSLA, BRK.B）
+        // 美股：纯字母开头（如 AAPL, TSLA, BRK.B）
         if (/^[A-Z]/.test(c)) return 'us';
-        // A股/港股：纯数字（6位A股，4-5位港股）
+        // 港股：1-5位纯数字（如 00700, 09988, 5）
+        if (/^\d{1,5}$/.test(c)) return 'hk';
+        // A股：6位纯数字（如 600036, 000001）
         return 'cn';
     }
 
@@ -1924,6 +1938,9 @@ class TradingTerminal {
             if (els.minCommissionInput) els.minCommissionInput.value = this.minCommission;
             if (els.currentPriceInput) els.currentPriceInput.value = '';
             if (els.tickerInput) els.tickerInput.value = '';
+            // 重置市场配色为默认 A 股模式
+            this.currentMarket = this.detectMarket('');
+            this.applyMarketColors();
             this.refresh();
             this.persist();
         });
@@ -2004,35 +2021,50 @@ class TradingTerminal {
                 this._debouncedFullUpdate();
                 return;
             }
+            else if (target.classList.contains('buy-shares')) {
+                let raw = Utils.parseNumberFromCommaString(target.value);
+                if (!isNaN(raw) && raw >= 0) {
+                    buy.shares = raw;
+                    target.value = raw ? Utils.formatNumberWithComma(raw) : '';
+                }
+                this.view.updateBuyRowCells(row, this.buys, this.calcService, this.commissionRate, this.minCommission);
+                this._debouncedFullUpdate();
+                return;
+            }
             else return;
             this.view.updateBuyRowCells(row, this.buys, this.calcService, this.commissionRate, this.minCommission);
             this._debouncedFullUpdate();
         });
 
-        // 买入表格 blur 事件：触发完整更新
+        // 买入表格 blur 事件：触发完整更新和股数解析
         els.buyTableWrapper.addEventListener('focusout', (e) => {
             let target = e.target;
-            if (target.classList.contains('buy-price') || target.classList.contains('buy-date')) {
-                this.updateAllStats();
-                this.persist();
+            // 日期校验：不允许未来日期
+            if (target.classList.contains('buy-date')) {
+                let today = Utils.getToday();
+                if (target.value > today) {
+                    target.value = today;
+                    let row = target.closest('tr');
+                    let buyId = row.getAttribute('data-buy-id');
+                    let buy = this.buys.find(b => b.id == buyId);
+                    if (buy) buy.date = today;
+                }
             }
-        });
-
-        // 买入表格 shares blur 事件
-        els.buyTableWrapper.addEventListener('focusout', (e) => {
-            if (e.target.classList.contains('buy-shares')) {
-                let raw = Utils.parseNumberFromCommaString(e.target.value);
+            if (target.classList.contains('buy-shares')) {
+                let raw = Utils.parseNumberFromCommaString(target.value);
                 if (isNaN(raw)) raw = 0;
-                let row = e.target.closest('tr');
+                let row = target.closest('tr');
                 let buyId = row.getAttribute('data-buy-id');
                 let buy = this.buys.find(b => b.id == buyId);
                 if (buy) {
                     buy.shares = raw;
-                    e.target.value = raw ? Utils.formatNumberWithComma(raw) : '';
+                    target.value = raw ? Utils.formatNumberWithComma(raw) : '';
                     this.view.updateBuyRowCells(row, this.buys, this.calcService, this.commissionRate, this.minCommission);
-                    this.updateAllStats();
-                    this.persist();
                 }
+            }
+            if (target.classList.contains('buy-price') || target.classList.contains('buy-date') || target.classList.contains('buy-shares')) {
+                this.updateAllStats();
+                this.persist();
             }
         });
 
@@ -2062,35 +2094,50 @@ class TradingTerminal {
                 this._debouncedFullUpdate();
                 return;
             }
+            else if (target.classList.contains('sell-shares')) {
+                let raw = Utils.parseNumberFromCommaString(target.value);
+                if (!isNaN(raw) && raw >= 0) {
+                    sell.shares = raw;
+                    target.value = raw ? Utils.formatNumberWithComma(raw) : '';
+                }
+                this.view.updateSellRowCells(row, this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission);
+                this._debouncedFullUpdate();
+                return;
+            }
             else return;
             this.view.updateSellRowCells(row, this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission);
             this._debouncedFullUpdate();
         });
 
-        // 卖出表格 blur 事件：触发完整更新
+        // 卖出表格 blur 事件：触发完整更新和股数解析
         els.sellTableWrapper.addEventListener('focusout', (e) => {
             let target = e.target;
-            if (target.classList.contains('sell-price') || target.classList.contains('sell-date')) {
-                this.updateAllStats();
-                this.persist();
+            // 日期校验：不允许未来日期
+            if (target.classList.contains('sell-date')) {
+                let today = Utils.getToday();
+                if (target.value > today) {
+                    target.value = today;
+                    let row = target.closest('tr');
+                    let sellId = row.getAttribute('data-sell-id');
+                    let sell = this.sells.find(s => s.id == sellId);
+                    if (sell) sell.date = today;
+                }
             }
-        });
-
-        // 卖出表格 shares blur 事件
-        els.sellTableWrapper.addEventListener('focusout', (e) => {
-            if (e.target.classList.contains('sell-shares')) {
-                let raw = Utils.parseNumberFromCommaString(e.target.value);
+            if (target.classList.contains('sell-shares')) {
+                let raw = Utils.parseNumberFromCommaString(target.value);
                 if (isNaN(raw)) raw = 0;
-                let row = e.target.closest('tr');
+                let row = target.closest('tr');
                 let sellId = row.getAttribute('data-sell-id');
                 let sell = this.sells.find(s => s.id == sellId);
                 if (sell) {
                     sell.shares = raw;
-                    e.target.value = raw ? Utils.formatNumberWithComma(raw) : '';
+                    target.value = raw ? Utils.formatNumberWithComma(raw) : '';
                     this.view.updateSellRowCells(row, this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission);
-                    this.updateAllStats();
-                    this.persist();
                 }
+            }
+            if (target.classList.contains('sell-price') || target.classList.contains('sell-date') || target.classList.contains('sell-shares')) {
+                this.updateAllStats();
+                this.persist();
             }
         });
 
@@ -2227,7 +2274,6 @@ class TradingTerminal {
             const lines = text.trim().split('\n');
             let addedCount = 0;
             let errorCount = 0;
-            const nextId = type === 'buy' ? this.nextBuyId : this.nextSellId;
             const targetArr = type === 'buy' ? this.buys : this.sells;
 
             lines.forEach((line) => {
@@ -2246,12 +2292,10 @@ class TradingTerminal {
                     errorCount++;
                     return;
                 }
-                targetArr.push({ id: nextId + addedCount, date, price, shares });
+                const id = type === 'buy' ? this.nextBuyId++ : this.nextSellId++;
+                targetArr.push({ id, date, price, shares });
                 addedCount++;
             });
-
-            if (type === 'buy') this.nextBuyId += addedCount;
-            else this.nextSellId += addedCount;
 
             if (addedCount > 0) {
                 this.refresh();
@@ -2296,7 +2340,7 @@ class TradingTerminal {
                     if (/买入|买|B/.test(col)) isSell = false;
 
                     let num = parseFloat(col.replace(/,/g, ''));
-                    if (!isNaN(num) && num > 100 && Number.isInteger(num) && !date && shares === 0) {
+                    if (!isNaN(num) && num >= 100 && num <= 100000000 && Number.isInteger(num) && shares === 0) {
                         shares = num;
                     }
 
