@@ -10,39 +10,150 @@
     <meta name="apple-mobile-web-app-title" content="证券交易终端">
     <meta name="format-detection" content="telephone=no">
     <meta name="theme-color" content="#1e3a5f">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* iOS 26 色彩系统 */
-            --primary: #007AFF;
-            --primary-light: #5AC8FA;
-            --success: #34C759;
-            --warning: #FF9500;
-            --danger: #FF3B30;
-            --col-head: #007AFF;
-            --border: rgba(0, 122, 255, 0.15);
-            --accent: #007AFF;
-            /* iOS 26: 渐变背景 */
-            --bg: linear-gradient(180deg, #F2F2F7 0%, #E5E5EA 100%);
-            --bg-solid: #F2F2F7;
-            --card-bg: rgba(255, 255, 255, 0.72);
-            --card-bg-solid: rgba(255, 255, 255, 0.85);
-            --warning-bg: rgba(255, 59, 48, 0.12);
-            --warning-text: #FF3B30;
+            /* 专业金融终端配色 - 亮色模式 */
+            /* 主色调：深蓝灰 */
+            --primary: #1e3a5f;
+            --primary-light: #2c5282;
+            --primary-dark: #0f2744;
+            /* 强调色：琥珀金 */
+            --accent: #d4a574;
+            --accent-light: #e8c9a0;
+            --accent-dark: #b8935f;
+            /* 功能色 */
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            /* 中性色 */
+            --col-head: #1e3a5f;
+            --border: rgba(30, 58, 95, 0.12);
+            /* 背景：浅灰蓝 */
+            --bg: #f5f7fa;
+            --bg-solid: #f5f7fa;
+            --card-bg: #ffffff;
+            --card-bg-solid: #ffffff;
+            --warning-bg: rgba(217, 119, 6, 0.08);
+            --warning-text: #b45309;
+            /* 文字 */
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-tertiary: #718096;
+            /* 数据色 */
+            --data-positive: #059669;
+            --data-negative: #dc2626;
+            --data-zero: var(--text-secondary);
+            /* 安全区域 */
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
             --safe-right: env(safe-area-inset-right, 0px);
-            /* iOS 26: 圆角系统 */
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 22px;
-            --radius-xl: 28px;
+            /* 圆角 */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-xl: 18px;
         }
+
+        /* 暗色模式变量 - 专业金融配色 */
+        [data-theme="dark"] {
+            /* 主色调：深蓝灰 */
+            --primary: #3d5a80;
+            --primary-light: #4a6fa5;
+            --primary-dark: #2c4a6e;
+            /* 强调色：琥珀金 */
+            --accent: #c9a227;
+            --accent-light: #e0b84d;
+            --accent-dark: #a88420;
+            /* 功能色 */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            /* 中性色 */
+            --col-head: #98c1d9;
+            --border: rgba(61, 90, 128, 0.3);
+            /* 背景：深灰蓝 */
+            --bg: #0f1419;
+            --bg-solid: #0f1419;
+            --card-bg: #1a1f2e;
+            --card-bg-solid: #1a1f2e;
+            --warning-bg: rgba(245, 158, 11, 0.1);
+            --warning-text: #fbbf24;
+            /* 文字 */
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            /* 数据色 */
+            --data-positive: #10b981;
+            --data-negative: #ef4444;
+            --data-zero: var(--text-secondary);
+        }
+
+        /* 暗色模式样式 - 专业金融配色 */
+        [data-theme="dark"] body { color: var(--text-primary); }
+        [data-theme="dark"] .stat-card { background: var(--card-bg); box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+        [data-theme="dark"] .stat-card::before { opacity: 0.2; background: linear-gradient(135deg, var(--accent) 0%, transparent 60%); }
+        [data-theme="dark"] .stat-label { color: var(--text-secondary); }
+        [data-theme="dark"] .stat-val { color: var(--text-primary); }
+        [data-theme="dark"] .rate-item { background: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .rate-item input { color: var(--text-primary); }
+        [data-theme="dark"] .rate-item input::placeholder { color: var(--text-tertiary); }
+        [data-theme="dark"] th { background: rgba(61, 90, 128, 0.25); color: var(--text-secondary); }
+        [data-theme="dark"] td { border-bottom-color: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .input-text { background: transparent; color: var(--text-primary); border-color: transparent; }
+        [data-theme="dark"] .input-text:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.15); }
+        [data-theme="dark"] .readonly-numeric { color: var(--text-primary); }
+        [data-theme="dark"] .perf-row { border-bottom-color: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .perf-label { color: var(--text-secondary); }
+        [data-theme="dark"] .perf-value { color: var(--text-primary); }
+        [data-theme="dark"] .perf-card { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .perf-card h3 { color: var(--col-head); border-left-color: var(--accent); }
+        [data-theme="dark"] .footnote { background: rgba(26, 31, 46, 0.8); color: var(--text-secondary); }
+        [data-theme="dark"] .del-btn { background: rgba(220, 38, 38, 0.15); color: #ef4444; }
+        [data-theme="dark"] .reset-btn { background: rgba(220, 38, 38, 0.15); color: #ef4444; }
+        [data-theme="dark"] .warning-bar { border-left-color: var(--warning-text); background: var(--warning-bg); }
+        [data-theme="dark"] .header-row { border-bottom-color: var(--col-head); }
+        [data-theme="dark"] .header-row h2 { color: var(--col-head); }
+        [data-theme="dark"] .analytics-section { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .analytics-card { background: rgba(61, 90, 128, 0.15); border-color: rgba(61, 90, 128, 0.25); }
+        [data-theme="dark"] .analytics-label { color: var(--text-secondary); }
+        [data-theme="dark"] .analytics-val { color: var(--text-primary); }
+        [data-theme="dark"] .analytics-header { border-bottom-color: rgba(61, 90, 128, 0.3); }
+        [data-theme="dark"] .analytics-title { color: var(--accent); }
+        [data-theme="dark"] .modal-box { background: #1a1f2e; border: 1px solid rgba(61, 90, 128, 0.3); }
+        [data-theme="dark"] .modal-msg { color: var(--text-primary); }
+        [data-theme="dark"] .modal-btn-cancel { background: rgba(61, 90, 128, 0.2); color: var(--text-secondary); }
+        [data-theme="dark"] .toast-box { background: #1a1f2e; border: 1px solid rgba(61, 90, 128, 0.3); }
+        [data-theme="dark"] .toast-msg { color: var(--text-primary); }
+        [data-theme="dark"] .toast-btn { background: var(--success); }
+        [data-theme="dark"] .page-title { color: var(--accent); }
+        [data-theme="dark"] .blotter-section { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .section { background: var(--card-bg); }
+        [data-theme="dark"] .glass-menu-btn {
+            background: rgba(61, 90, 128, 0.25);
+            border-color: rgba(201, 162, 39, 0.3);
+            color: var(--text-primary);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        [data-theme="dark"] .glass-menu-btn:hover { background: rgba(61, 90, 128, 0.35); }
+        [data-theme="dark"] .glass-menu-btn:active { background: rgba(61, 90, 128, 0.2); }
+        [data-theme="dark"] .theme-toggle-btn {
+            background: rgba(61, 90, 128, 0.25);
+            border-color: rgba(201, 162, 39, 0.3);
+            color: var(--text-primary);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        [data-theme="dark"] .theme-toggle-btn:hover { background: rgba(30, 58, 95, 0.75); }
+        [data-theme="dark"] .theme-toggle-btn:active { background: rgba(30, 58, 95, 0.4); }
+        [data-theme="dark"] .top-dropdown-content { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.3); }
+        [data-theme="dark"] .top-dropdown-item { color: var(--text-primary); }
+        [data-theme="dark"] .top-dropdown-item:hover { background: rgba(201, 162, 39, 0.1); }
+        [data-theme="dark"] .top-dropdown-divider { background: rgba(255, 255, 255, 0.1); }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { touch-action: manipulation; scroll-behavior: smooth; }
+        /* 方案A：Bloomberg终端经典字体 - DIN + Source Han Sans */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            font-family: 'DIN Alternate', 'DIN', 'Source Han Sans CN', 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
             background: var(--bg);
             background-attachment: fixed;
             padding: 16px;
@@ -51,22 +162,140 @@
             padding-left: max(16px, var(--safe-left));
             padding-right: max(16px, var(--safe-right));
             font-size: 15px;
-            color: #1C1C1E;
+            color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             min-height: 100dvh;
             text-wrap: pretty;
         }
+        /* 数字/价格专用字体 - DIN系列 */
+        .stat-val, .analytics-val, .perf-value, .readonly-numeric, .input-text, td.numeric, th.numeric {
+            font-family: 'DIN Alternate', 'DIN', 'DIN Condensed', 'Roboto Mono', 'SF Mono', monospace;
+            font-feature-settings: 'tnum' 1;
+            font-variant-numeric: tabular-nums;
+        }
         .container { max-width: 1200px; margin: 0 auto; }
 
         /* 页面标题 */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+        .page-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
         .page-title {
             font-size: 1.15rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 16px;
             line-height: 1.4;
             letter-spacing: -0.02em;
+        }
+
+        /* iOS 26: 玻璃风格菜单按钮 */
+        .glass-menu-btn {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-md);
+            color: #1C1C1E;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            min-width: 44px;
+            min-height: 44px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .glass-menu-btn:active {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0.97);
+        }
+        .glass-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        /* 主题切换按钮 */
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius-md);
+            color: #1C1C1E;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            min-width: 44px;
+            min-height: 44px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle-btn:active {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0.97);
+        }
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        /* 顶部下拉菜单 */
+        .top-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .top-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 6px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-md);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            border: 0.5px solid rgba(0, 122, 255, 0.1);
+            min-width: 160px;
+            z-index: 99999;
+            overflow: visible;
+            white-space: nowrap;
+        }
+        .top-dropdown-content.show { display: block; }
+        .top-dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1C1C1E;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .top-dropdown-item:hover { background: rgba(0, 122, 255, 0.08); }
+        .top-dropdown-item:active { background: rgba(0, 122, 255, 0.15); }
+        .top-dropdown-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 6px 0;
         }
 
         /* iOS 26: 警告条 - 毛玻璃风格 */
@@ -157,11 +386,23 @@
             display: block;
             font-size: 0.6rem;
             font-weight: 600;
-            text-transform: uppercase;
             letter-spacing: 0.3px;
             opacity: 0.5;
             line-height: 1.3;
             margin-bottom: 4px;
+        }
+        .analytics-label .label-cn {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .analytics-label .label-en {
+            display: block;
+            font-size: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            opacity: 0.7;
         }
         .analytics-val {
             display: block;
@@ -185,10 +426,22 @@
         .stat-label {
             font-size: 0.65rem;
             font-weight: 600;
-            text-transform: uppercase;
             letter-spacing: 0.3px;
             opacity: 0.6;
             line-height: 1.3;
+        }
+        .stat-label .label-cn {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-bottom: 1px;
+        }
+        .stat-label .label-en {
+            display: block;
+            font-size: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            opacity: 0.7;
         }
 
         /* 费率栏 - iOS 26 毛玻璃风格 */
@@ -259,92 +512,6 @@
         }
         .reset-btn:active { transform: scale(0.97); opacity: 0.8; }
 
-        /* 导入导出栏 - iOS 26 毛玻璃风格 */
-        .io-panel {
-            margin-bottom: 16px;
-            padding: 12px 16px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-            position: relative;
-            z-index: auto;
-            overflow: visible !important;
-        }
-        .io-btn {
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        .io-btn:active { transform: scale(0.97); opacity: 0.9; }
-        .io-btn-menu { background: var(--primary); }
-        .io-hint {
-            font-size: 0.65rem;
-            color: rgba(0, 0, 0, 0.4);
-            margin-left: auto;
-        }
-
-        /* 下拉菜单样式 */
-        .io-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .io-dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 6px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-md);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            border: 0.5px solid rgba(0, 122, 255, 0.1);
-            min-width: 160px;
-            z-index: 99999;
-            overflow: visible !important;
-            white-space: nowrap;
-        }
-        .io-dropdown-content.show {
-            display: block;
-        }
-        .io-dropdown-item {
-            display: block;
-            width: 100%;
-            padding: 12px 16px;
-            border: none;
-            background: transparent;
-            text-align: left;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #1C1C1E;
-            cursor: pointer;
-            transition: background 0.15s;
-            white-space: nowrap;
-        }
-        .io-dropdown-item:hover {
-            background: rgba(0, 122, 255, 0.08);
-        }
-        .io-dropdown-item:active {
-            background: rgba(0, 122, 255, 0.15);
-        }
-
         /* 交易区块 - iOS 26 毛玻璃卡片 */
         .blotter-section {
             background: var(--card-bg);
@@ -381,21 +548,27 @@
             letter-spacing: -0.01em;
         }
         .action-btn {
-            background: var(--primary);
-            color: white;
+            background: transparent;
+            color: var(--primary);
             border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.78rem;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            font-weight: 300;
             cursor: pointer;
-            font-weight: 600;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+            line-height: 1;
+            transition: all 0.2s ease;
         }
-        .action-btn:active { transform: scale(0.97); opacity: 0.85; }
+        .action-btn:hover {
+            background: rgba(30, 58, 95, 0.08);
+        }
+        .action-btn:active { transform: scale(0.92); }
 
         /* 表格容器 - 支持横向滚动 */
         .table-scroll-wrapper {
@@ -432,22 +605,21 @@
             vertical-align: middle;
             white-space: nowrap;
         }
-        .col-date { width: auto; min-width: 80px; }
+        .col-date { width: auto; min-width: 70px; }
         .col-price { width: auto; min-width: 60px; }
         .col-qty { width: auto; min-width: 60px; }
         .col-notional { width: auto; min-width: 80px; }
         .col-fee { width: auto; min-width: 85px; }
         .col-pnl { width: auto; min-width: 90px; }
-        .col-action { width: 45px; min-width: 45px; }
+        .col-action { width: 40px; min-width: 40px; }
 
-        /* 输入框 - 无边框自适应长度 */
+        /* 输入框 - 完全无框体自适应 */
         .input-text {
-            width: auto;
-            min-width: 30px;
+            width: 100%;
+            min-width: 40px;
             max-width: 100%;
-            padding: 4px 2px;
+            padding: 2px 1px;
             border: none;
-            border-bottom: 1px solid rgba(0, 122, 255, 0.2);
             border-radius: 0;
             text-align: center;
             font-family: 'SF Mono', 'Courier New', monospace;
@@ -456,19 +628,37 @@
             color: #1C1C1E;
             -webkit-appearance: none;
             appearance: none;
-            transition: border-color 0.15s;
             height: auto;
             line-height: 1.4;
         }
         .input-text:focus {
-            border-color: var(--primary);
-            border-bottom-width: 2px;
             outline: none;
             background: transparent;
         }
         input[type="date"].input-text {
-            min-width: 90px;
-            font-size: 12px;
+            min-width: 70px;
+            font-size: 0.72rem;
+            padding: 4px 2px;
+            /* 隐藏浏览器默认日期图标 */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+        }
+        /* 完全隐藏Webkit浏览器的日期选择器图标 */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+        /* Firefox */
+        input[type="date"]::-moz-calendar-picker-indicator {
+            display: none;
+        }
+        /* 确保整个输入框可点击 */
+        input[type="date"].input-text:hover {
+            background: rgba(30, 58, 95, 0.04);
         }
         .readonly-numeric {
             font-family: 'SF Mono', 'Courier New', monospace;
@@ -480,14 +670,16 @@
             background: rgba(255, 59, 48, 0.1);
             color: var(--danger);
             border: none;
-            padding: 6px 12px;
-            border-radius: 14px;
+            padding: 4px 10px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.72rem;
+            font-size: 0.85rem;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            min-width: 28px;
+            min-height: 28px;
         }
         .del-btn:active { transform: scale(0.95); opacity: 0.8; }
 
@@ -535,8 +727,8 @@
             word-break: break-all;
             color: #1C1C1E;
         }
-        .positive { color: var(--success); }
-        .negative { color: var(--danger); }
+        .positive { color: var(--data-positive); }
+        .negative { color: var(--data-negative); }
 
         .footnote {
             margin-top: 16px;
@@ -595,8 +787,8 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .modal-btn:active { transform: scale(0.97); opacity: 0.9; }
-        .modal-btn-cancel { background: rgba(142, 142, 147, 0.15); color: #007AFF; }
-        .modal-btn-confirm { background: #007AFF; color: #fff; }
+        .modal-btn-cancel { background: rgba(142, 142, 147, 0.12); color: var(--text-secondary); }
+        .modal-btn-confirm { background: var(--primary); color: #fff; }
 
         /* ====== 自定义提示弹框 (替代 alert) - iOS 26 风格 ====== */
         .toast-overlay {
@@ -641,42 +833,187 @@
 
         /* ====== iOS 26 响应式适配 ====== */
 
-        /* 大屏 (iPad / 横屏) */
-        @media (min-width: 780px) {
+        /*
+         * 设备断点规划（CSS逻辑像素）：
+         * ─────────────────────────────────────────────────
+         * iPhone 17        : 393pt × 852pt  → 393px
+         * iPhone 17 Pro    : 402pt × 874pt  → 402px
+         * iPhone 17 Pro Max: 440pt × 956pt  → 440px
+         * iPad mini 6      : 744pt × 1133pt → 744px
+         * iPad Pro 11      : 834pt × 1194pt → 834px
+         * ─────────────────────────────────────────────────
+         */
+
+        /* ── iPad Pro 11寸 (≥834px) ── */
+        @media (min-width: 834px) {
+            .container { max-width: 1100px; }
+            .dashboard-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+            .analytics-grid { grid-template-columns: repeat(3, 1fr); }
+            .performance-grid { grid-template-columns: repeat(2, 1fr); }
+            .rates-panel { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+            .page-title { font-size: 1.3rem; }
+            .stat-val { font-size: 1.4rem; }
+            .stat-label { font-size: 0.72rem; }
+            .analytics-val { font-size: 1.15rem; }
+            .analytics-label { font-size: 0.62rem; }
+            .blotter-section { padding: 20px 18px; }
+            .perf-card { padding: 18px; }
+            table { font-size: 0.8rem; }
+            .input-text { font-size: 0.8rem; }
+            .header-row h2 { font-size: 1.05rem; }
+            .action-btn { width: 28px; height: 28px; font-size: 1.1rem; }
+        }
+
+        /* ── iPad mini 6 (744px ~ 833px) ── */
+        @media (min-width: 744px) and (max-width: 833px) {
+            .container { max-width: 960px; }
+            .dashboard-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+            .analytics-grid { grid-template-columns: repeat(3, 1fr); }
+            .performance-grid { grid-template-columns: repeat(2, 1fr); }
+            .rates-panel { grid-template-columns: repeat(2, 1fr); }
+            .page-title { font-size: 1.2rem; }
+            .stat-val { font-size: 1.3rem; }
+            .stat-label { font-size: 0.68rem; }
+            .analytics-val { font-size: 1.05rem; }
+            .analytics-label { font-size: 0.58rem; }
+            .blotter-section { padding: 18px 14px; }
+            .perf-card { padding: 16px; }
+            table { font-size: 0.78rem; }
+            .input-text { font-size: 0.78rem; }
+        }
+
+        /* ── iPhone 17 Pro Max (≤440px) ── */
+        @media (max-width: 440px) {
+            .container { padding: 0 2px; }
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .analytics-grid { grid-template-columns: repeat(3, 1fr); }
+            .analytics-val { font-size: 0.9rem; }
+            .analytics-label { font-size: 0.5rem; }
+            .stat-card { padding: 14px 10px; }
+            .stat-val { font-size: 1.1rem; }
+            .stat-label { font-size: 0.58rem; }
+            .rates-panel { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .rate-item { padding: 5px 10px; }
+            .rate-item label { font-size: 0.62rem; }
+            .rate-item input { width: 60px; font-size: 0.72rem; }
+            .performance-grid { grid-template-columns: 1fr; }
+            .blotter-section { padding: 14px 10px; border-radius: 18px; }
+            .perf-card { padding: 14px 12px; }
+            .perf-card h3 { font-size: 0.8rem; }
+            .perf-row { font-size: 0.72rem; }
+            table { font-size: 0.72rem; }
+            .input-text { font-size: 0.72rem; padding: 2px 0; }
+            th { padding: 6px 3px; font-size: 0.65rem; }
+            td { padding: 6px 3px; }
+            .header-row h2 { font-size: 0.9rem; }
+            .action-btn { width: 26px; height: 26px; font-size: 1rem; }
+            .del-btn { padding: 3px 8px; font-size: 0.6rem; }
+            .page-title { font-size: 1rem; }
+            .page-header-actions { gap: 6px; }
+            .glass-menu-btn, .theme-toggle-btn { padding: 6px 10px; min-width: 38px; min-height: 38px; font-size: 1rem; }
+            .top-dropdown-content { min-width: 150px; }
+            .top-dropdown-item { padding: 10px 14px; font-size: 0.8rem; }
+            .modal-box { padding: 24px 20px; }
+            .modal-msg { font-size: 0.88rem; }
+        }
+
+        /* ── iPhone 17 Pro (≤402px) ── */
+        @media (max-width: 402px) {
+            .dashboard-grid { gap: 8px; }
+            .stat-card { padding: 12px 8px; }
+            .stat-val { font-size: 1rem; }
+            .stat-label { font-size: 0.55rem; }
+            .analytics-grid { gap: 6px; }
+            .analytics-val { font-size: 0.85rem; }
+            .analytics-label { font-size: 0.48rem; }
+            .rates-panel { gap: 6px; }
+            .rate-item { padding: 4px 8px; }
+            .rate-item label { font-size: 0.58rem; }
+            .rate-item input { width: 55px; font-size: 0.68rem; }
+            .blotter-section { padding: 12px 8px; }
+            .perf-card { padding: 12px 10px; }
+            table { font-size: 0.68rem; }
+            .input-text { font-size: 0.68rem; }
+            th { font-size: 0.6rem; }
+            .page-title { font-size: 0.95rem; }
+        }
+
+        /* ── iPhone 17 (≤393px) ── */
+        @media (max-width: 393px) {
+            .dashboard-grid { gap: 6px; }
+            .stat-card { padding: 10px 6px; border-radius: 14px; }
+            .stat-val { font-size: 0.95rem; }
+            .stat-label { font-size: 0.52rem; }
+            .analytics-grid { gap: 4px; }
+            .analytics-card { padding: 10px 6px; border-radius: 14px; }
+            .analytics-val { font-size: 0.8rem; }
+            .analytics-label { font-size: 0.45rem; }
+            .rates-panel { gap: 5px; }
+            .rate-item { padding: 4px 6px; }
+            .rate-item label { font-size: 0.55rem; }
+            .rate-item input { width: 50px; font-size: 0.65rem; }
+            .blotter-section { padding: 10px 6px; border-radius: 16px; }
+            .perf-card { padding: 10px 8px; }
+            .perf-row { font-size: 0.68rem; }
+            table { font-size: 0.65rem; }
+            .input-text { font-size: 0.65rem; }
+            th { padding: 5px 2px; font-size: 0.58rem; }
+            td { padding: 5px 2px; }
+            .header-row h2 { font-size: 0.85rem; }
+            .action-btn { width: 24px; height: 24px; font-size: 0.95rem; }
+            .page-title { font-size: 0.9rem; }
+            .glass-menu-btn, .theme-toggle-btn { padding: 5px 8px; min-width: 36px; min-height: 36px; font-size: 0.95rem; }
+            .top-dropdown-item { padding: 9px 12px; font-size: 0.75rem; }
+            .modal-box { padding: 20px 16px; margin: 0 10px; }
+            .modal-msg { font-size: 0.82rem; }
+        }
+
+        /* ── 小屏兜底 (iPhone SE / 极小设备 ≤374px) ── */
+        @media (max-width: 374px) {
+            body { padding: 10px; padding-top: max(10px, var(--safe-top)); }
+            .dashboard-grid { gap: 5px; }
+            .stat-card { padding: 8px 5px; }
+            .stat-val { font-size: 0.88rem; }
+            .rates-panel { grid-template-columns: 1fr; }
+            .blotter-section { padding: 8px 5px; }
+            .perf-card { padding: 8px 6px; }
+            .page-title { font-size: 0.85rem; }
+        }
+
+        /* ── iPad 横屏优化 ── */
+        @media (min-width: 744px) and (orientation: landscape) {
             .dashboard-grid { grid-template-columns: repeat(4, 1fr); }
             .analytics-grid { grid-template-columns: repeat(3, 1fr); }
             .performance-grid { grid-template-columns: repeat(2, 1fr); }
-            .rates-panel { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .rates-panel { grid-template-columns: repeat(4, 1fr); }
         }
 
-        /* 中屏 (竖屏手机) */
-        @media (max-width: 779px) {
-            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-            .analytics-grid { grid-template-columns: repeat(3, 1fr); }
-            .analytics-val { font-size: 0.95rem; }
-            .analytics-label { font-size: 0.55rem; }
-            .stat-val { font-size: 1.1rem; }
-            .stat-label { font-size: 0.6rem; }
-            .rates-panel { grid-template-columns: repeat(2, 1fr); }
-            .performance-grid { grid-template-columns: 1fr; }
-            .io-hint { display: none; }
-        }
-
-        /* 小屏 (iPhone SE / 小尺寸设备) */
-        @media (max-width: 374px) {
-            body { padding: 12px; padding-top: max(12px, var(--safe-top)); }
-            .dashboard-grid { gap: 8px; }
+        /* ── iPhone 横屏优化 ── */
+        @media (max-width: 743px) and (orientation: landscape) {
+            .dashboard-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
             .stat-card { padding: 10px 8px; }
-            .stat-val { font-size: 0.95rem; }
-            .rates-panel { grid-template-columns: 1fr; }
-            .blotter-section { padding: 12px 10px; }
-            .perf-card { padding: 12px; }
+            .stat-val { font-size: 1rem; }
+            .stat-label { font-size: 0.55rem; }
+            .analytics-grid { grid-template-columns: repeat(3, 1fr); }
+            .rates-panel { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+            .performance-grid { grid-template-columns: repeat(2, 1fr); }
+            body { padding-top: max(8px, var(--safe-top)); padding-bottom: max(8px, var(--safe-bottom)); }
         }
 
         /* iOS 触摸优化 */
         button { min-height: 36px; }
         input[type="text"], input[type="number"], input[type="date"] {
             min-height: 36px;
+        }
+
+        /* 隐藏数字输入框的上下箭头 */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
         }
 
         /* iOS 26: 优化滚动条在暗色区域的表现 */
@@ -695,99 +1032,65 @@
         html {
             background-color: var(--bg);
         }
-
-        /* iOS 26: 暗色模式适配（自动） */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --col-head: #7eb8e0;
-                --border: #2a3a4a;
-                --accent: #4aa8d0;
-                --bg: #0d1117;
-                --card-bg: #161b22;
-                --warning-bg: #3d1f1f;
-                --warning-text: #f87171;
-            }
-            body { color: #c9d1d9; }
-            .stat-card { background: #1a2332; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-            .stat-card::before { opacity: 0.3; }
-            .stat-label { color: #8b949e; }
-            .stat-val { color: #e6edf3; }
-            .rate-item { background: #1c2333; }
-            .rate-item input { color: #c9d1d9; }
-            .rate-item input::placeholder { color: #4a5568; }
-            .io-panel { background: #161b22; }
-            th { background: #1c2333; color: #8b949e; }
-            td { border-bottom-color: #21262d; }
-            .input-text { background: #0d1117; color: #c9d1d9; border-color: #30363d; }
-            .input-text:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(74,168,208,0.2); }
-            .readonly-numeric { color: #c9d1d9; }
-            .perf-row { border-bottom-color: #21262d; }
-            .perf-label { color: #8b949e; }
-            .perf-value { color: #c9d1d9; }
-            .perf-card { background: #161b22; border-color: #21262d; }
-            .perf-card h3 { color: var(--col-head); border-left-color: var(--accent); }
-            .footnote { background: rgba(22,27,34,0.8); color: #8b949e; }
-            .del-btn { background: #3d1f1f; }
-            .reset-btn { background: #3d1f1f; }
-            .warning-bar { border-left-color: var(--warning-text); }
-            .header-row { border-bottom-color: var(--col-head); }
-            .header-row h2 { color: var(--col-head); }
-            .analytics-section { background: #161b22; border-color: #21262d; }
-            .analytics-card { background: #1a2332; border-color: #21262d; }
-            .analytics-label { color: #8b949e; }
-            .analytics-val { color: #e6edf3; }
-            .analytics-header { border-bottom-color: #2a3a4a; }
-            .analytics-title { color: #7eb8e0; }
-            .io-dropdown-content { background: #1c2333; border-color: #2a3a4a; }
-            .io-dropdown-item { color: #c9d1d9; }
-            .io-dropdown-item:hover { background: rgba(74,168,208,0.1); }
-            .io-btn-menu { background: #1a3a5c; }
-            .io-hint { color: #8b949e; }
-            .modal-box { background: #1c2333; }
-            .modal-msg { color: #c9d1d9; }
-            .modal-btn-cancel { background: rgba(74,168,208,0.15); color: #7eb8e0; }
-            .toast-box { background: #1c2333; }
-            .toast-msg { color: #c9d1d9; }
-            .toast-btn { background: #1a5c3a; }
-            .page-title { color: #7eb8e0; }
-            .blotter-section { background: #161b22; border-color: #21262d; }
-            .section { background: #161b22; }
-        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2 class="page-title">📊 组合资产监控 · 证券交易终端</h2>
+    <!-- 页面标题 + 功能菜单 -->
+    <div class="page-header">
+        <h2 class="page-title">证券交易终端 · 组合资产监控</h2>
+        <div class="page-header-actions">
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="切换主题">◐</button>
+            <div class="top-dropdown">
+                <button id="topMenuBtn" class="glass-menu-btn" title="功能菜单">···</button>
+                <div class="top-dropdown-content" id="topDropdownContent">
+                    <!-- 导入导出组 -->
+                    <button id="importBtn" class="top-dropdown-item">导入数据</button>
+                    <button id="exportBtn" class="top-dropdown-item">导出数据</button>
+                    <button id="exportCsvBtn" class="top-dropdown-item">导出CSV</button>
+                    <div class="top-dropdown-divider"></div>
+                    <!-- 粘贴导入组 -->
+                    <button id="smartPasteBtn" class="top-dropdown-item">智能粘贴</button>
+                    <button id="pasteBuyBtn" class="top-dropdown-item">粘贴建仓</button>
+                    <button id="pasteSellBtn" class="top-dropdown-item">粘贴平仓</button>
+                    <div class="top-dropdown-divider"></div>
+                    <!-- 危险操作组 -->
+                    <button id="resetAllBtn" class="top-dropdown-item" style="color: #dc2626;">初始化组合</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="file" id="importFile" style="display:none" accept=".json">
 
     <!-- 动态警告条 -->
     <div id="inventoryWarning" class="warning-bar" style="display: none;">
-        <span class="warning-icon">⚠️</span> <span id="warningText"></span>
+        <span class="warning-icon">!</span> <span id="warningText"></span>
     </div>
 
     <!-- 核心仪表盘 -->
     <div class="dashboard-grid">
-        <div class="stat-card"><span class="stat-label">持仓市值<br>Market Value</span><span id="mv" class="stat-val">0.00</span></div>
-        <div class="stat-card"><span class="stat-label">浮动盈亏<br>Unrealized P&L</span><span id="upl" class="stat-val">0.00</span></div>
-        <div class="stat-card"><span class="stat-label">已实现盈亏<br>Realized P&L</span><span id="rpl" class="stat-val">0.00</span></div>
-        <div class="stat-card"><span class="stat-label">组合总收益率<br>Total Yield</span><span id="yield" class="stat-val">0.00%</span></div>
+        <div class="stat-card"><span class="stat-label"><span class="label-cn">持仓市值</span><span class="label-en">Market Value</span></span><span id="mv" class="stat-val">0.00</span></div>
+        <div class="stat-card"><span class="stat-label"><span class="label-cn">浮动盈亏</span><span class="label-en">Unrealized P&L</span></span><span id="upl" class="stat-val">0.00</span></div>
+        <div class="stat-card"><span class="stat-label"><span class="label-cn">已实现盈亏</span><span class="label-en">Realized P&L</span></span><span id="rpl" class="stat-val">0.00</span></div>
+        <div class="stat-card"><span class="stat-label"><span class="label-cn">组合总收益率</span><span class="label-en">Total Yield</span></span><span id="yield" class="stat-val">0.00%</span></div>
     </div>
 
     <!-- 统计分析 -->
     <div class="analytics-section">
         <div class="analytics-header">
-            <span class="analytics-title">📊 统计分析</span>
+            <span class="analytics-title">统计分析</span>
         </div>
         <div class="analytics-grid">
             <div class="analytics-card">
-                <span class="analytics-label">胜率 Win Rate</span>
+                <span class="analytics-label"><span class="label-cn">胜率</span><span class="label-en">Win Rate</span></span>
                 <span id="winRate" class="analytics-val">-</span>
             </div>
             <div class="analytics-card">
-                <span class="analytics-label">盈亏比 Profit Factor</span>
+                <span class="analytics-label"><span class="label-cn">盈亏比</span><span class="label-en">Profit Factor</span></span>
                 <span id="profitFactor" class="analytics-val">-</span>
             </div>
             <div class="analytics-card">
-                <span class="analytics-label">最大回撤 Max Drawdown</span>
+                <span class="analytics-label"><span class="label-cn">最大回撤</span><span class="label-en">Max Drawdown</span></span>
                 <span id="maxDrawdown" class="analytics-val">-</span>
             </div>
         </div>
@@ -795,35 +1098,17 @@
 
     <!-- 费率参数 -->
     <div class="rates-panel">
-        <div class="rate-item"><label>📌 股票代码</label><input type="text" id="tickerInput" placeholder="600036"></div>
-        <div class="rate-item"><label>📈 现价</label><input type="number" id="currentPriceInput" inputmode="decimal" step="0.01" placeholder="市价"></div>
-        <div class="rate-item"><label>💸 佣金%</label><input type="number" id="commissionRate" inputmode="decimal" step="0.001" value="0.025"></div>
-        <div class="rate-item"><label>📄 印花税%</label><input type="number" id="stampTaxRate" inputmode="decimal" step="0.01" value="0.1"></div>
-        <div class="rate-item"><label>💰 最低佣</label><input type="number" id="minCommission" inputmode="decimal" step="0.5" value="5"></div>
-        <div class="rates-actions"><button id="resetAllBtn" class="reset-btn">🗑 初始化组合</button></div>
-    </div>
-
-    <!-- 导入导出 -->
-    <div class="io-panel">
-        <div class="io-dropdown">
-            <button id="ioMenuBtn" class="io-btn io-btn-menu">数据管理 ▼</button>
-            <div class="io-dropdown-content" id="ioDropdownContent">
-                <button id="smartPasteBtn" class="io-dropdown-item">智能粘贴导入</button>
-                <button id="exportBtn" class="io-dropdown-item">导出数据</button>
-                <button id="exportCsvBtn" class="io-dropdown-item">导出CSV</button>
-                <button id="importBtn" class="io-dropdown-item">导入数据</button>
-                <button id="pasteBuyBtn" class="io-dropdown-item">粘贴买入</button>
-                <button id="pasteSellBtn" class="io-dropdown-item">粘贴卖出</button>
-            </div>
-        </div>
-        <input type="file" id="importFile" style="display:none" accept=".json">
-        <span class="io-hint">Ctrl+V 快捷导入</span>
+        <div class="rate-item"><label>股票代码</label><input type="text" id="tickerInput" placeholder="600036"></div>
+        <div class="rate-item"><label>现价</label><input type="number" id="currentPriceInput" inputmode="decimal" step="0.01" placeholder="市价"></div>
+        <div class="rate-item"><label>佣金%</label><input type="number" id="commissionRate" inputmode="decimal" step="0.001" value="0.025"></div>
+        <div class="rate-item"><label>印花税%</label><input type="number" id="stampTaxRate" inputmode="decimal" step="0.01" value="0.1"></div>
+        <div class="rate-item"><label>最低佣</label><input type="number" id="minCommission" inputmode="decimal" step="0.5" value="5"></div>
     </div>
 
     <!-- 自定义确认弹框 -->
     <div id="confirmModal" class="modal-overlay">
         <div class="modal-box">
-            <div class="modal-icon">⚠️</div>
+            <div class="modal-icon">!</div>
             <div class="modal-msg" id="confirmModalMsg"></div>
             <div class="modal-actions">
                 <button class="modal-btn modal-btn-cancel" id="confirmModalCancel">取消</button>
@@ -841,15 +1126,15 @@
         </div>
     </div>
 
-    <!-- 买入流水 -->
+    <!-- 建仓流水 -->
     <div class="section">
-        <div class="header-row"><h2>买入流水</h2><button id="addBuyBtn" class="action-btn">+ 新增</button></div>
+        <div class="header-row"><h2>建仓流水</h2><button id="addBuyBtn" class="action-btn" title="新增">+</button></div>
         <div class="table-scroll-wrapper" id="buyTableWrapper"></div>
     </div>
 
-    <!-- 卖出流水 -->
+    <!-- 平仓流水 -->
     <div class="section">
-        <div class="header-row"><h2>卖出流水</h2><button id="addSellBtn" class="action-btn">+ 新增</button></div>
+        <div class="header-row"><h2>平仓流水</h2><button id="addSellBtn" class="action-btn" title="新增">+</button></div>
         <div class="table-scroll-wrapper" id="sellTableWrapper"></div>
     </div>
 
@@ -886,7 +1171,7 @@
     </div>
 
     <div class="footnote">
-        ⚡ 计价准则：先进先出 (FIFO) | 买入佣金 = max(成交金额×佣金率, 最低佣金) | 卖出清算 = 佣金 + 印花税<br>
+        计价准则：先进先出 (FIFO) | 买入佣金 = max(成交金额×佣金率, 最低佣金) | 卖出清算 = 佣金 + 印花税<br>
         所有委托记录自动保存至本地，刷新页面不丢失。如遇卖出数量超出持仓，系统将发出持仓警告。
     </div>
 </div>
@@ -1231,8 +1516,9 @@ class ViewRenderer {
             addBuyBtn: document.getElementById('addBuyBtn'),
             addSellBtn: document.getElementById('addSellBtn'),
             resetAllBtn: document.getElementById('resetAllBtn'),
-            ioMenuBtn: document.getElementById('ioMenuBtn'),
-            ioDropdownContent: document.getElementById('ioDropdownContent'),
+            topMenuBtn: document.getElementById('topMenuBtn'),
+            topDropdownContent: document.getElementById('topDropdownContent'),
+            themeToggleBtn: document.getElementById('themeToggleBtn'),
         };
     }
 
@@ -1247,7 +1533,7 @@ class ViewRenderer {
                 <td class="col-qty"><input type="text" inputmode="numeric" class="input-text buy-shares" value="${buy.shares ? Utils.formatNumberWithComma(buy.shares) : ''}" placeholder="数量"></td>
                 <td class="col-notional readonly-numeric buy-amount">${Utils.formatMoney(amount)}</td>
                 <td class="col-fee readonly-numeric buy-fee">${Utils.formatMoney(comm)}</td>
-                <td class="col-action"><button class="del-btn buy-del">删除</button></td>
+                <td class="col-action"><button class="del-btn buy-del" title="删除">×</button></td>
             </tr>`;
         }
         html += `</tbody></table>`;
@@ -1263,9 +1549,9 @@ class ViewRenderer {
             let pnlData = sellPnLMap[sell.id];
             let pnlHtml = '';
             if (pnlData && pnlData.netPnL !== undefined) {
-                let pnlClass = pnlData.netPnL >= 0 ? 'positive' : 'negative';
+                let pnlColor = pnlData.netPnL >= 0 ? 'var(--data-positive)' : 'var(--data-negative)';
                 let pnlSign = pnlData.netPnL >= 0 ? '+' : '';
-                pnlHtml = `<span class="${pnlClass}">${pnlSign}${Utils.formatMoney(pnlData.netPnL)}</span><br><span style="font-size:0.55rem; color:#6f8eaa;">成本${Utils.formatMoney(pnlData.buyCost)}</span>`;
+                pnlHtml = `<span style="color:${pnlColor};font-weight:600;">${pnlSign}${Utils.formatMoney(pnlData.netPnL)}</span><br><span style="font-size:0.55rem; color:var(--text-tertiary);">成本${Utils.formatMoney(pnlData.buyCost)}</span>`;
             } else {
                 pnlHtml = '-';
             }
@@ -1276,7 +1562,7 @@ class ViewRenderer {
                 <td class="col-notional readonly-numeric sell-amount">${Utils.formatMoney(amount)}</td>
                 <td class="col-pnl sell-pnl">${pnlHtml}</td>
                 <td class="col-fee sell-fee">${Utils.formatMoney(totalFee)}<br><span style="font-size:0.55rem; color:#6f8eaa;">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span></td>
-                <td class="col-action"><button class="del-btn sell-del">删除</button></td>
+                <td class="col-action"><button class="del-btn sell-del" title="删除">×</button></td>
             </tr>`;
         }
         html += `</tbody></table>`;
@@ -1308,14 +1594,19 @@ class ViewRenderer {
         if (feeCell) feeCell.innerHTML = `${Utils.formatMoney(totalFee)}<br><span style="font-size:0.6rem; color:#6f8eaa;">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span>`;
     }
 
-    updateDashboard(stats) {
+    updateDashboard(stats, market) {
+        const pnlColor = (value) => {
+            if (value > 0) return market === 'us' ? '#10b981' : '#dc2626';
+            if (value < 0) return market === 'us' ? '#ef4444' : '#0f8b5e';
+            return '';
+        };
         this.els.mv.innerText = Utils.formatMoney(stats.remainMarket);
         this.els.upl.innerText = Utils.formatMoney(stats.remainFloatProfit);
-        this.els.upl.style.color = stats.remainFloatProfit >= 0 ? '#0f8b5e' : '#dc2626';
+        this.els.upl.style.color = pnlColor(stats.remainFloatProfit);
         this.els.rpl.innerText = Utils.formatMoney(stats.totalRealizedProfit);
-        this.els.rpl.style.color = stats.totalRealizedProfit >= 0 ? '#0f8b5e' : '#dc2626';
+        this.els.rpl.style.color = pnlColor(stats.totalRealizedProfit);
         this.els.yield.innerText = Utils.formatPercent(stats.totalYield);
-        this.els.yield.style.color = stats.totalYield >= 0 ? '#0f8b5e' : '#dc2626';
+        this.els.yield.style.color = pnlColor(stats.totalYield);
     }
 
     updateAnalytics(stats) {
@@ -1383,7 +1674,7 @@ class ViewRenderer {
         this.els.weightedDays.innerText = stats.weightedAvgDays.toFixed(1) + " 天";
         this.els.diffPrice.innerText = stats.diffPrice.toFixed(4);
         this.els.assistDiff.innerText = Utils.formatMoney(stats.assistDiff);
-        this.els.checkHint.innerText = stats.checkValid ? "✅ 校验通过" : "⚠️ 数据误差";
+        this.els.checkHint.innerText = stats.checkValid ? "✅ 校验通过" : "数据误差";
         this.els.checkHint.style.color = stats.checkValid ? "#0f8b5e" : "#e67e22";
     }
 
@@ -1418,6 +1709,7 @@ class TradingTerminal {
         this.currentPrice = this.data.currentPrice ?? null;
         this.ticker = this.data.ticker ?? '';
         this.lastSellPnLMap = {};
+        this.currentMarket = 'cn'; // cn=中国A股/港股, us=美股
 
         // 防抖函数
         this._debouncedFullUpdate = Utils.debounce(() => {
@@ -1427,6 +1719,9 @@ class TradingTerminal {
 
         this.initUI();
         this.bindEvents();
+        // 初始化市场配色
+        this.currentMarket = this.detectMarket(this.ticker);
+        this.applyMarketColors();
         this.refresh();
     }
 
@@ -1440,6 +1735,32 @@ class TradingTerminal {
 
         this._initConfirmModal();
         this._initToastModal();
+        this._initTheme();
+    }
+
+    _initTheme() {
+        // 从localStorage读取主题设置，默认亮色模式
+        const savedTheme = localStorage.getItem('PortfolioTheme') || 'light';
+        this.setTheme(savedTheme);
+    }
+
+    setTheme(theme) {
+        this.currentTheme = theme;
+        const html = document.documentElement;
+        const btn = this.view.els.themeToggleBtn;
+        if (theme === 'dark') {
+            html.setAttribute('data-theme', 'dark');
+            if (btn) btn.innerText = '◑';
+        } else {
+            html.removeAttribute('data-theme');
+            if (btn) btn.innerText = '◐';
+        }
+        localStorage.setItem('PortfolioTheme', theme);
+    }
+
+    toggleTheme() {
+        const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+        this.setTheme(newTheme);
     }
 
     _initConfirmModal() {
@@ -1500,7 +1821,7 @@ class TradingTerminal {
     updateAllStats() {
         let stats = this.calculateFIFO();
         this.lastSellPnLMap = stats.sellPnLMap || {};
-        this.view.updateDashboard(stats);
+        this.view.updateDashboard(stats, this.currentMarket);
         this.view.updateAnalytics(stats);
         this.view.updatePerformanceCards(stats);
         this.view.updateWarning(stats.warningMessages);
@@ -1511,7 +1832,7 @@ class TradingTerminal {
         this.lastSellPnLMap = stats.sellPnLMap || {};
         this.view.renderBuyTable(this.buys, this.calcService, this.commissionRate, this.minCommission);
         this.view.renderSellTable(this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission, this.lastSellPnLMap);
-        this.view.updateDashboard(stats);
+        this.view.updateDashboard(stats, this.currentMarket);
         this.view.updateAnalytics(stats);
         this.view.updatePerformanceCards(stats);
         this.view.updateWarning(stats.warningMessages);
@@ -1530,15 +1851,60 @@ class TradingTerminal {
     }
 
     deleteBuy(id) {
-        this.buys = this.buys.filter(b => b.id != id);
-        this.refresh();
-        this.persist();
+        const buy = this.buys.find(b => b.id == id);
+        const hasData = buy && (buy.date || buy.price || buy.shares);
+        if (hasData) {
+            this.showConfirm("确定删除该笔建仓记录？", () => {
+                this.buys = this.buys.filter(b => b.id != id);
+                this.refresh();
+                this.persist();
+            });
+        } else {
+            this.buys = this.buys.filter(b => b.id != id);
+            this.refresh();
+            this.persist();
+        }
     }
 
     deleteSell(id) {
-        this.sells = this.sells.filter(s => s.id != id);
-        this.refresh();
-        this.persist();
+        const sell = this.sells.find(s => s.id == id);
+        const hasData = sell && (sell.date || sell.price || sell.shares);
+        if (hasData) {
+            this.showConfirm("确定删除该笔平仓记录？", () => {
+                this.sells = this.sells.filter(s => s.id != id);
+                this.refresh();
+                this.persist();
+            });
+        } else {
+            this.sells = this.sells.filter(s => s.id != id);
+            this.refresh();
+            this.persist();
+        }
+    }
+
+    // 根据股票代码自动识别市场
+    detectMarket(code) {
+        if (!code || !code.trim()) return 'cn';
+        const c = code.trim().toUpperCase();
+        // 美股：纯字母或含小数点（如 AAPL, TSLA, BRK.B）
+        if (/^[A-Z]/.test(c)) return 'us';
+        // A股/港股：纯数字（6位A股，4-5位港股）
+        return 'cn';
+    }
+
+    // 应用市场配色到CSS变量并刷新显示
+    applyMarketColors() {
+        const root = document.documentElement;
+        if (this.currentMarket === 'us') {
+            root.style.setProperty('--data-positive', '#10b981');
+            root.style.setProperty('--data-negative', '#ef4444');
+        } else {
+            root.style.setProperty('--data-positive', '#dc2626');
+            root.style.setProperty('--data-negative', '#0f8b5e');
+        }
+        // 刷新仪表盘颜色
+        let stats = this.calculateFIFO();
+        this.view.updateDashboard(stats, this.currentMarket);
     }
 
     resetAll() {
@@ -1603,17 +1969,23 @@ class TradingTerminal {
         // 股票代码
         els.tickerInput.oninput = () => {
             this.ticker = els.tickerInput.value;
+            // 自动识别市场并更新涨跌配色
+            this.currentMarket = this.detectMarket(this.ticker);
+            this.applyMarketColors();
             this.persist();
         };
 
-        // 下拉菜单控制
-        els.ioMenuBtn.onclick = function(e) {
+        // 顶部下拉菜单控制
+        els.topMenuBtn.onclick = function(e) {
             e.stopPropagation();
-            els.ioDropdownContent.classList.toggle('show');
+            els.topDropdownContent.classList.toggle('show');
         };
         document.addEventListener('click', function() {
-            els.ioDropdownContent.classList.remove('show');
+            els.topDropdownContent.classList.remove('show');
         });
+
+        // 主题切换
+        els.themeToggleBtn.onclick = () => this.toggleTheme();
 
         // 买入表格事件委托
         els.buyTableWrapper.addEventListener('input', (e) => {
@@ -1733,7 +2105,7 @@ class TradingTerminal {
 
         // 导出数据
         document.getElementById('exportBtn').onclick = () => {
-            els.ioDropdownContent.classList.remove('show');
+            els.topDropdownContent.classList.remove('show');
             this.dataService.exportBackup({
                 buys: this.buys,
                 sells: this.sells,
@@ -1749,7 +2121,7 @@ class TradingTerminal {
 
         // CSV 导出
         document.getElementById('exportCsvBtn').onclick = () => {
-            els.ioDropdownContent.classList.remove('show');
+            els.topDropdownContent.classList.remove('show');
             let stats = this.calculateFIFO();
             let pnlMap = stats.sellPnLMap || {};
             let csvLines = [];
@@ -1786,10 +2158,10 @@ class TradingTerminal {
         let importBtn = document.getElementById('importBtn');
         importBtn.onclick = (e) => {
             e.stopPropagation();
-            els.ioDropdownContent.classList.remove('show');
+            els.topDropdownContent.classList.remove('show');
             this.dataService.importFromFile((data, err) => {
                 if (err) {
-                    this.showToast(err, '❌');
+                    this.showToast(err, '!');
                     return;
                 }
                 this.showConfirm('导入将覆盖当前所有数据，是否继续？', () => {
@@ -1817,21 +2189,21 @@ class TradingTerminal {
         // 智能粘贴导入
         document.getElementById('smartPasteBtn').onclick = (e) => {
             e.stopPropagation();
-            els.ioDropdownContent.classList.remove('show');
+            els.topDropdownContent.classList.remove('show');
             this.smartPasteImport();
         };
 
         // 粘贴导入买入
         document.getElementById('pasteBuyBtn').onclick = (e) => {
             e.stopPropagation();
-            els.ioDropdownContent.classList.remove('show');
+            els.topDropdownContent.classList.remove('show');
             this.pasteFromClipboard('buy');
         };
 
         // 粘贴导入卖出
         document.getElementById('pasteSellBtn').onclick = (e) => {
             e.stopPropagation();
-            els.ioDropdownContent.classList.remove('show');
+            els.topDropdownContent.classList.remove('show');
             this.pasteFromClipboard('sell');
         };
 
@@ -1849,7 +2221,7 @@ class TradingTerminal {
         try {
             const text = await navigator.clipboard.readText();
             if (!text || text.trim() === '') {
-                this.showToast('剪贴板为空，请先复制数据。', '⚠️');
+                this.showToast('剪贴板为空，请先复制数据。', '!');
                 return;
             }
             const lines = text.trim().split('\n');
@@ -1886,10 +2258,10 @@ class TradingTerminal {
                 this.persist();
                 this.showToast(`成功导入 ${addedCount} 条${type === 'buy' ? '买入' : '卖出'}记录${errorCount > 0 ? '，' + errorCount + ' 条格式异常已跳过' : ''}`, '✅');
             } else {
-                this.showToast('未识别到有效数据，请检查格式（每行：日期,价格,数量）。', '⚠️');
+                this.showToast('未识别到有效数据，请检查格式（每行：日期,价格,数量）。', '!');
             }
         } catch (err) {
-            this.showToast('无法读取剪贴板，请检查浏览器权限设置。', '⚠️');
+            this.showToast('无法读取剪贴板，请检查浏览器权限设置。', '!');
         }
     }
 
@@ -1897,7 +2269,7 @@ class TradingTerminal {
         try {
             const text = await navigator.clipboard.readText();
             if (!text || text.trim() === '') {
-                this.showToast('剪贴板为空，请先复制交割单数据。', '⚠️');
+                this.showToast('剪贴板为空，请先复制交割单数据。', '!');
                 return;
             }
 
@@ -1952,7 +2324,7 @@ class TradingTerminal {
             }
 
             if (buyCount === 0 && sellCount === 0) {
-                this.showToast('未能识别到有效交易数据，请确保复制的数据包含日期、价格、数量信息。', '⚠️');
+                this.showToast('未能识别到有效交易数据，请确保复制的数据包含日期、价格、数量信息。', '!');
                 return;
             }
 
@@ -1979,7 +2351,7 @@ class TradingTerminal {
             this.showToast(`导入完成：买入 ${buyCount} 条，卖出 ${sellCount} 条${skipCount > 0 ? '，跳过 ' + skipCount + ' 条格式异常数据' : ''}`, '✅');
 
         } catch (err) {
-            this.showToast('粘贴失败：' + err.message, '⚠️');
+            this.showToast('粘贴失败：' + err.message, '!');
         }
     }
 }
