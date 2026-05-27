@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>证券交易终端 · 组合资产监控</title>
+    <!-- iOS PWA 支持 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="证券交易终端">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#1e3a5f">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* iOS 26 色彩系统 */
+            --primary: #007AFF;
+            --primary-light: #5AC8FA;
+            --success: #34C759;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+            --col-head: #007AFF;
+            --border: rgba(0, 122, 255, 0.15);
+            --accent: #007AFF;
+            /* iOS 26: 渐变背景 */
+            --bg: linear-gradient(180deg, #F2F2F7 0%, #E5E5EA 100%);
+            --bg-solid: #F2F2F7;
+            --card-bg: rgba(255, 255, 255, 0.72);
+            --card-bg-solid: rgba(255, 255, 255, 0.85);
+            --warning-bg: rgba(255, 59, 48, 0.12);
+            --warning-text: #FF3B30;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            /* iOS 26: 圆角系统 */
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 28px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { touch-action: manipulation; scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            background-attachment: fixed;
+            padding: 16px;
+            padding-top: max(16px, var(--safe-top));
+            padding-bottom: max(24px, var(--safe-bottom));
+            padding-left: max(16px, var(--safe-left));
+            padding-right: max(16px, var(--safe-right));
+            font-size: 15px;
+            color: #1C1C1E;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100dvh;
+            text-wrap: pretty;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        /* 页面标题 */
+        .page-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+        }
+
+        /* iOS 26: 警告条 - 毛玻璃风格 */
+        .warning-bar {
+            background: var(--warning-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: var(--warning-text);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid var(--warning-text);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+        .warning-bar .warning-icon { flex-shrink: 0; font-size: 1.1rem; }
+
+        /* 仪表盘 - iOS 26 渐变卡片 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,245,247,0.9) 100%);
+            color: #1C1C1E;
+            padding: 14px 10px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+            min-width: 0;
+            border: 0.5px solid rgba(0, 122, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            opacity: 0.6;
+        }
+
+        /* 统计分析区域 - iOS 26 风格 */
+        .analytics-section {
+            margin-bottom: 16px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+        .analytics-header {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1.5px solid var(--border);
+        }
+        .analytics-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .analytics-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,245,247,0.9) 100%);
+            padding: 12px 10px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255,255,255,0.8);
+            border: 0.5px solid rgba(0, 122, 255, 0.08);
+        }
+        .analytics-label {
+            display: block;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            opacity: 0.5;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+        .analytics-val {
+            display: block;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            letter-spacing: -0.02em;
+            color: #1C1C1E;
+        }
+        .stat-val {
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            display: block;
+            margin-top: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            letter-spacing: -0.02em;
+        }
+        .stat-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            opacity: 0.6;
+            line-height: 1.3;
+        }
+
+        /* 费率栏 - iOS 26 毛玻璃风格 */
+        .rates-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+        .rate-item {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            border: 0.5px solid rgba(0, 122, 255, 0.08);
+        }
+        .rate-item label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--primary);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .rate-item input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            min-width: 50px;
+            text-align: right;
+            font-weight: 600;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 15px;
+            outline: none;
+            color: #1C1C1E;
+            -webkit-appearance: none;
+        }
+        .rate-item input::placeholder { color: rgba(0, 122, 255, 0.4); font-weight: 400; }
+        .rates-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+        .reset-btn {
+            background: rgba(255, 59, 48, 0.12);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--danger);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reset-btn:active { transform: scale(0.97); opacity: 0.8; }
+
+        /* 导入导出栏 - iOS 26 毛玻璃风格 */
+        .io-panel {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: auto;
+            overflow: visible !important;
+        }
+        .io-btn {
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .io-btn:active { transform: scale(0.97); opacity: 0.9; }
+        .io-btn-menu { background: var(--primary); }
+        .io-hint {
+            font-size: 0.65rem;
+            color: rgba(0, 0, 0, 0.4);
+            margin-left: auto;
+        }
+
+        /* 下拉菜单样式 */
+        .io-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .io-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 6px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-md);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            border: 0.5px solid rgba(0, 122, 255, 0.1);
+            min-width: 160px;
+            z-index: 99999;
+            overflow: visible !important;
+            white-space: nowrap;
+        }
+        .io-dropdown-content.show {
+            display: block;
+        }
+        .io-dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1C1C1E;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .io-dropdown-item:hover {
+            background: rgba(0, 122, 255, 0.08);
+        }
+        .io-dropdown-item:active {
+            background: rgba(0, 122, 255, 0.15);
+        }
+
+        /* 交易区块 - iOS 26 毛玻璃卡片 */
+        .blotter-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 16px 14px;
+            margin-bottom: 16px;
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+        .section {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 16px 14px;
+            margin-bottom: 16px;
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+        .header-row h2 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+        }
+        .action-btn:active { transform: scale(0.97); opacity: 0.85; }
+
+        /* 表格容器 - 支持横向滚动 */
+        .table-scroll-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -14px;
+            padding: 0 14px;
+        }
+
+        /* 表格 - iOS 26 风格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 520px;
+        }
+        th {
+            background: rgba(0, 122, 255, 0.06);
+            padding: 10px 6px;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 1.5px solid var(--border);
+            color: var(--primary);
+            font-size: 0.72rem;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        td {
+            padding: 6px 4px;
+            text-align: center;
+            border-bottom: 0.5px solid rgba(0, 122, 255, 0.06);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .col-date { width: auto; min-width: 80px; }
+        .col-price { width: auto; min-width: 60px; }
+        .col-qty { width: auto; min-width: 60px; }
+        .col-notional { width: auto; min-width: 80px; }
+        .col-fee { width: auto; min-width: 85px; }
+        .col-pnl { width: auto; min-width: 90px; }
+        .col-action { width: 45px; min-width: 45px; }
+
+        /* 输入框 - 无边框自适应长度 */
+        .input-text {
+            width: auto;
+            min-width: 30px;
+            max-width: 100%;
+            padding: 4px 2px;
+            border: none;
+            border-bottom: 1px solid rgba(0, 122, 255, 0.2);
+            border-radius: 0;
+            text-align: center;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 13px;
+            background: transparent;
+            color: #1C1C1E;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: border-color 0.15s;
+            height: auto;
+            line-height: 1.4;
+        }
+        .input-text:focus {
+            border-color: var(--primary);
+            border-bottom-width: 2px;
+            outline: none;
+            background: transparent;
+        }
+        input[type="date"].input-text {
+            min-width: 90px;
+            font-size: 12px;
+        }
+        .readonly-numeric {
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 0.78rem;
+            color: #1C1C1E;
+        }
+        .del-btn {
+            background: rgba(255, 59, 48, 0.1);
+            color: var(--danger);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .del-btn:active { transform: scale(0.95); opacity: 0.8; }
+
+        /* 绩效卡片网格 - iOS 26 玻璃拟态 */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .perf-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 16px;
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+        .perf-card h3 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+        .perf-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.82rem;
+            padding: 6px 0;
+            border-bottom: 0.5px solid rgba(0, 122, 255, 0.06);
+            gap: 8px;
+        }
+        .perf-row:last-child { border-bottom: none; margin-bottom: 0; }
+        .perf-label { color: rgba(0, 0, 0, 0.5); flex-shrink: 0; }
+        .perf-value {
+            font-weight: 700;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            text-align: right;
+            word-break: break-all;
+            color: #1C1C1E;
+        }
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+
+        .footnote {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+            line-height: 1.6;
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* ====== 自定义确认弹框 (替代 confirm) - iOS 26 风格 ====== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: var(--radius-xl);
+            padding: 24px 20px 20px;
+            max-width: 320px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+        }
+        .modal-icon { font-size: 2.4rem; margin-bottom: 12px; }
+        .modal-msg { font-size: 0.9rem; color: #1C1C1E; margin-bottom: 20px; line-height: 1.5; font-weight: 500; }
+        .modal-actions { display: flex; gap: 10px; justify-content: center; }
+        .modal-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .modal-btn:active { transform: scale(0.97); opacity: 0.9; }
+        .modal-btn-cancel { background: rgba(142, 142, 147, 0.15); color: #007AFF; }
+        .modal-btn-confirm { background: #007AFF; color: #fff; }
+
+        /* ====== 自定义提示弹框 (替代 alert) - iOS 26 风格 ====== */
+        .toast-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .toast-overlay.active { display: flex; }
+        .toast-box {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: var(--radius-xl);
+            padding: 28px 24px 24px;
+            max-width: 280px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            border: 0.5px solid rgba(255, 255, 255, 0.5);
+        }
+        .toast-icon { font-size: 2.8rem; margin-bottom: 14px; }
+        .toast-msg { font-size: 0.95rem; color: #1C1C1E; margin-bottom: 24px; line-height: 1.5; font-weight: 600; }
+        .toast-btn {
+            background: #34C759;
+            color: #fff;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(52, 199, 89, 0.3);
+        }
+        .toast-btn:active { transform: scale(0.97); opacity: 0.9; }
+
+        /* ====== iOS 26 响应式适配 ====== */
+
+        /* 大屏 (iPad / 横屏) */
+        @media (min-width: 780px) {
+            .dashboard-grid { grid-template-columns: repeat(4, 1fr); }
+            .analytics-grid { grid-template-columns: repeat(3, 1fr); }
+            .performance-grid { grid-template-columns: repeat(2, 1fr); }
+            .rates-panel { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        }
+
+        /* 中屏 (竖屏手机) */
+        @media (max-width: 779px) {
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+            .analytics-grid { grid-template-columns: repeat(3, 1fr); }
+            .analytics-val { font-size: 0.95rem; }
+            .analytics-label { font-size: 0.55rem; }
+            .stat-val { font-size: 1.1rem; }
+            .stat-label { font-size: 0.6rem; }
+            .rates-panel { grid-template-columns: repeat(2, 1fr); }
+            .performance-grid { grid-template-columns: 1fr; }
+            .io-hint { display: none; }
+        }
+
+        /* 小屏 (iPhone SE / 小尺寸设备) */
+        @media (max-width: 374px) {
+            body { padding: 12px; padding-top: max(12px, var(--safe-top)); }
+            .dashboard-grid { gap: 8px; }
+            .stat-card { padding: 10px 8px; }
+            .stat-val { font-size: 0.95rem; }
+            .rates-panel { grid-template-columns: 1fr; }
+            .blotter-section { padding: 12px 10px; }
+            .perf-card { padding: 12px; }
+        }
+
+        /* iOS 触摸优化 */
+        button { min-height: 36px; }
+        input[type="text"], input[type="number"], input[type="date"] {
+            min-height: 36px;
+        }
+
+        /* iOS 26: 优化滚动条在暗色区域的表现 */
+        .table-scroll-wrapper::-webkit-scrollbar {
+            height: 3px;
+        }
+        .table-scroll-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .table-scroll-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(30,58,95,0.15);
+            border-radius: 2px;
+        }
+
+        /* iOS 26: 防止页面弹性滚动时的背景色泄露 */
+        html {
+            background-color: var(--bg);
+        }
+
+        /* iOS 26: 暗色模式适配（自动） */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --col-head: #7eb8e0;
+                --border: #2a3a4a;
+                --accent: #4aa8d0;
+                --bg: #0d1117;
+                --card-bg: #161b22;
+                --warning-bg: #3d1f1f;
+                --warning-text: #f87171;
+            }
+            body { color: #c9d1d9; }
+            .stat-card { background: #1a2332; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+            .stat-card::before { opacity: 0.3; }
+            .stat-label { color: #8b949e; }
+            .stat-val { color: #e6edf3; }
+            .rate-item { background: #1c2333; }
+            .rate-item input { color: #c9d1d9; }
+            .rate-item input::placeholder { color: #4a5568; }
+            .io-panel { background: #161b22; }
+            th { background: #1c2333; color: #8b949e; }
+            td { border-bottom-color: #21262d; }
+            .input-text { background: #0d1117; color: #c9d1d9; border-color: #30363d; }
+            .input-text:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(74,168,208,0.2); }
+            .readonly-numeric { color: #c9d1d9; }
+            .perf-row { border-bottom-color: #21262d; }
+            .perf-label { color: #8b949e; }
+            .perf-value { color: #c9d1d9; }
+            .perf-card { background: #161b22; border-color: #21262d; }
+            .perf-card h3 { color: var(--col-head); border-left-color: var(--accent); }
+            .footnote { background: rgba(22,27,34,0.8); color: #8b949e; }
+            .del-btn { background: #3d1f1f; }
+            .reset-btn { background: #3d1f1f; }
+            .warning-bar { border-left-color: var(--warning-text); }
+            .header-row { border-bottom-color: var(--col-head); }
+            .header-row h2 { color: var(--col-head); }
+            .analytics-section { background: #161b22; border-color: #21262d; }
+            .analytics-card { background: #1a2332; border-color: #21262d; }
+            .analytics-label { color: #8b949e; }
+            .analytics-val { color: #e6edf3; }
+            .analytics-header { border-bottom-color: #2a3a4a; }
+            .analytics-title { color: #7eb8e0; }
+            .io-dropdown-content { background: #1c2333; border-color: #2a3a4a; }
+            .io-dropdown-item { color: #c9d1d9; }
+            .io-dropdown-item:hover { background: rgba(74,168,208,0.1); }
+            .io-btn-menu { background: #1a3a5c; }
+            .io-hint { color: #8b949e; }
+            .modal-box { background: #1c2333; }
+            .modal-msg { color: #c9d1d9; }
+            .modal-btn-cancel { background: rgba(74,168,208,0.15); color: #7eb8e0; }
+            .toast-box { background: #1c2333; }
+            .toast-msg { color: #c9d1d9; }
+            .toast-btn { background: #1a5c3a; }
+            .page-title { color: #7eb8e0; }
+            .blotter-section { background: #161b22; border-color: #21262d; }
+            .section { background: #161b22; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="page-title">📊 组合资产监控 · 证券交易终端</h2>
+
+    <!-- 动态警告条 -->
+    <div id="inventoryWarning" class="warning-bar" style="display: none;">
+        <span class="warning-icon">⚠️</span> <span id="warningText"></span>
+    </div>
+
+    <!-- 核心仪表盘 -->
+    <div class="dashboard-grid">
+        <div class="stat-card"><span class="stat-label">持仓市值<br>Market Value</span><span id="mv" class="stat-val">0.00</span></div>
+        <div class="stat-card"><span class="stat-label">浮动盈亏<br>Unrealized P&L</span><span id="upl" class="stat-val">0.00</span></div>
+        <div class="stat-card"><span class="stat-label">已实现盈亏<br>Realized P&L</span><span id="rpl" class="stat-val">0.00</span></div>
+        <div class="stat-card"><span class="stat-label">组合总收益率<br>Total Yield</span><span id="yield" class="stat-val">0.00%</span></div>
+    </div>
+
+    <!-- 统计分析 -->
+    <div class="analytics-section">
+        <div class="analytics-header">
+            <span class="analytics-title">📊 统计分析</span>
+        </div>
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <span class="analytics-label">胜率 Win Rate</span>
+                <span id="winRate" class="analytics-val">-</span>
+            </div>
+            <div class="analytics-card">
+                <span class="analytics-label">盈亏比 Profit Factor</span>
+                <span id="profitFactor" class="analytics-val">-</span>
+            </div>
+            <div class="analytics-card">
+                <span class="analytics-label">最大回撤 Max Drawdown</span>
+                <span id="maxDrawdown" class="analytics-val">-</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 费率参数 -->
+    <div class="rates-panel">
+        <div class="rate-item"><label>📌 股票代码</label><input type="text" id="tickerInput" placeholder="600036"></div>
+        <div class="rate-item"><label>📈 现价</label><input type="number" id="currentPriceInput" inputmode="decimal" step="0.01" placeholder="市价"></div>
+        <div class="rate-item"><label>💸 佣金%</label><input type="number" id="commissionRate" inputmode="decimal" step="0.001" value="0.025"></div>
+        <div class="rate-item"><label>📄 印花税%</label><input type="number" id="stampTaxRate" inputmode="decimal" step="0.01" value="0.1"></div>
+        <div class="rate-item"><label>💰 最低佣</label><input type="number" id="minCommission" inputmode="decimal" step="0.5" value="5"></div>
+        <div class="rates-actions"><button id="resetAllBtn" class="reset-btn">🗑 初始化组合</button></div>
+    </div>
+
+    <!-- 导入导出 -->
+    <div class="io-panel">
+        <div class="io-dropdown">
+            <button id="ioMenuBtn" class="io-btn io-btn-menu">数据管理 ▼</button>
+            <div class="io-dropdown-content" id="ioDropdownContent">
+                <button id="smartPasteBtn" class="io-dropdown-item">智能粘贴导入</button>
+                <button id="exportBtn" class="io-dropdown-item">导出数据</button>
+                <button id="exportCsvBtn" class="io-dropdown-item">导出CSV</button>
+                <button id="importBtn" class="io-dropdown-item">导入数据</button>
+                <button id="pasteBuyBtn" class="io-dropdown-item">粘贴买入</button>
+                <button id="pasteSellBtn" class="io-dropdown-item">粘贴卖出</button>
+            </div>
+        </div>
+        <input type="file" id="importFile" style="display:none" accept=".json">
+        <span class="io-hint">Ctrl+V 快捷导入</span>
+    </div>
+
+    <!-- 自定义确认弹框 -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon">⚠️</div>
+            <div class="modal-msg" id="confirmModalMsg"></div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" id="confirmModalCancel">取消</button>
+                <button class="modal-btn modal-btn-confirm" id="confirmModalOk">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义提示弹框 -->
+    <div id="toastModal" class="toast-overlay">
+        <div class="toast-box">
+            <div class="toast-icon" id="toastModalIcon">✅</div>
+            <div class="toast-msg" id="toastModalMsg"></div>
+            <button class="toast-btn" id="toastModalOk">确认</button>
+        </div>
+    </div>
+
+    <!-- 买入流水 -->
+    <div class="section">
+        <div class="header-row"><h2>买入流水</h2><button id="addBuyBtn" class="action-btn">+ 新增</button></div>
+        <div class="table-scroll-wrapper" id="buyTableWrapper"></div>
+    </div>
+
+    <!-- 卖出流水 -->
+    <div class="section">
+        <div class="header-row"><h2>卖出流水</h2><button id="addSellBtn" class="action-btn">+ 新增</button></div>
+        <div class="table-scroll-wrapper" id="sellTableWrapper"></div>
+    </div>
+
+    <!-- 组合绩效报告 -->
+    <div class="performance-grid">
+        <div class="perf-card">
+            <h3>持仓资产组合</h3>
+            <div class="perf-row"><span class="perf-label">持仓总量</span><span id="remainSharesCard" class="perf-value">0</span></div>
+            <div class="perf-row"><span class="perf-label">持仓均价 (含清算费用)</span><span id="avgCostPerShareCard" class="perf-value">0.0000</span></div>
+            <div class="perf-row"><span class="perf-label">持仓本金</span><span id="remainCostCard" class="perf-value">0.00</span></div>
+            <div class="perf-row"><span class="perf-label">当前市值</span><span id="remainMarketCard" class="perf-value">0.00</span></div>
+            <div class="perf-row"><span class="perf-label">持仓盈亏</span><span id="remainProfitCard" class="perf-value">0.00</span></div>
+            <div class="perf-row"><span class="perf-label">持仓收益率</span><span id="remainYieldCard" class="perf-value">0.00%</span></div>
+        </div>
+        <div class="perf-card">
+            <h3>交易绩效报告</h3>
+            <div class="perf-row"><span class="perf-label">累计投入资本</span><span id="totalCostCard" class="perf-value">0.00</span></div>
+            <div class="perf-row"><span class="perf-label">累计回收价值</span><span id="totalRecoverCard" class="perf-value">0.00</span></div>
+            <div class="perf-row"><span class="perf-label">已实现收益净额</span><span id="realizedProfitDetailCard" class="perf-value">0.00</span></div>
+            <div class="perf-row"><span class="perf-label">组合总收益率</span><span id="totalYieldCard" class="perf-value">0.00%</span></div>
+            <div class="perf-row"><span class="perf-label">几何年化收益率 (CAGR)</span><span id="geoAnnualCard" class="perf-value">0.00%</span></div>
+        </div>
+        <div class="perf-card">
+            <h3>估值校验</h3>
+            <div class="perf-row"><span class="perf-label">市价与均价差</span><span id="diffPriceCard" class="perf-value">0.0000</span></div>
+            <div class="perf-row"><span class="perf-label">价差乘数 (应等同持仓盈亏)</span><span id="assistDiffCard" class="perf-value">0.00</span></div>
+            <div class="perf-row"><span class="perf-label">算法防漏校验</span><span id="checkHintCard" class="perf-value">待校验</span></div>
+        </div>
+        <div class="perf-card">
+            <h3>持仓时间分析</h3>
+            <div class="perf-row"><span class="perf-label">持仓周期 (自然日)</span><span id="totalDaysCard" class="perf-value">0 天</span></div>
+            <div class="perf-row"><span class="perf-label">资金加权持仓天数</span><span id="weightedDaysCard" class="perf-value">0.0 天</span></div>
+        </div>
+    </div>
+
+    <div class="footnote">
+        ⚡ 计价准则：先进先出 (FIFO) | 买入佣金 = max(成交金额×佣金率, 最低佣金) | 卖出清算 = 佣金 + 印花税<br>
+        所有委托记录自动保存至本地，刷新页面不丢失。如遇卖出数量超出持仓，系统将发出持仓警告。
+    </div>
+</div>
+
+<script>
+// ============================================================
+// 工具函数（静态方法级别，不依赖实例）
+// ============================================================
+const Utils = {
+    formatNumberWithComma(x) {
+        if (x === undefined || x === null) return '0';
+        let parts = x.toString().split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    },
+    parseNumberFromCommaString(s) {
+        if (!s) return 0;
+        return parseFloat(s.replace(/,/g, ''));
+    },
+    parseNum(v, isShare = false) {
+        if (v === null || v === '') return 0;
+        let n = parseFloat(v);
+        if (isNaN(n)) return 0;
+        if (isShare) return Math.max(0, Math.round(n));
+        return Math.max(0, n);
+    },
+    formatMoney(v) { return Utils.formatNumberWithComma(v.toFixed(2)); },
+    formatPercent(v) { return (v * 100).toFixed(2) + '%'; },
+    getToday() {
+        let d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    },
+    daysBetween(dateStr) {
+        if (!dateStr) return 0;
+        let d = new Date(dateStr);
+        if (isNaN(d)) return 0;
+        d.setHours(0,0,0,0);
+        let today = new Date();
+        today.setHours(0,0,0,0);
+        return Math.floor((today - d) / 86400000);
+    },
+    debounce(fn, delay) {
+        let timer = null;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+};
+
+// ============================================================
+// DataService - 数据持久化与版本管理
+// ============================================================
+class DataService {
+    constructor() {
+        this.STORAGE_KEY = 'PortfolioBlotter_FIFO_CN';
+        this.SCHEMA_VERSION = '2.0';
+    }
+
+    load() {
+        let raw = localStorage.getItem(this.STORAGE_KEY);
+        if (!raw) return this.getDefaultData();
+        try {
+            let d = JSON.parse(raw);
+            if (d.version !== this.SCHEMA_VERSION) {
+                d = this.migrate(d);
+            }
+            return d;
+        } catch(e) {
+            return this.getDefaultData();
+        }
+    }
+
+    save(data) {
+        data.version = this.SCHEMA_VERSION;
+        data.timestamp = new Date().toISOString();
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+    }
+
+    getDefaultData() {
+        return {
+            version: this.SCHEMA_VERSION,
+            timestamp: new Date().toISOString(),
+            buys: [
+                { id: 1, date: '2026-01-26', price: 10, shares: 1000 },
+                { id: 2, date: '2026-02-26', price: 12, shares: 1000 },
+                { id: 3, date: '2026-03-26', price: 15, shares: 1000 },
+            ],
+            sells: [
+                { id: 1, date: '2026-04-26', price: 19, shares: 1000 },
+            ],
+            nextBuyId: 4,
+            nextSellId: 2,
+            commissionRate: 0.025,
+            stampTaxRate: 0.1,
+            minCommission: 5,
+            currentPrice: 20,
+            ticker: ''
+        };
+    }
+
+    migrate(oldData) {
+        // 版本迁移：确保所有字段存在
+        let result = this.getDefaultData();
+        if (oldData.buys) result.buys = oldData.buys;
+        if (oldData.sells) result.sells = oldData.sells;
+        if (oldData.nextBuyId) result.nextBuyId = oldData.nextBuyId;
+        if (oldData.nextSellId) result.nextSellId = oldData.nextSellId;
+        if (oldData.commissionRate !== undefined) result.commissionRate = oldData.commissionRate;
+        if (oldData.stampTaxRate !== undefined) result.stampTaxRate = oldData.stampTaxRate;
+        if (oldData.minCommission !== undefined) result.minCommission = oldData.minCommission;
+        if (oldData.currentPrice !== undefined) result.currentPrice = oldData.currentPrice;
+        if (oldData.ticker !== undefined) result.ticker = oldData.ticker;
+        // 保存迁移后的数据
+        this.save(result);
+        return result;
+    }
+
+    exportBackup(data) {
+        let backup = {
+            version: data.version || this.SCHEMA_VERSION,
+            timestamp: new Date().toISOString(),
+            buys: data.buys,
+            sells: data.sells,
+            nextBuyId: data.nextBuyId,
+            nextSellId: data.nextSellId,
+            commissionRate: data.commissionRate,
+            stampTaxRate: data.stampTaxRate,
+            minCommission: data.minCommission,
+            currentPrice: data.currentPrice,
+            ticker: data.ticker || ''
+        };
+        let blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'Portfolio_Backup_' + new Date().toISOString().slice(0,10) + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    importFromFile(onComplete) {
+        let importFileInput = document.getElementById('importFile');
+        importFileInput.value = '';
+        importFileInput.click();
+        importFileInput.onchange = function(event) {
+            let file = event.target.files[0];
+            if (!file) return;
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let data = JSON.parse(e.target.result);
+                    if (!data.buys && !data.sells) {
+                        onComplete(null, '文件格式错误：缺少 buys 或 sells 字段。');
+                        return;
+                    }
+                    onComplete(data, null);
+                } catch (err) {
+                    onComplete(null, '文件格式错误，无法解析：' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        };
+    }
+}
+
+// ============================================================
+// CalcService - 计算引擎
+// ============================================================
+class CalcService {
+    constructor(dataService) {
+        this.ds = dataService;
+    }
+
+    calcBuyFee(amount, commissionRate, minCommission) {
+        if (amount <= 0) return 0;
+        let comm = amount * commissionRate / 100;
+        return Math.max(comm, minCommission);
+    }
+
+    calcSellFee(amount, commissionRate, stampTaxRate, minCommission) {
+        if (amount <= 0) return { comm: 0, stamp: 0 };
+        let comm = amount * commissionRate / 100;
+        let stamp = amount * stampTaxRate / 100;
+        return { comm: Math.max(comm, minCommission), stamp: stamp };
+    }
+
+    calculateFIFO(buys, sells, currentPrice, commissionRate, stampTaxRate, minCommission) {
+        let validBuys = buys.filter(b => b.price > 0 && b.shares > 0 && b.date);
+        let validSells = sells.filter(s => s.price > 0 && s.shares > 0 && s.date);
+
+        let buyQueue = validBuys.map(b => {
+            let amount = b.price * b.shares;
+            let fee = this.calcBuyFee(amount, commissionRate, minCommission);
+            return { ...b, originalShares: b.shares, remaining: b.shares, totalFee: fee };
+        }).sort((a,b) => new Date(a.date) - new Date(b.date));
+
+        let totalRealizedProfit = 0;
+        let totalSoldNet = 0;
+        let sortedSells = [...validSells].sort((a,b) => new Date(a.date) - new Date(b.date));
+        let warningMessages = [];
+        let closedTradePnLs = [];
+        let sellPnLMap = {};
+
+        for (let sell of sortedSells) {
+            let sellShares = sell.shares;
+            let sellAmount = sellShares * sell.price;
+            let { comm, stamp } = this.calcSellFee(sellAmount, commissionRate, stampTaxRate, minCommission);
+            let sellFee = comm + stamp;
+            let soldValueNet = sellAmount - sellFee;
+            totalSoldNet += soldValueNet;
+
+            let remainingToSell = sellShares;
+            let tradePnL = 0;
+            let tradeBuyCost = 0;
+            let tradeSellRevenue = 0;
+            let tradeFees = 0;
+            while (remainingToSell > 0 && buyQueue.length > 0) {
+                let buyLot = buyQueue[0];
+                let matchShares = Math.min(remainingToSell, buyLot.remaining);
+                let buyCost = matchShares * buyLot.price;
+                let sellRevenue = matchShares * sell.price;
+                let allocatedSellFee = sellFee * (matchShares / sellShares);
+                let allocatedBuyFee = buyLot.totalFee * (matchShares / buyLot.originalShares);
+                let netProfit = (sellRevenue - buyCost) - allocatedSellFee - allocatedBuyFee;
+                totalRealizedProfit += netProfit;
+                tradePnL += netProfit;
+                tradeBuyCost += buyCost;
+                tradeSellRevenue += sellRevenue;
+                tradeFees += allocatedBuyFee + allocatedSellFee;
+
+                buyLot.remaining -= matchShares;
+                remainingToSell -= matchShares;
+                if (buyLot.remaining === 0) buyQueue.shift();
+            }
+            closedTradePnLs.push(tradePnL);
+            sellPnLMap[sell.id] = {
+                netPnL: tradePnL,
+                buyCost: tradeBuyCost,
+                sellRevenue: tradeSellRevenue,
+                fees: tradeFees
+            };
+            if (remainingToSell > 0) {
+                warningMessages.push(`卖出委托 (${sell.date}) 数量 ${sell.shares} 股，其中 ${remainingToSell} 股无法匹配持仓，请核对交易记录。`);
+            }
+        }
+
+        let remainShares = 0, remainCost = 0, remainBuyFee = 0;
+        let weightedSum = 0, totalRemainPrincipal = 0;
+        for (let lot of buyQueue) {
+            remainShares += lot.remaining;
+            let lotPrincipal = lot.remaining * lot.price;
+            remainCost += lotPrincipal;
+            remainBuyFee += lot.totalFee * (lot.remaining / lot.originalShares);
+            let days = Utils.daysBetween(lot.date);
+            totalRemainPrincipal += lotPrincipal;
+            weightedSum += lotPrincipal * days;
+        }
+
+        let currentPriceNum = Utils.parseNum(currentPrice, false);
+        let remainMarket = remainShares * currentPriceNum;
+        let remainFloatProfit = remainMarket - (remainCost + remainBuyFee);
+        let remainYield = (remainCost + remainBuyFee) === 0 ? 0 : remainFloatProfit / (remainCost + remainBuyFee);
+        let avgCostPerShare = remainShares === 0 ? 0 : (remainCost + remainBuyFee) / remainShares;
+        let weightedAvgDays = totalRemainPrincipal === 0 ? 0 : weightedSum / totalRemainPrincipal;
+
+        let totalBuyFee = 0, totalRawCost = 0;
+        for (let buy of validBuys) {
+            let principal = buy.price * buy.shares;
+            totalBuyFee += this.calcBuyFee(principal, commissionRate, minCommission);
+            totalRawCost += principal;
+        }
+        let totalInvested = totalRawCost + totalBuyFee;
+        let totalRecover = totalSoldNet + remainMarket;
+        let totalProfit = totalRecover - totalInvested;
+        let totalYield = totalInvested === 0 ? 0 : totalProfit / totalInvested;
+
+        let firstBuyDate = null;
+        for (let buy of validBuys.sort((a,b)=> new Date(a.date)-new Date(b.date))) {
+            if (buy.shares > 0) { firstBuyDate = buy.date; break; }
+        }
+        let totalDays = firstBuyDate ? Utils.daysBetween(firstBuyDate) : 0;
+        let geoAnnual = 0;
+        if (totalDays > 0 && totalInvested > 0 && totalRecover > 0) {
+            let years = totalDays / 365;
+            geoAnnual = Math.pow(totalRecover / totalInvested, 1 / years) - 1;
+            if (isNaN(geoAnnual)) geoAnnual = 0;
+        }
+
+        let diffPrice = currentPriceNum - avgCostPerShare;
+        let assistDiff = diffPrice * remainShares;
+        let checkValid = Math.abs(remainFloatProfit - assistDiff) < 0.01;
+
+        return {
+            remainShares, remainCost, remainMarket, remainFloatProfit, remainYield, avgCostPerShare,
+            totalRealizedProfit, totalInvested, totalRecover, totalProfit, totalYield, geoAnnual,
+            totalDays, weightedAvgDays, diffPrice, assistDiff, checkValid,
+            warningMessages, closedTradePnLs, sellPnLMap
+        };
+    }
+}
+
+// ============================================================
+// ViewRenderer - 视图渲染
+// ============================================================
+class ViewRenderer {
+    constructor() {
+        // 缓存DOM引用
+        this.els = {
+            mv: document.getElementById('mv'),
+            upl: document.getElementById('upl'),
+            rpl: document.getElementById('rpl'),
+            yield: document.getElementById('yield'),
+            remainShares: document.getElementById('remainSharesCard'),
+            avgCostPerShare: document.getElementById('avgCostPerShareCard'),
+            remainCost: document.getElementById('remainCostCard'),
+            remainMarket: document.getElementById('remainMarketCard'),
+            remainProfit: document.getElementById('remainProfitCard'),
+            remainYield: document.getElementById('remainYieldCard'),
+            realizedProfitDetail: document.getElementById('realizedProfitDetailCard'),
+            totalCost: document.getElementById('totalCostCard'),
+            totalRecover: document.getElementById('totalRecoverCard'),
+            totalYield: document.getElementById('totalYieldCard'),
+            geoAnnual: document.getElementById('geoAnnualCard'),
+            totalDays: document.getElementById('totalDaysCard'),
+            weightedDays: document.getElementById('weightedDaysCard'),
+            diffPrice: document.getElementById('diffPriceCard'),
+            assistDiff: document.getElementById('assistDiffCard'),
+            checkHint: document.getElementById('checkHintCard'),
+            winRate: document.getElementById('winRate'),
+            profitFactor: document.getElementById('profitFactor'),
+            maxDrawdown: document.getElementById('maxDrawdown'),
+            warningDiv: document.getElementById('inventoryWarning'),
+            warningText: document.getElementById('warningText'),
+            buyTableWrapper: document.getElementById('buyTableWrapper'),
+            sellTableWrapper: document.getElementById('sellTableWrapper'),
+            commissionInput: document.getElementById('commissionRate'),
+            stampInput: document.getElementById('stampTaxRate'),
+            minCommissionInput: document.getElementById('minCommission'),
+            currentPriceInput: document.getElementById('currentPriceInput'),
+            tickerInput: document.getElementById('tickerInput'),
+            addBuyBtn: document.getElementById('addBuyBtn'),
+            addSellBtn: document.getElementById('addSellBtn'),
+            resetAllBtn: document.getElementById('resetAllBtn'),
+            ioMenuBtn: document.getElementById('ioMenuBtn'),
+            ioDropdownContent: document.getElementById('ioDropdownContent'),
+        };
+    }
+
+    renderBuyTable(buys, calcService, commissionRate, minCommission) {
+        let html = `<table><thead><tr><th class="col-date">成交日期</th><th class="col-price">成交价格</th><th class="col-qty">成交数量</th><th class="col-notional">成交金额</th><th class="col-fee">佣金</th><th class="col-action"></th></tr></thead><tbody>`;
+        for (let buy of buys) {
+            let amount = buy.price * buy.shares;
+            let comm = calcService.calcBuyFee(amount, commissionRate, minCommission);
+            html += `<tr data-buy-id="${buy.id}">
+                <td class="col-date"><input type="date" class="input-text buy-date" value="${buy.date || ''}"></td>
+                <td class="col-price"><input type="number" inputmode="decimal" step="0.01" class="input-text buy-price" value="${buy.price || ''}" placeholder="价格"></td>
+                <td class="col-qty"><input type="text" inputmode="numeric" class="input-text buy-shares" value="${buy.shares ? Utils.formatNumberWithComma(buy.shares) : ''}" placeholder="数量"></td>
+                <td class="col-notional readonly-numeric buy-amount">${Utils.formatMoney(amount)}</td>
+                <td class="col-fee readonly-numeric buy-fee">${Utils.formatMoney(comm)}</td>
+                <td class="col-action"><button class="del-btn buy-del">删除</button></td>
+            </tr>`;
+        }
+        html += `</tbody></table>`;
+        this.els.buyTableWrapper.innerHTML = html;
+    }
+
+    renderSellTable(sells, calcService, commissionRate, stampTaxRate, minCommission, sellPnLMap) {
+        let html = `<table><thead><tr><th class="col-date">成交日期</th><th class="col-price">成交价格</th><th class="col-qty">成交数量</th><th class="col-notional">成交金额</th><th class="col-pnl">实现盈亏</th><th class="col-fee">清算费用</th><th class="col-action"></th></tr></thead><tbody>`;
+        for (let sell of sells) {
+            let amount = sell.price * sell.shares;
+            let { comm, stamp } = calcService.calcSellFee(amount, commissionRate, stampTaxRate, minCommission);
+            let totalFee = comm + stamp;
+            let pnlData = sellPnLMap[sell.id];
+            let pnlHtml = '';
+            if (pnlData && pnlData.netPnL !== undefined) {
+                let pnlClass = pnlData.netPnL >= 0 ? 'positive' : 'negative';
+                let pnlSign = pnlData.netPnL >= 0 ? '+' : '';
+                pnlHtml = `<span class="${pnlClass}">${pnlSign}${Utils.formatMoney(pnlData.netPnL)}</span><br><span style="font-size:0.55rem; color:#6f8eaa;">成本${Utils.formatMoney(pnlData.buyCost)}</span>`;
+            } else {
+                pnlHtml = '-';
+            }
+            html += `<tr data-sell-id="${sell.id}">
+                <td class="col-date"><input type="date" class="input-text sell-date" value="${sell.date || ''}"></td>
+                <td class="col-price"><input type="number" inputmode="decimal" step="0.01" class="input-text sell-price" value="${sell.price || ''}" placeholder="价格"></td>
+                <td class="col-qty"><input type="text" inputmode="numeric" class="input-text sell-shares" value="${sell.shares ? Utils.formatNumberWithComma(sell.shares) : ''}" placeholder="数量"></td>
+                <td class="col-notional readonly-numeric sell-amount">${Utils.formatMoney(amount)}</td>
+                <td class="col-pnl sell-pnl">${pnlHtml}</td>
+                <td class="col-fee sell-fee">${Utils.formatMoney(totalFee)}<br><span style="font-size:0.55rem; color:#6f8eaa;">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span></td>
+                <td class="col-action"><button class="del-btn sell-del">删除</button></td>
+            </tr>`;
+        }
+        html += `</tbody></table>`;
+        this.els.sellTableWrapper.innerHTML = html;
+    }
+
+    updateBuyRowCells(row, buys, calcService, commissionRate, minCommission) {
+        let buyId = row.getAttribute('data-buy-id');
+        let buy = buys.find(b => b.id == buyId);
+        if (!buy) return;
+        let amount = buy.price * buy.shares;
+        let comm = calcService.calcBuyFee(amount, commissionRate, minCommission);
+        let amountCell = row.querySelector('.buy-amount');
+        let feeCell = row.querySelector('.buy-fee');
+        if (amountCell) amountCell.innerText = Utils.formatMoney(amount);
+        if (feeCell) feeCell.innerText = Utils.formatMoney(comm);
+    }
+
+    updateSellRowCells(row, sells, calcService, commissionRate, stampTaxRate, minCommission) {
+        let sellId = row.getAttribute('data-sell-id');
+        let sell = sells.find(s => s.id == sellId);
+        if (!sell) return;
+        let amount = sell.price * sell.shares;
+        let { comm, stamp } = calcService.calcSellFee(amount, commissionRate, stampTaxRate, minCommission);
+        let totalFee = comm + stamp;
+        let amountCell = row.querySelector('.sell-amount');
+        let feeCell = row.querySelector('.sell-fee');
+        if (amountCell) amountCell.innerText = Utils.formatMoney(amount);
+        if (feeCell) feeCell.innerHTML = `${Utils.formatMoney(totalFee)}<br><span style="font-size:0.6rem; color:#6f8eaa;">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span>`;
+    }
+
+    updateDashboard(stats) {
+        this.els.mv.innerText = Utils.formatMoney(stats.remainMarket);
+        this.els.upl.innerText = Utils.formatMoney(stats.remainFloatProfit);
+        this.els.upl.style.color = stats.remainFloatProfit >= 0 ? '#0f8b5e' : '#dc2626';
+        this.els.rpl.innerText = Utils.formatMoney(stats.totalRealizedProfit);
+        this.els.rpl.style.color = stats.totalRealizedProfit >= 0 ? '#0f8b5e' : '#dc2626';
+        this.els.yield.innerText = Utils.formatPercent(stats.totalYield);
+        this.els.yield.style.color = stats.totalYield >= 0 ? '#0f8b5e' : '#dc2626';
+    }
+
+    updateAnalytics(stats) {
+        let winRateEl = this.els.winRate;
+        let pfEl = this.els.profitFactor;
+        let mddEl = this.els.maxDrawdown;
+        if (!winRateEl) return;
+
+        let pnls = stats.closedTradePnLs || [];
+        if (pnls.length === 0) {
+            winRateEl.innerText = '-';
+            pfEl.innerText = '-';
+            mddEl.innerText = '-';
+            winRateEl.className = 'analytics-val';
+            pfEl.className = 'analytics-val';
+            mddEl.className = 'analytics-val';
+            return;
+        }
+
+        // 胜率
+        let wins = pnls.filter(p => p > 0).length;
+        let winRate = (wins / pnls.length * 100).toFixed(1) + '%';
+        winRateEl.innerText = winRate;
+        winRateEl.className = 'analytics-val ' + (wins / pnls.length >= 0.5 ? 'positive' : 'negative');
+
+        // 盈亏比 (Profit Factor)
+        let totalGain = pnls.filter(p => p > 0).reduce((a, b) => a + b, 0);
+        let totalLoss = Math.abs(pnls.filter(p => p < 0).reduce((a, b) => a + b, 0));
+        let pf = totalLoss > 0 ? (totalGain / totalLoss).toFixed(2) : (totalGain > 0 ? '∞' : '0');
+        pfEl.innerText = pf;
+        pfEl.className = 'analytics-val ' + (parseFloat(pf) >= 1 || pf === '∞' ? 'positive' : 'negative');
+
+        // 最大回撤
+        let running = 0, peak = 0, mdd = 0;
+        pnls.forEach(p => {
+            running += p;
+            if (running > peak) peak = running;
+            let dd = peak - running;
+            if (dd > mdd) mdd = dd;
+        });
+        mddEl.innerText = '¥' + mdd.toFixed(2);
+        mddEl.className = 'analytics-val ' + (mdd === 0 ? 'positive' : 'negative');
+    }
+
+    updatePerformanceCards(stats) {
+        this.els.remainShares.innerText = Utils.formatNumberWithComma(stats.remainShares.toFixed(2));
+        this.els.avgCostPerShare.innerText = stats.avgCostPerShare.toFixed(4);
+        this.els.remainCost.innerText = Utils.formatMoney(stats.remainCost);
+        this.els.remainMarket.innerText = Utils.formatMoney(stats.remainMarket);
+        this.els.remainProfit.innerText = Utils.formatMoney(stats.remainFloatProfit);
+        this.els.remainProfit.className = `perf-value ${stats.remainFloatProfit >= 0 ? 'positive' : 'negative'}`;
+        this.els.remainYield.innerText = Utils.formatPercent(stats.remainYield);
+        this.els.remainYield.className = `perf-value ${stats.remainYield >= 0 ? 'positive' : 'negative'}`;
+
+        this.els.totalCost.innerText = Utils.formatMoney(stats.totalInvested);
+        this.els.totalRecover.innerText = Utils.formatMoney(stats.totalRecover);
+        this.els.realizedProfitDetail.innerText = Utils.formatMoney(stats.totalRealizedProfit);
+        this.els.realizedProfitDetail.className = `perf-value ${stats.totalRealizedProfit >= 0 ? 'positive' : 'negative'}`;
+        this.els.totalYield.innerText = Utils.formatPercent(stats.totalYield);
+        this.els.totalYield.className = `perf-value ${stats.totalYield >= 0 ? 'positive' : 'negative'}`;
+        this.els.geoAnnual.innerText = Utils.formatPercent(stats.geoAnnual);
+        this.els.geoAnnual.className = `perf-value ${stats.geoAnnual >= 0 ? 'positive' : 'negative'}`;
+
+        this.els.totalDays.innerText = stats.totalDays + " 天";
+        this.els.weightedDays.innerText = stats.weightedAvgDays.toFixed(1) + " 天";
+        this.els.diffPrice.innerText = stats.diffPrice.toFixed(4);
+        this.els.assistDiff.innerText = Utils.formatMoney(stats.assistDiff);
+        this.els.checkHint.innerText = stats.checkValid ? "✅ 校验通过" : "⚠️ 数据误差";
+        this.els.checkHint.style.color = stats.checkValid ? "#0f8b5e" : "#e67e22";
+    }
+
+    updateWarning(warningMessages) {
+        if (warningMessages.length > 0) {
+            this.els.warningDiv.style.display = "flex";
+            this.els.warningText.innerHTML = warningMessages.join("<br>");
+        } else {
+            this.els.warningDiv.style.display = "none";
+        }
+    }
+}
+
+// ============================================================
+// TradingTerminal - 主控制器
+// ============================================================
+class TradingTerminal {
+    constructor() {
+        this.dataService = new DataService();
+        this.calcService = new CalcService(this.dataService);
+        this.view = new ViewRenderer();
+
+        // 加载数据
+        this.data = this.dataService.load();
+        this.buys = this.data.buys || [];
+        this.sells = this.data.sells || [];
+        this.nextBuyId = this.data.nextBuyId || 1;
+        this.nextSellId = this.data.nextSellId || 1;
+        this.commissionRate = this.data.commissionRate ?? 0.025;
+        this.stampTaxRate = this.data.stampTaxRate ?? 0.1;
+        this.minCommission = this.data.minCommission ?? 5;
+        this.currentPrice = this.data.currentPrice ?? null;
+        this.ticker = this.data.ticker ?? '';
+        this.lastSellPnLMap = {};
+
+        // 防抖函数
+        this._debouncedFullUpdate = Utils.debounce(() => {
+            this.updateAllStats();
+            this.persist();
+        }, 300);
+
+        this.initUI();
+        this.bindEvents();
+        this.refresh();
+    }
+
+    initUI() {
+        let els = this.view.els;
+        if (els.commissionInput) els.commissionInput.value = this.commissionRate;
+        if (els.stampInput) els.stampInput.value = this.stampTaxRate;
+        if (els.minCommissionInput) els.minCommissionInput.value = this.minCommission;
+        if (els.currentPriceInput) els.currentPriceInput.value = (this.currentPrice === null || this.currentPrice === 0) ? '' : this.currentPrice;
+        if (els.tickerInput) els.tickerInput.value = this.ticker || '';
+
+        this._initConfirmModal();
+        this._initToastModal();
+    }
+
+    _initConfirmModal() {
+        this._confirmCallback = null;
+        let modal = document.getElementById('confirmModal');
+        document.getElementById('confirmModalCancel').onclick = () => {
+            modal.classList.remove('active');
+            this._confirmCallback = null;
+        };
+        document.getElementById('confirmModalOk').onclick = () => {
+            modal.classList.remove('active');
+            if (this._confirmCallback) { this._confirmCallback(); this._confirmCallback = null; }
+        };
+    }
+
+    _initToastModal() {
+        this._toastCallback = null;
+        document.getElementById('toastModalOk').onclick = () => {
+            document.getElementById('toastModal').classList.remove('active');
+            if (this._toastCallback) { this._toastCallback(); this._toastCallback = null; }
+        };
+    }
+
+    showConfirm(msg, onConfirm) {
+        document.getElementById('confirmModalMsg').innerText = msg;
+        document.getElementById('confirmModal').classList.add('active');
+        this._confirmCallback = onConfirm;
+    }
+
+    showToast(msg, icon, onOk) {
+        document.getElementById('toastModalMsg').innerText = msg;
+        document.getElementById('toastModalIcon').innerText = icon || '✅';
+        document.getElementById('toastModal').classList.add('active');
+        this._toastCallback = onOk;
+    }
+
+    persist() {
+        this.dataService.save({
+            buys: this.buys.map(({id,date,price,shares}) => ({id,date,price,shares})),
+            sells: this.sells.map(({id,date,price,shares}) => ({id,date,price,shares})),
+            nextBuyId: this.nextBuyId,
+            nextSellId: this.nextSellId,
+            commissionRate: this.commissionRate,
+            stampTaxRate: this.stampTaxRate,
+            minCommission: this.minCommission,
+            currentPrice: this.currentPrice,
+            ticker: this.ticker
+        });
+    }
+
+    calculateFIFO() {
+        return this.calcService.calculateFIFO(
+            this.buys, this.sells, this.currentPrice,
+            this.commissionRate, this.stampTaxRate, this.minCommission
+        );
+    }
+
+    updateAllStats() {
+        let stats = this.calculateFIFO();
+        this.lastSellPnLMap = stats.sellPnLMap || {};
+        this.view.updateDashboard(stats);
+        this.view.updateAnalytics(stats);
+        this.view.updatePerformanceCards(stats);
+        this.view.updateWarning(stats.warningMessages);
+    }
+
+    refresh() {
+        let stats = this.calculateFIFO();
+        this.lastSellPnLMap = stats.sellPnLMap || {};
+        this.view.renderBuyTable(this.buys, this.calcService, this.commissionRate, this.minCommission);
+        this.view.renderSellTable(this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission, this.lastSellPnLMap);
+        this.view.updateDashboard(stats);
+        this.view.updateAnalytics(stats);
+        this.view.updatePerformanceCards(stats);
+        this.view.updateWarning(stats.warningMessages);
+    }
+
+    addBuy() {
+        this.buys.push({ id: this.nextBuyId++, date: Utils.getToday(), price: 0, shares: 0 });
+        this.refresh();
+        this.persist();
+    }
+
+    addSell() {
+        this.sells.push({ id: this.nextSellId++, date: Utils.getToday(), price: 0, shares: 0 });
+        this.refresh();
+        this.persist();
+    }
+
+    deleteBuy(id) {
+        this.buys = this.buys.filter(b => b.id != id);
+        this.refresh();
+        this.persist();
+    }
+
+    deleteSell(id) {
+        this.sells = this.sells.filter(s => s.id != id);
+        this.refresh();
+        this.persist();
+    }
+
+    resetAll() {
+        this.showConfirm("确定要清空所有交易记录吗？此操作不可逆转！", () => {
+            this.buys = [];
+            this.sells = [];
+            this.nextBuyId = 1;
+            this.nextSellId = 1;
+            this.commissionRate = 0.025;
+            this.stampTaxRate = 0.1;
+            this.minCommission = 5;
+            this.currentPrice = null;
+            this.ticker = '';
+            let els = this.view.els;
+            if (els.commissionInput) els.commissionInput.value = this.commissionRate;
+            if (els.stampInput) els.stampInput.value = this.stampTaxRate;
+            if (els.minCommissionInput) els.minCommissionInput.value = this.minCommission;
+            if (els.currentPriceInput) els.currentPriceInput.value = '';
+            if (els.tickerInput) els.tickerInput.value = '';
+            this.refresh();
+            this.persist();
+        });
+    }
+
+    bindEvents() {
+        let els = this.view.els;
+        let self = this;
+
+        // 全局按钮
+        els.addBuyBtn.onclick = () => this.addBuy();
+        els.addSellBtn.onclick = () => this.addSell();
+        els.resetAllBtn.onclick = () => this.resetAll();
+
+        // 费率参数输入（防抖）
+        els.commissionInput.oninput = () => {
+            let val = Utils.parseNum(els.commissionInput.value);
+            if (val > 0) this.commissionRate = val;
+            this._debouncedFullUpdate();
+        };
+        els.stampInput.oninput = () => {
+            let val = Utils.parseNum(els.stampInput.value);
+            if (val > 0) this.stampTaxRate = val;
+            this._debouncedFullUpdate();
+        };
+        els.minCommissionInput.oninput = () => {
+            let val = Utils.parseNum(els.minCommissionInput.value);
+            if (val >= 0) this.minCommission = val;
+            this._debouncedFullUpdate();
+        };
+
+        // 现价输入（防抖，blur时触发完整更新）
+        els.currentPriceInput.oninput = () => {
+            this.currentPrice = Utils.parseNum(els.currentPriceInput.value);
+            this._debouncedFullUpdate();
+        };
+        els.currentPriceInput.onblur = () => {
+            this.currentPrice = Utils.parseNum(els.currentPriceInput.value);
+            this.updateAllStats();
+            this.persist();
+        };
+
+        // 股票代码
+        els.tickerInput.oninput = () => {
+            this.ticker = els.tickerInput.value;
+            this.persist();
+        };
+
+        // 下拉菜单控制
+        els.ioMenuBtn.onclick = function(e) {
+            e.stopPropagation();
+            els.ioDropdownContent.classList.toggle('show');
+        };
+        document.addEventListener('click', function() {
+            els.ioDropdownContent.classList.remove('show');
+        });
+
+        // 买入表格事件委托
+        els.buyTableWrapper.addEventListener('input', (e) => {
+            let target = e.target;
+            let row = target.closest('tr');
+            if (!row) return;
+            let buyId = row.getAttribute('data-buy-id');
+            let buy = this.buys.find(b => b.id == buyId);
+            if (!buy) return;
+            if (target.classList.contains('buy-date')) buy.date = target.value;
+            else if (target.classList.contains('buy-price')) {
+                buy.price = Utils.parseNum(target.value, false);
+                // 输入时只更新当前行计算值（增量更新）
+                this.view.updateBuyRowCells(row, this.buys, this.calcService, this.commissionRate, this.minCommission);
+                // 防抖触发完整统计
+                this._debouncedFullUpdate();
+                return;
+            }
+            else return;
+            this.view.updateBuyRowCells(row, this.buys, this.calcService, this.commissionRate, this.minCommission);
+            this._debouncedFullUpdate();
+        });
+
+        // 买入表格 blur 事件：触发完整更新
+        els.buyTableWrapper.addEventListener('focusout', (e) => {
+            let target = e.target;
+            if (target.classList.contains('buy-price') || target.classList.contains('buy-date')) {
+                this.updateAllStats();
+                this.persist();
+            }
+        });
+
+        // 买入表格 shares blur 事件
+        els.buyTableWrapper.addEventListener('focusout', (e) => {
+            if (e.target.classList.contains('buy-shares')) {
+                let raw = Utils.parseNumberFromCommaString(e.target.value);
+                if (isNaN(raw)) raw = 0;
+                let row = e.target.closest('tr');
+                let buyId = row.getAttribute('data-buy-id');
+                let buy = this.buys.find(b => b.id == buyId);
+                if (buy) {
+                    buy.shares = raw;
+                    e.target.value = raw ? Utils.formatNumberWithComma(raw) : '';
+                    this.view.updateBuyRowCells(row, this.buys, this.calcService, this.commissionRate, this.minCommission);
+                    this.updateAllStats();
+                    this.persist();
+                }
+            }
+        });
+
+        // 买入删除
+        els.buyTableWrapper.addEventListener('click', (e) => {
+            if (e.target.classList.contains('buy-del')) {
+                let row = e.target.closest('tr');
+                let buyId = row.getAttribute('data-buy-id');
+                this.deleteBuy(buyId);
+            }
+        });
+
+        // 卖出表格事件委托
+        els.sellTableWrapper.addEventListener('input', (e) => {
+            let target = e.target;
+            let row = target.closest('tr');
+            if (!row) return;
+            let sellId = row.getAttribute('data-sell-id');
+            let sell = this.sells.find(s => s.id == sellId);
+            if (!sell) return;
+            if (target.classList.contains('sell-date')) sell.date = target.value;
+            else if (target.classList.contains('sell-price')) {
+                sell.price = Utils.parseNum(target.value, false);
+                // 输入时只更新当前行计算值（增量更新）
+                this.view.updateSellRowCells(row, this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission);
+                // 防抖触发完整统计
+                this._debouncedFullUpdate();
+                return;
+            }
+            else return;
+            this.view.updateSellRowCells(row, this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission);
+            this._debouncedFullUpdate();
+        });
+
+        // 卖出表格 blur 事件：触发完整更新
+        els.sellTableWrapper.addEventListener('focusout', (e) => {
+            let target = e.target;
+            if (target.classList.contains('sell-price') || target.classList.contains('sell-date')) {
+                this.updateAllStats();
+                this.persist();
+            }
+        });
+
+        // 卖出表格 shares blur 事件
+        els.sellTableWrapper.addEventListener('focusout', (e) => {
+            if (e.target.classList.contains('sell-shares')) {
+                let raw = Utils.parseNumberFromCommaString(e.target.value);
+                if (isNaN(raw)) raw = 0;
+                let row = e.target.closest('tr');
+                let sellId = row.getAttribute('data-sell-id');
+                let sell = this.sells.find(s => s.id == sellId);
+                if (sell) {
+                    sell.shares = raw;
+                    e.target.value = raw ? Utils.formatNumberWithComma(raw) : '';
+                    this.view.updateSellRowCells(row, this.sells, this.calcService, this.commissionRate, this.stampTaxRate, this.minCommission);
+                    this.updateAllStats();
+                    this.persist();
+                }
+            }
+        });
+
+        // 卖出删除
+        els.sellTableWrapper.addEventListener('click', (e) => {
+            if (e.target.classList.contains('sell-del')) {
+                let row = e.target.closest('tr');
+                let sellId = row.getAttribute('data-sell-id');
+                this.deleteSell(sellId);
+            }
+        });
+
+        // 导出数据
+        document.getElementById('exportBtn').onclick = () => {
+            els.ioDropdownContent.classList.remove('show');
+            this.dataService.exportBackup({
+                buys: this.buys,
+                sells: this.sells,
+                nextBuyId: this.nextBuyId,
+                nextSellId: this.nextSellId,
+                commissionRate: this.commissionRate,
+                stampTaxRate: this.stampTaxRate,
+                minCommission: this.minCommission,
+                currentPrice: this.currentPrice,
+                ticker: this.ticker
+            });
+        };
+
+        // CSV 导出
+        document.getElementById('exportCsvBtn').onclick = () => {
+            els.ioDropdownContent.classList.remove('show');
+            let stats = this.calculateFIFO();
+            let pnlMap = stats.sellPnLMap || {};
+            let csvLines = [];
+            csvLines.push('\uFEFF');
+            csvLines.push('方向,成交日期,成交价格,成交数量,成交金额,买入成本,实现盈亏,佣金,印花税');
+
+            for (let buy of this.buys) {
+                let amount = (buy.price || 0) * (buy.shares || 0);
+                let comm = this.calcService.calcBuyFee(amount, this.commissionRate, this.minCommission);
+                csvLines.push(`买入,${buy.date || ''},${buy.price || 0},${buy.shares || 0},${amount.toFixed(2)},-,-,${comm.toFixed(2)},0,`);
+            }
+
+            for (let sell of this.sells) {
+                let amount = (sell.price || 0) * (sell.shares || 0);
+                let { comm, stamp } = this.calcService.calcSellFee(amount, this.commissionRate, this.stampTaxRate, this.minCommission);
+                let pnlData = pnlMap[sell.id];
+                let pnl = pnlData ? pnlData.netPnL.toFixed(2) : '-';
+                let buyCost = pnlData ? pnlData.buyCost.toFixed(2) : '-';
+                csvLines.push(`卖出,${sell.date || ''},${sell.price || 0},${sell.shares || 0},${amount.toFixed(2)},${buyCost},${pnl},${comm.toFixed(2)},${stamp.toFixed(2)},`);
+            }
+
+            let csvContent = csvLines.join('\n');
+            let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'Portfolio_Trades_' + new Date().toISOString().slice(0,10) + '.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            this.showToast('CSV 导出成功！', '✅');
+        };
+
+        // 导入数据
+        let importBtn = document.getElementById('importBtn');
+        importBtn.onclick = (e) => {
+            e.stopPropagation();
+            els.ioDropdownContent.classList.remove('show');
+            this.dataService.importFromFile((data, err) => {
+                if (err) {
+                    this.showToast(err, '❌');
+                    return;
+                }
+                this.showConfirm('导入将覆盖当前所有数据，是否继续？', () => {
+                    this.buys = data.buys || [];
+                    this.sells = data.sells || [];
+                    this.nextBuyId = data.nextBuyId || (this.buys.length > 0 ? Math.max(...this.buys.map(b=>b.id||0)) + 1 : 1);
+                    this.nextSellId = data.nextSellId || (this.sells.length > 0 ? Math.max(...this.sells.map(s=>s.id||0)) + 1 : 1);
+                    if (data.commissionRate !== undefined) this.commissionRate = data.commissionRate;
+                    if (data.stampTaxRate !== undefined) this.stampTaxRate = data.stampTaxRate;
+                    if (data.minCommission !== undefined) this.minCommission = data.minCommission;
+                    if (data.currentPrice !== undefined) this.currentPrice = data.currentPrice;
+                    if (data.ticker !== undefined) this.ticker = data.ticker;
+                    if (els.commissionInput) els.commissionInput.value = this.commissionRate;
+                    if (els.stampInput) els.stampInput.value = this.stampTaxRate;
+                    if (els.minCommissionInput) els.minCommissionInput.value = this.minCommission;
+                    if (els.currentPriceInput) els.currentPriceInput.value = (this.currentPrice===null||this.currentPrice===0) ? '' : this.currentPrice;
+                    if (els.tickerInput) els.tickerInput.value = this.ticker || '';
+                    this.refresh();
+                    this.persist();
+                    this.showToast('数据导入成功！', '✅');
+                });
+            });
+        };
+
+        // 智能粘贴导入
+        document.getElementById('smartPasteBtn').onclick = (e) => {
+            e.stopPropagation();
+            els.ioDropdownContent.classList.remove('show');
+            this.smartPasteImport();
+        };
+
+        // 粘贴导入买入
+        document.getElementById('pasteBuyBtn').onclick = (e) => {
+            e.stopPropagation();
+            els.ioDropdownContent.classList.remove('show');
+            this.pasteFromClipboard('buy');
+        };
+
+        // 粘贴导入卖出
+        document.getElementById('pasteSellBtn').onclick = (e) => {
+            e.stopPropagation();
+            els.ioDropdownContent.classList.remove('show');
+            this.pasteFromClipboard('sell');
+        };
+
+        // Ctrl+V / Cmd+V 快捷导入
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+                e.preventDefault();
+                this.smartPasteImport();
+            }
+        });
+    }
+
+    async pasteFromClipboard(type) {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (!text || text.trim() === '') {
+                this.showToast('剪贴板为空，请先复制数据。', '⚠️');
+                return;
+            }
+            const lines = text.trim().split('\n');
+            let addedCount = 0;
+            let errorCount = 0;
+            const nextId = type === 'buy' ? this.nextBuyId : this.nextSellId;
+            const targetArr = type === 'buy' ? this.buys : this.sells;
+
+            lines.forEach((line) => {
+                line = line.trim();
+                if (!line) return;
+                let parts = line.includes('\t') ? line.split('\t') : line.split(',');
+                parts = parts.map(p => p.trim());
+                if (parts.length < 3) {
+                    errorCount++;
+                    return;
+                }
+                const date = parts[0] || Utils.getToday();
+                const price = parseFloat(parts[1]);
+                const shares = parseFloat(parts[2]);
+                if (isNaN(price) || isNaN(shares) || price <= 0 || shares <= 0) {
+                    errorCount++;
+                    return;
+                }
+                targetArr.push({ id: nextId + addedCount, date, price, shares });
+                addedCount++;
+            });
+
+            if (type === 'buy') this.nextBuyId += addedCount;
+            else this.nextSellId += addedCount;
+
+            if (addedCount > 0) {
+                this.refresh();
+                this.persist();
+                this.showToast(`成功导入 ${addedCount} 条${type === 'buy' ? '买入' : '卖出'}记录${errorCount > 0 ? '，' + errorCount + ' 条格式异常已跳过' : ''}`, '✅');
+            } else {
+                this.showToast('未识别到有效数据，请检查格式（每行：日期,价格,数量）。', '⚠️');
+            }
+        } catch (err) {
+            this.showToast('无法读取剪贴板，请检查浏览器权限设置。', '⚠️');
+        }
+    }
+
+    async smartPasteImport() {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (!text || text.trim() === '') {
+                this.showToast('剪贴板为空，请先复制交割单数据。', '⚠️');
+                return;
+            }
+
+            const lines = text.trim().split('\n');
+            let buyCount = 0, sellCount = 0, skipCount = 0;
+            const newBuys = [], newSells = [];
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                let cols = line.split(/[\t,|]/).map(c => c.trim()).filter(c => c);
+
+                let date = '', price = 0, shares = 0, isSell = false;
+
+                for (let col of cols) {
+                    if (/^\d{4}[-/]\d{2}[-/]\d{2}$/.test(col)) {
+                        date = col.replace(/\//g, '-');
+                    } else if (/^\d{8}$/.test(col)) {
+                        date = col.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+                    }
+
+                    if (/卖出|卖|S/.test(col)) isSell = true;
+                    if (/买入|买|B/.test(col)) isSell = false;
+
+                    let num = parseFloat(col.replace(/,/g, ''));
+                    if (!isNaN(num) && num > 100 && Number.isInteger(num) && !date && shares === 0) {
+                        shares = num;
+                    }
+
+                    if (!isNaN(num) && num > 0 && num < 10000 && col.includes('.')) {
+                        if (!/^\d{4}\./.test(col)) {
+                            price = num;
+                        }
+                    }
+                }
+
+                if (!date) date = Utils.getToday();
+
+                if (price > 0 && shares > 0) {
+                    const record = { id: 0, date, price, shares };
+                    if (isSell) {
+                        newSells.push(record);
+                        sellCount++;
+                    } else {
+                        newBuys.push(record);
+                        buyCount++;
+                    }
+                } else {
+                    skipCount++;
+                }
+            }
+
+            if (buyCount === 0 && sellCount === 0) {
+                this.showToast('未能识别到有效交易数据，请确保复制的数据包含日期、价格、数量信息。', '⚠️');
+                return;
+            }
+
+            for (let buy of newBuys) {
+                buy.id = this.nextBuyId++;
+                this.buys.push(buy);
+            }
+            for (let sell of newSells) {
+                sell.id = this.nextSellId++;
+                this.sells.push(sell);
+            }
+
+            this.buys.sort((a, b) => new Date(a.date) - new Date(b.date));
+            this.sells.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            this.buys.forEach((b, i) => b.id = i + 1);
+            this.sells.forEach((s, i) => s.id = i + 1);
+            this.nextBuyId = this.buys.length + 1;
+            this.nextSellId = this.sells.length + 1;
+
+            this.refresh();
+            this.persist();
+
+            this.showToast(`导入完成：买入 ${buyCount} 条，卖出 ${sellCount} 条${skipCount > 0 ? '，跳过 ' + skipCount + ' 条格式异常数据' : ''}`, '✅');
+
+        } catch (err) {
+            this.showToast('粘贴失败：' + err.message, '⚠️');
+        }
+    }
+}
+
+// ============================================================
+// 启动应用
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    window.tradingTerminal = new TradingTerminal();
+});
+</script>
+</body>
+</html>
