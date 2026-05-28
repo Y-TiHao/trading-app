@@ -9,153 +9,360 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="证券交易终端">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#1e3a5f">
+    <meta name="theme-color" content="#007AFF">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
-        :root {
-            /* 专业金融终端配色 - 亮色模式 */
-            /* 主色调：深蓝灰 */
-            --primary: #1e3a5f;
-            --primary-light: #2c5282;
-            --primary-dark: #0f2744;
-            /* 强调色：琥珀金 */
-            --accent: #d4a574;
-            --accent-light: #e8c9a0;
-            --accent-dark: #b8935f;
-            /* 功能色 */
+:root {
+            /* Apple HIG 配色 - 亮色模式 */
+            --primary: #007AFF;
+            --primary-light: #409CFF;
+            --primary-dark: #0066D6;
+            --accent: #007AFF;
+            --accent-light: #409CFF;
+            --accent-dark: #0066D6;
             --success: #059669;
-            --warning: #d97706;
-            --danger: #dc2626;
-            /* 中性色 */
-            --col-head: #1e3a5f;
-            --border: rgba(30, 58, 95, 0.12);
-            /* 背景：浅灰蓝 */
-            --bg: #f5f7fa;
-            --bg-solid: #f5f7fa;
-            --card-bg: #ffffff;
-            --card-bg-solid: #ffffff;
-            --warning-bg: rgba(217, 119, 6, 0.08);
-            --warning-text: #b45309;
-            /* 文字 */
-            --text-primary: #1a202c;
-            --text-secondary: #4a5568;
-            --text-tertiary: #718096;
-            /* 数据色 */
-            --data-positive: #059669;
-            --data-negative: #dc2626;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+            --col-head: #007AFF;
+            --border: rgba(0, 0, 0, 0.08);
+            --bg: #F2F2F7;
+            --bg-solid: #F2F2F7;
+            --warning-bg: rgba(255, 149, 0, 0.06);
+            --warning-text: #8A6A00;
+            --text-primary: #1C1C1E;
+            --text-secondary: #3C3C43;
+            --text-tertiary: #8A8A8E;
+            --data-positive: #dc2626;
+            --data-negative: #059669;
             --data-zero: var(--text-secondary);
-            /* 安全区域 */
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
             --safe-right: env(safe-area-inset-right, 0px);
-            /* 圆角 */
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 14px;
-            --radius-xl: 18px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
         }
 
-        /* 暗色模式变量 - 专业金融配色 */
-        [data-theme="dark"] {
-            /* 主色调：深蓝灰 */
-            --primary: #3d5a80;
-            --primary-light: #4a6fa5;
-            --primary-dark: #2c4a6e;
-            /* 强调色：琥珀金 */
-            --accent: #c9a227;
-            --accent-light: #e0b84d;
-            --accent-dark: #a88420;
-            /* 功能色 */
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            /* 中性色 */
-            --col-head: #98c1d9;
-            --border: rgba(61, 90, 128, 0.3);
-            /* 背景：深灰蓝 */
-            --bg: #0f1419;
-            --bg-solid: #0f1419;
-            --card-bg: #1a1f2e;
-            --card-bg-solid: #1a1f2e;
-            --warning-bg: rgba(245, 158, 11, 0.1);
-            --warning-text: #fbbf24;
-            /* 文字 */
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --text-tertiary: #64748b;
-            /* 数据色 */
-            --data-positive: #10b981;
-            --data-negative: #ef4444;
+[data-theme="dark"] {
+            --primary: #0A84FF;
+            --primary-light: #409CFF;
+            --primary-dark: #007AFF;
+            --accent: #0A84FF;
+            --accent-light: #409CFF;
+            --accent-dark: #007AFF;
+            --success: #059669;
+            --warning: #FFD60A;
+            --danger: #FF453A;
+            --col-head: #0A84FF;
+            --border: rgba(255, 255, 255, 0.08);
+            --bg: #000000;
+            --bg-solid: #000000;
+            --warning-bg: rgba(255, 214, 10, 0.1);
+            --warning-text: #FFD60A;
+            --text-primary: #F2F2F7;
+            --text-secondary: #8A8A8E;
+            --text-tertiary: #48484C;
+            --data-positive: #dc2626;
+            --data-negative: #059669;
             --data-zero: var(--text-secondary);
         }
 
-        /* 暗色模式样式 - 专业金融配色 */
-        [data-theme="dark"] body { color: var(--text-primary); }
-        [data-theme="dark"] .stat-card { background: var(--card-bg); box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
-        [data-theme="dark"] .stat-card::before { opacity: 0.2; background: linear-gradient(135deg, var(--accent) 0%, transparent 60%); }
-        [data-theme="dark"] .stat-label { color: var(--text-secondary); }
-        [data-theme="dark"] .stat-val { color: var(--text-primary); }
-        [data-theme="dark"] .rate-item { background: rgba(61, 90, 128, 0.1); }
-        [data-theme="dark"] .rate-item:focus-within { background: rgba(61, 90, 128, 0.18); border-color: var(--accent); }
-        [data-theme="dark"] .rate-item input { color: var(--text-primary); }
-        [data-theme="dark"] .rate-item input::placeholder { color: var(--text-tertiary); }
-        [data-theme="dark"] th { background: rgba(61, 90, 128, 0.25); color: var(--text-secondary); }
-        [data-theme="dark"] td { border-bottom-color: rgba(61, 90, 128, 0.2); }
-        [data-theme="dark"] .input-text { background: transparent; color: var(--text-primary); border-color: transparent; }
-        [data-theme="dark"] .input-text:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.15); }
-        [data-theme="dark"] .readonly-numeric { color: var(--text-primary); }
-        [data-theme="dark"] .perf-row { border-bottom-color: rgba(61, 90, 128, 0.2); }
-        [data-theme="dark"] .perf-label { color: var(--text-secondary); }
-        [data-theme="dark"] .perf-value { color: var(--text-primary); }
-        [data-theme="dark"] .perf-card { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.2); }
-        [data-theme="dark"] .perf-card h3 { color: var(--col-head); border-left-color: var(--accent); }
-        [data-theme="dark"] .footnote { background: rgba(26, 31, 46, 0.8); color: var(--text-secondary); }
-        [data-theme="dark"] .del-btn { border-color: rgba(128, 128, 128, 0.25); opacity: 0.45; background: transparent; color: var(--text-tertiary); }
-        [data-theme="dark"] .del-btn:hover { opacity: 1; color: #ef4444; border-color: #ef4444; background: rgba(220, 38, 38, 0.12); }
-        [data-theme="dark"] .reset-btn { background: rgba(220, 38, 38, 0.15); color: #ef4444; }
-        [data-theme="dark"] .warning-bar { border-left-color: var(--warning-text); background: var(--warning-bg); }
-        [data-theme="dark"] .header-row { border-bottom-color: var(--col-head); }
-        [data-theme="dark"] .header-row h2 { color: var(--col-head); }
-        [data-theme="dark"] .analytics-section { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.2); }
-        [data-theme="dark"] .analytics-card { background: rgba(61, 90, 128, 0.15); border-color: rgba(61, 90, 128, 0.25); }
-        [data-theme="dark"] .analytics-label { color: var(--text-secondary); }
-        [data-theme="dark"] .analytics-val { color: var(--text-primary); }
-        [data-theme="dark"] .analytics-header { border-bottom-color: rgba(61, 90, 128, 0.3); }
-        [data-theme="dark"] .analytics-title { color: var(--accent); }
-        [data-theme="dark"] .modal-box { background: #1a1f2e; border: 1px solid rgba(61, 90, 128, 0.3); }
-        [data-theme="dark"] .modal-msg { color: var(--text-primary); }
-        [data-theme="dark"] .modal-btn-cancel { background: rgba(61, 90, 128, 0.2); color: var(--text-secondary); }
-        [data-theme="dark"] .toast-box { background: #1a1f2e; border: 1px solid rgba(61, 90, 128, 0.3); }
-        [data-theme="dark"] .toast-msg { color: var(--text-primary); }
-        [data-theme="dark"] .toast-btn { background: var(--success); }
-        [data-theme="dark"] .page-title { color: var(--accent); }
-        [data-theme="dark"] .blotter-section { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.2); }
-        [data-theme="dark"] .section { background: var(--card-bg); }
-        [data-theme="dark"] .glass-menu-btn {
-            background: rgba(61, 90, 128, 0.25);
-            border-color: rgba(201, 162, 39, 0.3);
-            color: var(--text-primary);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+[data-theme="bloomberg"] {
+            /* Bloomberg 终端暗色主题 (极深黑底 + 暗金边框 + 金色文字) */
+            --primary: #C9A84C;
+            --primary-light: #D4B96A;
+            --primary-dark: #B08A30;
+            --accent: #C9A84C;
+            --accent-light: #D4B96A;
+            --accent-dark: #B08A30;
+            --success: #00A841;
+            --warning: #D4A843;
+            --danger: #E5533D;
+            --col-head: #C9A84C;
+            --border: rgba(201, 168, 76, 0.18);
+            --bg: #060B14;
+            --bg-solid: #060B14;
+            --warning-bg: rgba(201, 168, 76, 0.1);
+            --warning-text: #D4B96A;
+            --text-primary: #E8D48B;
+            --text-secondary: #8B7D5C;
+            --text-tertiary: #5C4E32;
+            --data-positive: #EF4444;
+            --data-negative: #10B981;
+            --data-zero: #8B7D5C;
+            /* Bloomberg 字体栈 */
+            --font-bloomberg: 'DIN', 'DIN Alternate', 'DIN Pro', -apple-system, 'Source Han Sans CN', 'Noto Sans SC', 'PingFang SC', sans-serif;
+            --font-bloomberg-mono: 'DIN', 'DIN Alternate', 'DIN Pro', 'SF Mono', monospace;
         }
-        [data-theme="dark"] .glass-menu-btn:hover { background: rgba(61, 90, 128, 0.35); }
-        [data-theme="dark"] .glass-menu-btn:active { background: rgba(61, 90, 128, 0.2); }
-        [data-theme="dark"] .theme-toggle-btn {
-            background: rgba(61, 90, 128, 0.25);
-            border-color: rgba(201, 162, 39, 0.3);
-            color: var(--text-primary);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+/* BloomLight — Bloomberg 终端亮色主题 (深海军蓝底 + 暗色卡片 + 橙色点缀) */
+[data-theme="bloomberg-light"] {
+            --primary: #FF6600;
+            --primary-light: #FF8833;
+            --primary-dark: #E55D00;
+            --accent: #FF6600;
+            --accent-light: #FF8833;
+            --accent-dark: #E55D00;
+            --success: #00A841;
+            --warning: #FF9500;
+            --danger: #E53E3E;
+            --col-head: #FF6600;
+            --border: rgba(255, 102, 0, 0.12);
+            --bg: #0F1724;
+            --bg-solid: #0F1724;
+            --bg-card: #162032;
+            --warning-bg: rgba(255, 102, 0, 0.1);
+            --warning-text: #FF8833;
+            --text-primary: #E2E8F0;
+            --text-secondary: #94A3B8;
+            --text-tertiary: #64748B;
+            --data-positive: #EF4444;
+            --data-negative: #10B981;
+            --data-zero: #94A3B8;
+            /* Bloomberg 字体栈 */
+            --font-bloomberg: 'DIN', 'DIN Alternate', 'DIN Pro', -apple-system, 'Source Han Sans CN', 'Noto Sans SC', 'PingFang SC', sans-serif;
+            --font-bloomberg-mono: 'DIN', 'DIN Alternate', 'DIN Pro', 'SF Mono', monospace;
         }
-        [data-theme="dark"] .theme-toggle-btn:hover { background: rgba(30, 58, 95, 0.75); }
-        [data-theme="dark"] .theme-toggle-btn:active { background: rgba(30, 58, 95, 0.4); }
-        [data-theme="dark"] .top-dropdown-content { background: var(--card-bg); border-color: rgba(61, 90, 128, 0.3); }
-        [data-theme="dark"] .top-dropdown-item { color: var(--text-primary); }
-        [data-theme="dark"] .top-dropdown-item:hover { background: rgba(201, 162, 39, 0.1); }
-        [data-theme="dark"] .top-dropdown-divider { background: rgba(255, 255, 255, 0.1); }
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        html { touch-action: manipulation; scroll-behavior: smooth; }
-        /* 方案A：Bloomberg终端经典字体 - DIN + Source Han Sans */
-        body {
-            font-family: 'DIN Alternate', 'DIN', 'Source Han Sans CN', 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+
+/* BloomLight 组件样式 — 深海军蓝底 + 暗色卡片 + 橙色点缀 + DIN字体 */
+[data-theme="bloomberg-light"] body { background: #0F1724; color: var(--text-primary); font-family: var(--font-bloomberg); }
+[data-theme="bloomberg-light"] .stat-val,
+[data-theme="bloomberg-light"] .analytics-val,
+[data-theme="bloomberg-light"] .perf-value,
+[data-theme="bloomberg-light"] .readonly-numeric,
+[data-theme="bloomberg-light"] .input-text,
+[data-theme="bloomberg-light"] td.numeric,
+[data-theme="bloomberg-light"] th.numeric { font-family: var(--font-bloomberg-mono); font-feature-settings: 'tnum' 1; font-variant-numeric: tabular-nums; }
+[data-theme="bloomberg-light"] .stat-card { background: #162032; border: 1px solid rgba(255,102,0,0.08); box-shadow: none; }
+[data-theme="bloomberg-light"] .stat-label { color: var(--text-secondary); }
+[data-theme="bloomberg-light"] .stat-val { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .analytics-section { background: #162032; border: 1px solid rgba(255,102,0,0.12); box-shadow: none; }
+[data-theme="bloomberg-light"] .analytics-card { background: #1A263A; border: 1px solid rgba(255,102,0,0.06); }
+[data-theme="bloomberg-light"] .analytics-label { color: var(--text-secondary); }
+[data-theme="bloomberg-light"] .analytics-val { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .analytics-val.positive { color: var(--data-positive); }
+[data-theme="bloomberg-light"] .analytics-val.negative { color: var(--data-negative); }
+[data-theme="bloomberg-light"] .analytics-header { border-bottom-color: rgba(255,102,0,0.15); }
+[data-theme="bloomberg-light"] .section-heading { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .page-title { color: #E2E8F0; }
+[data-theme="bloomberg-light"] .perf-card { background: #162032; border: 1px solid rgba(255,102,0,0.08); box-shadow: none; }
+[data-theme="bloomberg-light"] .perf-card h3 { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .perf-label { color: var(--text-secondary); }
+[data-theme="bloomberg-light"] .perf-value { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .perf-value.positive { color: var(--data-positive); }
+[data-theme="bloomberg-light"] .perf-value.negative { color: var(--data-negative); }
+[data-theme="bloomberg-light"] .blotter-section,
+[data-theme="bloomberg-light"] .section { background: #162032; border: 1px solid rgba(255,102,0,0.12); box-shadow: none; }
+[data-theme="bloomberg-light"] .footnote { background: #162032; border: 1px solid rgba(255,102,0,0.08); color: var(--text-secondary); box-shadow: none; }
+[data-theme="bloomberg-light"] .modal-box { background: #162032; border: 1px solid rgba(255,102,0,0.15); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+[data-theme="bloomberg-light"] .modal-msg { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .toast-box { background: #162032; border: 1px solid rgba(255,102,0,0.15); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+[data-theme="bloomberg-light"] .toast-msg { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .undo-toast { background: #162032; border: 1px solid rgba(255,102,0,0.12); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+[data-theme="bloomberg-light"] .undo-toast-msg { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .del-btn { border-color: rgba(255,102,0,0.12); opacity: 0.4; background: transparent; color: var(--text-tertiary); }
+[data-theme="bloomberg-light"] .del-btn:hover { opacity: 1; color: var(--danger); border-color: var(--danger); background: rgba(229,62,62,0.1); }
+[data-theme="bloomberg-light"] .reset-btn { background: rgba(229,62,62,0.12); color: var(--danger); }
+[data-theme="bloomberg-light"] .header-row { border-bottom-color: rgba(255,102,0,0.35); }
+[data-theme="bloomberg-light"] .theme-toggle-btn { opacity: 0.5; color: #E2E8F0; }
+[data-theme="bloomberg-light"] .theme-toggle-btn:hover { opacity: 0.85; background: rgba(255,255,255,0.08); }
+[data-theme="bloomberg-light"] .theme-toggle-btn.bloomberg-active { color: #FF6600; opacity: 1; background: rgba(255,102,0,0.12); }
+[data-theme="bloomberg-light"] .top-dropdown-content { background: rgba(22,32,50,0.98); border-color: rgba(255,102,0,0.12); box-shadow: 0 4px 24px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,102,0,0.08); }
+[data-theme="bloomberg-light"] .top-dropdown-item { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .top-dropdown-item:hover { background: rgba(255,102,0,0.08); }
+[data-theme="bloomberg-light"] .top-dropdown-item.theme-active { color: #FF6600; font-weight: 600; background: rgba(255,102,0,0.1); }
+[data-theme="bloomberg-light"] .top-dropdown-divider { background: rgba(255,102,0,0.1); }
+[data-theme="bloomberg-light"] .glass-menu-btn { background: rgba(255,102,0,0.08); border-color: transparent; color: #E2E8F0; box-shadow: none; }
+[data-theme="bloomberg-light"] .glass-menu-btn:hover { opacity: 1; background: rgba(255,255,255,0.08); }
+[data-theme="bloomberg-light"] .rates-panel { background: transparent; }
+[data-theme="bloomberg-light"] .rate-item { background: transparent; border-right: none; }
+[data-theme="bloomberg-light"] .rate-item:last-child { border-right: none; }
+[data-theme="bloomberg-light"] .rate-display { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .rate-item label { color: var(--text-secondary); opacity: 0.65; }
+[data-theme="bloomberg-light"] th { background: #1A263A; color: var(--text-secondary); border-bottom-color: rgba(255,102,0,0.15); }
+[data-theme="bloomberg-light"] td { border-bottom-color: rgba(255,102,0,0.06); }
+[data-theme="bloomberg-light"] .input-text { background: transparent; color: var(--text-primary); border-color: transparent; }
+[data-theme="bloomberg-light"] .input-text:hover { border-bottom: 1px solid rgba(255,102,0,0.12); }
+[data-theme="bloomberg-light"] .input-text:focus { border-color: transparent; box-shadow: none; }
+[data-theme="bloomberg-light"] .readonly-numeric { color: var(--text-primary); }
+[data-theme="bloomberg-light"] .warning-bar {
+            background: rgba(255,102,0,0.1);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            backdrop-filter: blur(20px) saturate(1.8);
+            color: #FF8833;
+            border: 1px solid rgba(255,102,0,0.25);
+            box-shadow: 0 1px 0 rgba(255,102,0,0.1) inset, 0 4px 16px rgba(0,0,0,0.25);
+        }
+[data-theme="bloomberg-light"] .rate-edit.error { color: var(--danger); }
+[data-theme="bloomberg-light"] .save-indicator { background: #1A263A; color: var(--text-primary); }
+[data-theme="bloomberg-light"] .perf-row { border-bottom-color: rgba(255,102,0,0.08); }
+[data-theme="bloomberg-light"] .modal-btn-cancel { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
+[data-theme="bloomberg-light"] .toast-btn { background: #FF6600; }
+[data-theme="bloomberg-light"] .undo-toast-countdown { color: var(--text-tertiary); }
+[data-theme="bloomberg-light"] .undo-btn { background: transparent; border-color: rgba(255,102,0,0.12); color: var(--text-secondary); }
+
+/* ========== 暗色模式组件样式 ========== */
+
+[data-theme="dark"] body, [data-theme="bloomberg"] body { color: var(--text-primary); }
+
+[data-theme="dark"] .stat-card { background: #1C1C1E; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+
+
+[data-theme="dark"] .stat-label, [data-theme="bloomberg"] .stat-label { color: var(--text-secondary); }
+
+[data-theme="dark"] .stat-val, [data-theme="bloomberg"] .stat-val { color: var(--text-primary); }
+
+[data-theme="dark"] .rates-panel, [data-theme="bloomberg"] .rates-panel { background: transparent; }
+
+[data-theme="dark"] .rate-item, [data-theme="bloomberg"] .rate-item { background: transparent; border-right: none; }
+
+[data-theme="dark"] .rate-item:last-child, [data-theme="bloomberg"] .rate-item:last-child { border-right: none; }
+
+[data-theme="dark"] .rate-item:hover, [data-theme="bloomberg"] .rate-item:hover { opacity: 0.75; }
+
+[data-theme="dark"] .rate-item.editing, [data-theme="bloomberg"] .rate-item.editing { opacity: 1; }
+
+[data-theme="dark"] th, [data-theme="bloomberg"] th { background: #1C1C1E; color: var(--text-secondary); border-bottom-color: rgba(255,255,255,0.08); }
+
+[data-theme="dark"] td, [data-theme="bloomberg"] td { border-bottom-color: rgba(255,255,255,0.04); }
+
+[data-theme="dark"] .input-text, [data-theme="bloomberg"] .input-text { background: transparent; color: var(--text-primary); border-color: transparent; }
+
+[data-theme="dark"] .input-text:hover, [data-theme="bloomberg"] .input-text:hover { border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+[data-theme="dark"] .input-text:focus, [data-theme="bloomberg"] .input-text:focus { border-color: transparent; box-shadow: none; }
+
+[data-theme="dark"] .rate-edit.error, [data-theme="bloomberg"] .rate-edit.error { color: var(--danger); }
+
+[data-theme="dark"] .save-indicator, [data-theme="bloomberg"] .save-indicator { background: #2C2C2E; color: var(--text-primary); }
+
+[data-theme="dark"] .readonly-numeric, [data-theme="bloomberg"] .readonly-numeric { color: var(--text-primary); }
+
+[data-theme="dark"] .perf-row, [data-theme="bloomberg"] .perf-row { border-bottom-color: var(--border); }
+
+[data-theme="dark"] .perf-label, [data-theme="bloomberg"] .perf-label { color: var(--text-secondary); }
+
+[data-theme="dark"] .perf-value, [data-theme="bloomberg"] .perf-value { color: var(--text-primary); }
+[data-theme="dark"] .perf-value.positive { color: var(--data-positive); }
+[data-theme="dark"] .perf-value.negative { color: var(--data-negative); }
+
+[data-theme="dark"] .perf-card { background: #1C1C1E; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+
+
+[data-theme="dark"] .perf-card h3, [data-theme="bloomberg"] .perf-card h3 { color: var(--text-primary); }
+
+[data-theme="dark"] .footnote, [data-theme="bloomberg"] .footnote { background: #1C1C1E; color: var(--text-secondary); border: none; }
+
+[data-theme="dark"] .del-btn, [data-theme="bloomberg"] .del-btn { border-color: rgba(255,255,255,0.1); opacity: 0.45; background: transparent; color: var(--text-tertiary); }
+
+[data-theme="dark"] .del-btn:hover, [data-theme="bloomberg"] .del-btn:hover { opacity: 1; color: var(--danger); border-color: var(--danger); background: rgba(255, 69, 58, 0.12); }
+
+[data-theme="dark"] .reset-btn, [data-theme="bloomberg"] .reset-btn { background: rgba(255, 69, 58, 0.15); color: var(--danger); }
+
+[data-theme="dark"] .warning-bar, [data-theme="bloomberg"] .warning-bar {
+            background: rgba(40, 30, 0, 0.65);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            backdrop-filter: blur(20px) saturate(1.8);
+            color: #FFD60A;
+            border: 1px solid rgba(255, 214, 10, 0.18);
+            box-shadow: 0 1px 0 rgba(255,214,10,0.1) inset, 0 4px 16px rgba(0,0,0,0.3);
+        }
+
+[data-theme="dark"] .header-row, [data-theme="bloomberg"] .header-row { border-bottom-color: var(--accent); }
+
+[data-theme="dark"] .analytics-section, [data-theme="bloomberg"] .analytics-section { background: #1C1C1E; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+[data-theme="dark"] .analytics-card, [data-theme="bloomberg"] .analytics-card { background: #2C2C2E; border: none; box-shadow: none; }
+
+[data-theme="dark"] .analytics-label, [data-theme="bloomberg"] .analytics-label { color: var(--text-secondary); }
+
+[data-theme="dark"] .analytics-val, [data-theme="bloomberg"] .analytics-val { color: var(--text-primary); }
+[data-theme="dark"] .analytics-val.positive { color: var(--data-positive); }
+[data-theme="dark"] .analytics-val.negative { color: var(--data-negative); }
+
+[data-theme="dark"] .analytics-header, [data-theme="bloomberg"] .analytics-header { border-bottom-color: var(--border); }
+
+[data-theme="dark"] .section-heading, [data-theme="bloomberg"] .section-heading { color: var(--text-primary); }
+
+[data-theme="dark"] .modal-box, [data-theme="bloomberg"] .modal-box { background: #1C1C1E; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+
+[data-theme="dark"] .modal-msg, [data-theme="bloomberg"] .modal-msg { color: var(--text-primary); }
+
+[data-theme="dark"] .modal-btn-cancel, [data-theme="bloomberg"] .modal-btn-cancel { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
+
+[data-theme="dark"] .toast-box, [data-theme="bloomberg"] .toast-box { background: #1C1C1E; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+
+[data-theme="dark"] .toast-msg, [data-theme="bloomberg"] .toast-msg { color: var(--text-primary); }
+
+[data-theme="dark"] .toast-btn, [data-theme="bloomberg"] .toast-btn { background: #0A84FF; }
+
+[data-theme="dark"] .page-title, [data-theme="bloomberg"] .page-title { color: var(--text-primary); }
+
+[data-theme="dark"] .blotter-section, [data-theme="bloomberg"] .blotter-section { background: #1C1C1E; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+[data-theme="dark"] .section, [data-theme="bloomberg"] .section { background: #1C1C1E; border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+        [data-theme="dark"] .action-group { background: rgba(72,72,74,0.72); box-shadow: 0 0 0 0.5px rgba(255,255,255,0.04), 0 1px 3px rgba(0,0,0,0.3); }
+        [data-theme="dark"] .action-group .glass-menu-btn { background: transparent; color: #E5E5EA; }
+        [data-theme="dark"] .action-group .glass-menu-btn:hover { background: rgba(255,255,255,0.08); }
+        [data-theme="dark"] .action-group .glass-menu-btn:active { background: rgba(255,255,255,0.16); }
+        [data-theme="bloomberg"] .action-group { background: rgba(20,28,40,0.72); box-shadow: 0 0 0 0.5px rgba(201,168,76,0.06), 0 1px 3px rgba(0,0,0,0.4); }
+        [data-theme="bloomberg"] .action-group .glass-menu-btn { background: transparent; color: #C9A84C; }
+        [data-theme="bloomberg"] .action-group .glass-menu-btn:hover { background: rgba(201,168,76,0.08); }
+        [data-theme="bloomberg"] .action-group .glass-menu-btn:active { background: rgba(201,168,76,0.16); }
+        [data-theme="bloomberg-light"] .action-group { background: rgba(232,224,210,0.72); box-shadow: 0 0 0 0.5px rgba(255,102,0,0.06), 0 1px 3px rgba(0,0,0,0.06); }
+        [data-theme="bloomberg-light"] .action-group .glass-menu-btn { background: transparent; color: #FF6600; }
+        [data-theme="bloomberg-light"] .action-group .glass-menu-btn:hover { background: rgba(255,102,0,0.08); }
+        [data-theme="bloomberg-light"] .action-group .glass-menu-btn:active { background: rgba(255,102,0,0.16); }
+
+[data-theme="dark"] .glass-menu-btn:hover, [data-theme="bloomberg"] .glass-menu-btn:hover { background: rgba(255,255,255,0.06); }
+
+[data-theme="dark"] .glass-menu-btn:active, [data-theme="bloomberg"] .glass-menu-btn:active { background: rgba(255,255,255,0.10); }
+
+[data-theme="dark"] .theme-toggle-btn, [data-theme="bloomberg"] .theme-toggle-btn {
+            background: transparent;
+            border-color: transparent;
+            color: var(--text-secondary);
+            box-shadow: none;
+        }
+
+[data-theme="dark"] .theme-toggle-btn:hover, [data-theme="bloomberg"] .theme-toggle-btn:hover { background: rgba(255,255,255,0.06); }
+
+[data-theme="dark"] .theme-toggle-btn:active, [data-theme="bloomberg"] .theme-toggle-btn:active { background: rgba(255,255,255,0.10); }
+
+[data-theme="dark"] .top-dropdown-content, [data-theme="bloomberg"] .top-dropdown-content { background: rgba(28,28,30,0.98); border-color: rgba(255,255,255,0.10); box-shadow: 0 4px 24px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.08); }
+
+[data-theme="dark"] .top-dropdown-item, [data-theme="bloomberg"] .top-dropdown-item { color: #F2F2F7; }
+
+[data-theme="dark"] .top-dropdown-item:hover, [data-theme="bloomberg"] .top-dropdown-item:hover { background: rgba(120,120,128,0.14); }
+[data-theme="dark"] .top-dropdown-item.theme-active { color: #0A84FF; font-weight: 600; background: rgba(10,132,255,0.1); }
+[data-theme="bloomberg"] .top-dropdown-item.theme-active { color: #C9A84C; font-weight: 600; background: rgba(201,168,76,0.1); }
+
+[data-theme="dark"] .top-dropdown-divider, [data-theme="bloomberg"] .top-dropdown-divider { background: rgba(255,255,255,0.08); }
+
+/* 二级子菜单暗色主题 */
+[data-theme="dark"] .top-dropdown-sub .top-dropdown-item,
+[data-theme="bloomberg"] .top-dropdown-sub .top-dropdown-item { color: #98989D; }
+[data-theme="dark"] .top-dropdown-sub .top-dropdown-item:hover,
+[data-theme="bloomberg"] .top-dropdown-sub .top-dropdown-item:hover { color: #F2F2F7; }
+[data-theme="bloomberg"] .top-dropdown-sub .top-dropdown-item.theme-active { color: #C9A84C; }
+[data-theme="dark"] .top-dropdown-sub .top-dropdown-item.theme-active { color: #0A84FF; }
+[data-theme="bloomberg-light"] .top-dropdown-sub .top-dropdown-item { color: #8BA9CC; }
+[data-theme="bloomberg-light"] .top-dropdown-sub .top-dropdown-item:hover { color: #E2E8F0; }
+[data-theme="bloomberg-light"] .top-dropdown-sub .top-dropdown-item.theme-active { color: #FF6600; }
+
+/* ========== 基础样式 ========== */
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { touch-action: manipulation; scroll-behavior: smooth; }
+
+body {
+            font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif;
             background: var(--bg);
             background-attachment: fixed;
             padding: 16px;
@@ -170,340 +377,671 @@
             min-height: 100dvh;
             text-wrap: pretty;
         }
-        /* 数字/价格专用字体 - DIN系列 */
-        .stat-val, .analytics-val, .perf-value, .readonly-numeric, .input-text, td.numeric, th.numeric {
-            font-family: 'DIN Alternate', 'DIN', 'DIN Condensed', 'Roboto Mono', 'SF Mono', monospace;
+
+.stat-val, .analytics-val, .perf-value, .readonly-numeric, .input-text, td.numeric, th.numeric {
+            font-family: 'SF Mono', 'Roboto Mono', 'Courier New', monospace;
             font-feature-settings: 'tnum' 1;
             font-variant-numeric: tabular-nums;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
 
-        /* 页面标题 */
-        .page-header {
+.container { max-width: 1200px; margin: 0 auto; }
+
+/* ========== 页面标题 ========== */
+
+.page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
             gap: 12px;
         }
-        .page-header-actions {
+
+.page-header-actions {
             display: flex;
             align-items: center;
             gap: 8px;
             flex-shrink: 0;
         }
-        .page-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1.4;
-            letter-spacing: -0.02em;
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(240,240,246,0.72);
+            border: none;
+            border-radius: 999px;
+            padding: 6px 8px;
+            gap: 12px;
+            box-shadow: 0 0 0 0.5px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.04);
         }
 
-        /* iOS 26: 玻璃风格菜单按钮 */
-        .glass-menu-btn {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(255, 255, 255, 0.8);
+        .action-group .top-dropdown {
+            position: relative;
+        }
+
+        .action-group .glass-menu-btn {
+            border-radius: 999px;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            color: #1D1D1F;
+            box-shadow: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: unset;
+            min-height: unset;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .action-group .glass-menu-btn:hover {
+            background: rgba(0,0,0,0.06);
+        }
+
+        .action-group .glass-menu-btn:active {
+            background: rgba(0,0,0,0.12);
+            transform: scale(0.92);
+        }
+
+
+.page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+            letter-spacing: -0.03em;
+            font-family: -apple-system, 'SF Pro Display', 'PingFang SC', sans-serif;
+        }
+
+/* ========== Bloomberg 风格按钮 ========== */
+
+.glass-menu-btn {
+            background: transparent;
+            border: none;
             border-radius: var(--radius-md);
-            color: #1C1C1E;
+            color: var(--text-secondary);
             font-size: 1.1rem;
             font-weight: 600;
             padding: 8px 12px;
             min-width: 44px;
             min-height: 44px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            box-shadow: none;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
-        .glass-menu-btn:active {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(0.97);
-        }
-        .glass-menu-btn:hover {
-            background: rgba(255, 255, 255, 0.75);
-        }
 
-        /* 主题切换按钮 */
-        .theme-toggle-btn {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 0.5px solid rgba(255, 255, 255, 0.8);
+.glass-menu-btn:active { background: rgba(120,120,128,0.1); transform: scale(0.97); }
+
+.glass-menu-btn:hover { background: rgba(120,120,128,0.08); }
+
+.theme-toggle-btn {
+            background: transparent;
+            border: none;
             border-radius: var(--radius-md);
-            color: #1C1C1E;
+            color: var(--text-secondary);
             font-size: 1.1rem;
             padding: 8px 12px;
             min-width: 44px;
             min-height: 44px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            box-shadow: none;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
-        .theme-toggle-btn:active {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(0.97);
+
+.theme-toggle-btn:active { background: rgba(120,120,128,0.1); transform: scale(0.97); }
+
+.theme-toggle-btn:hover { background: rgba(120,120,128,0.08); }
+
+/* Bloomberg 按钮激活态 */
+.theme-toggle-btn.bloomberg-active {
+            color: #FF6600;
+            background: rgba(255, 102, 0, 0.12);
         }
-        .theme-toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.75);
+.theme-toggle-btn.bloomberg-active:hover {
+            background: rgba(255, 102, 0, 0.18);
         }
 
-        /* 顶部下拉菜单 */
-        .top-dropdown {
+
+/* ========== 顶部下拉菜单 ========== */
+
+.top-dropdown {
             position: relative;
             display: inline-block;
         }
-        .top-dropdown-content {
+
+.top-dropdown-content {
             display: none;
             position: absolute;
-            top: 100%;
+            top: calc(100% + 4px);
             right: 0;
-            margin-top: 6px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            margin-top: 2px;
+            background: rgba(255,255,255,0.98);
             border-radius: var(--radius-md);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            border: 0.5px solid rgba(0, 122, 255, 0.1);
-            min-width: 160px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 0 0 0.5px rgba(0,0,0,0.08);
+            border: 0.5px solid rgba(0,0,0,0.08);
+            min-width: 170px;
             z-index: 99999;
             overflow: visible;
             white-space: nowrap;
+            -webkit-backdrop-filter: blur(40px) saturate(2);
+            backdrop-filter: blur(40px) saturate(2);
         }
-        .top-dropdown-content.show { display: block; }
-        .top-dropdown-item {
+
+.top-dropdown-content.show { display: block; }
+
+.top-dropdown-item {
             display: block;
             width: 100%;
-            padding: 12px 16px;
+            padding: 11px 16px;
             border: none;
             background: transparent;
             text-align: left;
             font-size: 0.85rem;
             font-weight: 500;
-            color: #1C1C1E;
+            color: var(--text-primary);
             cursor: pointer;
-            transition: background 0.15s;
+            transition: background 0.12s;
             white-space: nowrap;
+            position: relative;
         }
-        .top-dropdown-item:hover { background: rgba(0, 122, 255, 0.08); }
-        .top-dropdown-item:active { background: rgba(0, 122, 255, 0.15); }
-        .top-dropdown-divider {
+
+.top-dropdown-item:hover { background: rgba(120, 120, 128, 0.08); }
+
+.top-dropdown-item:active { background: rgba(120, 120, 128, 0.14); }
+
+.top-dropdown-item.theme-active {
+            color: var(--primary);
+            font-weight: 600;
+            background: rgba(0, 122, 255, 0.06);
+        }
+
+/* 二级菜单父项样式 */
+.top-dropdown-item.submenu-parent {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+.top-dropdown-item.submenu-parent::after {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-right: 1.5px solid currentColor;
+            border-bottom: 1.5px solid currentColor;
+            transform: rotate(-45deg);
+            opacity: 0.4;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+.top-dropdown-item.submenu-parent.expanded::after {
+            transform: rotate(45deg);
+        }
+
+/* 二级菜单子项 */
+.top-dropdown-sub {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease;
+        }
+.top-dropdown-sub.open {
+            max-height: 500px;
+        }
+.top-dropdown-sub .top-dropdown-item {
+            padding-left: 32px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+.top-dropdown-sub .top-dropdown-item:hover {
+            color: var(--text-primary);
+        }
+.top-dropdown-sub .top-dropdown-item.theme-active {
+            color: var(--primary);
+            font-weight: 600;
+            background: rgba(0, 122, 255, 0.06);
+        }
+
+.top-dropdown-divider {
             height: 1px;
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.06);
             margin: 6px 0;
         }
 
-        /* iOS 26: 警告条 - 毛玻璃风格 */
-        .warning-bar {
-            background: var(--warning-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            color: var(--warning-text);
-            padding: 12px 16px;
+/* ========== 警告条 ========== */
+
+/* ========== 警告条闪烁动画 ========== */
+@keyframes warnBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+
+.warning-bar {
+            background: rgba(255, 249, 230, 0.72);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            backdrop-filter: blur(20px) saturate(1.8);
+            color: #7A5C00;
+            padding: 10px 16px;
             border-radius: var(--radius-md);
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 10px;
-            border-left: 4px solid var(--warning-text);
             font-size: 0.85rem;
             line-height: 1.5;
             font-weight: 500;
+            position: sticky;
+            top: max(8px, var(--safe-top));
+            z-index: 100;
+            box-shadow: 0 1px 0 rgba(255,200,0,0.15) inset, 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255, 200, 0, 0.22);
         }
-        .warning-bar .warning-icon { flex-shrink: 0; font-size: 1.1rem; }
 
-        /* 仪表盘 - iOS 26 渐变卡片 */
-        .dashboard-grid {
+.warning-bar .warning-icon {
+            flex-shrink: 0;
+            font-size: 1.1rem;
+            animation: warnBlink 1.6s ease-in-out infinite;
+        }
+
+/* ========== 仪表盘卡片 ========== */
+
+.dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-bottom: 16px;
         }
-        .stat-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,245,247,0.9) 100%);
-            color: #1C1C1E;
-            padding: 14px 10px;
+
+.stat-card {
+            background: #FFFFFF;
+            padding: 16px 12px;
             border-radius: var(--radius-lg);
             text-align: center;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
             min-width: 0;
-            border: 0.5px solid rgba(0, 122, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            opacity: 0.6;
+            border: none;
         }
 
-        /* 统计分析区域 - iOS 26 风格 */
-        .analytics-section {
-            margin-bottom: 16px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-lg);
-            padding: 14px 16px;
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-        }
-        .analytics-header {
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1.5px solid var(--border);
-        }
-        .analytics-title {
-            font-size: 0.88rem;
+.stat-val {
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--primary);
-            letter-spacing: -0.01em;
-        }
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-        .analytics-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(245,245,247,0.9) 100%);
-            padding: 12px 10px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255,255,255,0.8);
-            border: 0.5px solid rgba(0, 122, 255, 0.08);
-        }
-        .analytics-label {
             display: block;
-            font-size: 0.6rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            opacity: 0.5;
-            line-height: 1.3;
-            margin-bottom: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
         }
-        .analytics-label .label-cn {
+
+.stat-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.55;
+            line-height: 1.3;
+        }
+
+.stat-label .label-cn {
             display: block;
             font-size: 0.65rem;
             font-weight: 600;
             margin-bottom: 2px;
-        }
-        .analytics-label .label-en {
-            display: block;
-            font-size: 0.5rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            opacity: 0.7;
-        }
-        .analytics-val {
-            display: block;
-            font-size: 1.05rem;
-            font-weight: 700;
-            font-family: 'SF Mono', 'Courier New', monospace;
-            letter-spacing: -0.02em;
-            color: #1C1C1E;
-        }
-        .stat-val {
-            font-size: 1.2rem;
-            font-weight: 700;
-            font-family: 'SF Mono', 'Courier New', monospace;
-            display: block;
-            margin-top: 6px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            letter-spacing: -0.02em;
-        }
-        .stat-label {
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            opacity: 0.6;
-            line-height: 1.3;
-        }
-        .stat-label .label-cn {
-            display: block;
-            font-size: 0.65rem;
-            font-weight: 600;
-            margin-bottom: 1px;
-        }
-        .stat-label .label-en {
-            display: block;
-            font-size: 0.5rem;
-            font-weight: 500;
-            text-transform: uppercase;
             opacity: 0.7;
         }
 
-        /* 费率栏 - iOS 26 毛玻璃风格 */
-        .rates-panel {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-xl);
-            padding: 14px 16px;
+.stat-label .label-en {
+            display: block;
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            opacity: 0.5;
+            letter-spacing: 0.3px;
+        }
+
+/* ========== 统计分析区域 ========== */
+
+.analytics-section {
+            margin-bottom: 16px;
+            background: #FFFFFF;
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            border: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+.analytics-header {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+.section-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+.analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+.analytics-card {
+            background: var(--bg);
+            padding: 12px 10px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: none;
+            border: none;
+        }
+
+.analytics-label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+
+.analytics-label .label-cn {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+            opacity: 0.7;
+        }
+
+.analytics-label .label-en {
+            display: block;
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            opacity: 0.5;
+            letter-spacing: 0.3px;
+        }
+
+.analytics-val {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+        }
+
+/* ========== 费率栏 ========== */
+
+.rates-panel {
+            background: transparent;
+            border-radius: 0;
+            padding: 4px 0;
             margin-bottom: 16px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 8px;
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            border: none;
+            box-shadow: none;
+            position: relative;
         }
-        .rate-item {
-            background: rgba(255, 255, 255, 0.35);
-            border-radius: var(--radius-md);
-            padding: 10px 12px;
+
+.rate-item {
+            background: transparent;
+            border-radius: 0;
+            padding: 4px 8px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 2px;
             min-width: 0;
-            border: 0.5px solid rgba(128, 128, 128, 0.12);
-            transition: border-color 0.2s ease, background 0.2s ease;
+            border: none;
+            box-shadow: none;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
         }
-        .rate-item:focus-within {
-            background: rgba(255, 255, 255, 0.5);
-            border-color: var(--primary);
-        }
-        .rate-item label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--primary);
+
+.rate-item:hover { opacity: 0.75; }
+
+.rate-item.editing { cursor: text; opacity: 1; }
+
+.rate-item label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            opacity: 0.65;
+            line-height: 1.3;
             white-space: nowrap;
-            flex-shrink: 0;
+            text-align: center;
+            pointer-events: none;
         }
-        .rate-item input {
+
+.rate-item label .label-cn {
+            display: block;
+            font-size: 1em;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+.rate-item label .label-en {
+            display: block;
+            font-size: 0.72em;
+            font-weight: 600;
+            opacity: 0.75;
+        }
+
+.rate-display {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            color: var(--text-primary);
+            text-align: center;
+            min-height: 1.3em;
+            line-height: 1.3;
+        }
+
+.rate-display.is-placeholder { display: none; }
+
+.rate-item:not(.editing):has(.rate-display.is-placeholder) {
+            justify-content: center;
+            gap: 0;
+            padding: 7px 8px;
+        }
+
+.rate-item:not(.editing):has(.rate-display.is-placeholder) label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            opacity: 0.8;
+        }
+
+.rate-item.editing .rate-display { display: none; }
+
+.rate-edit {
+            display: none;
             border: none;
             background: transparent;
             width: 100%;
-            min-width: 50px;
-            text-align: right;
-            font-weight: 600;
+            text-align: center;
+            font-weight: 700;
             font-family: 'SF Mono', 'Courier New', monospace;
-            font-size: 15px;
+            font-size: 1.1rem;
             outline: none;
-            color: #1C1C1E;
+            color: var(--text-primary);
             -webkit-appearance: none;
+            padding: 0;
         }
-        .rate-item input::placeholder { color: rgba(0, 122, 255, 0.4); font-weight: 400; }
-        .rates-actions {
+
+.rate-item.editing .rate-edit { display: block; }
+
+.rate-edit::placeholder { color: var(--text-tertiary); font-weight: 400; }
+
+.rate-edit.error { color: #dc2626; animation: shake-err 0.4s ease; }
+
+.rate-item.editing.error-flash { color: #dc2626; }
+
+/* ========== 保存状态指示 ========== */
+
+.save-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: #FFFFFF;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+.save-indicator.show { opacity: 1; transform: translateY(0); }
+
+/* ========== 撤销提示条 ========== */
+
+.undo-toast {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 12px 20px;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            z-index: 9990;
+            max-width: 360px;
+            width: auto;
+            white-space: nowrap;
+        }
+
+.undo-toast.active { display: flex; }
+
+.undo-toast-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+.undo-toast-msg {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            flex-shrink: 0;
+        }
+
+.undo-toast-countdown {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            min-width: 6.5em;
+            flex-shrink: 0;
+        }
+
+.undo-toast-btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 20px;
+            background: var(--primary);
+            color: #FFFFFF;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+.undo-toast-btn:active { opacity: 0.8; transform: scale(0.97); }
+
+[data-theme="dark"] .undo-toast, [data-theme="bloomberg"] .undo-toast {
+            background: #1C1C1E;
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+[data-theme="dark"] .undo-toast-msg, [data-theme="bloomberg"] .undo-toast-msg { color: var(--text-primary); }
+
+[data-theme="dark"] .undo-toast-countdown, [data-theme="bloomberg"] .undo-toast-countdown { color: var(--text-tertiary); }
+
+/* ========== 费率编辑行 ========== */
+
+.rate-edit-row {
+            display: none !important;
+            align-items: baseline;
+            gap: 2px;
+        }
+
+.rate-item.editing .rate-edit-row { display: flex !important; }
+
+.currency-prefix {
+            display: none;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            flex-shrink: 0;
+            margin-right: 3px;
+        }
+
+.currency-suffix {
+            display: none;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            flex-shrink: 0;
+            margin-left: 3px;
+        }
+
+.rate-item.editing .currency-prefix,
+        .rate-item.editing .currency-suffix { display: block; }
+
+.rate-item.editing .currency-prefix.hide-in-edit,
+        .rate-item.editing .currency-suffix.hide-in-edit { display: none !important; }
+
+.rate-edit-row .rate-edit {
+            display: block;
+            width: auto;
+            min-width: 30px;
+            max-width: 80px;
+        }
+
+[data-theme="dark"] .currency-prefix, [data-theme="bloomberg"] .currency-prefix,
+        [data-theme="dark"] .currency-suffix, [data-theme="bloomberg"] .currency-suffix { color: var(--text-secondary); opacity: 0.85; }
+
+[data-theme="dark"] .rate-display, [data-theme="bloomberg"] .rate-display { color: var(--text-primary); }
+
+[data-theme="dark"] .rate-edit, [data-theme="bloomberg"] .rate-edit { color: var(--text-primary); }
+
+[data-theme="dark"] .rate-edit::placeholder, [data-theme="bloomberg"] .rate-edit::placeholder { color: var(--text-tertiary); }
+
+[data-theme="dark"] .rate-item label, [data-theme="bloomberg"] .rate-item label { color: var(--text-secondary); opacity: 0.65; }
+
+.rates-actions {
             grid-column: 1 / -1;
             display: flex;
             justify-content: flex-end;
             margin-top: 4px;
         }
-        .reset-btn {
-            background: rgba(255, 59, 48, 0.12);
+
+.reset-btn {
+            background: rgba(255, 59, 48, 0.08);
             border: none;
             padding: 10px 18px;
             border-radius: 20px;
@@ -515,36 +1053,35 @@
             align-items: center;
             justify-content: center;
         }
-        .reset-btn:active { transform: scale(0.97); opacity: 0.8; }
 
-        /* 交易区块 - iOS 26 毛玻璃卡片 */
-        .blotter-section, .section {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-xl);
-            padding: 16px 14px;
+.reset-btn:active { transform: scale(0.97); opacity: 0.8; }
+
+/* ========== 交易区块 ========== */
+
+.blotter-section, .section {
+            background: #ffffff;
+            padding: 24px 28px;
             margin-bottom: 16px;
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border: none;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
         }
-        .header-row {
+
+.header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1.5px solid var(--border);
-            padding-bottom: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
-        .header-row h2 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: -0.01em;
+
+.blotter-section .section-heading,
+        .section .section-heading {
+            padding-left: 0;
         }
-        .action-btn {
+
+.action-btn {
             background: transparent;
-            color: var(--primary);
+            color: var(--text-secondary);
             border: none;
             padding: 0;
             width: 38px;
@@ -560,114 +1097,125 @@
             line-height: 1;
             transition: all 0.2s ease;
         }
-        .action-btn:hover {
-            background: rgba(30, 58, 95, 0.08);
-        }
-        .action-btn:active { transform: scale(0.92); }
 
-        /* 表格容器 - 支持横向滚动 */
-        .table-scroll-wrapper {
+.action-btn:hover { background: rgba(120, 120, 128, 0.1); }
+
+.action-btn:active { transform: scale(0.92); }
+
+/* ========== 表格 ========== */
+
+.table-scroll-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            margin: 0 -14px;
-            padding: 0 14px;
         }
 
-        /* 表格 - iOS 26 风格 */
-        table {
+table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.8rem;
             min-width: 520px;
         }
-        th {
-            background: rgba(0, 122, 255, 0.06);
-            padding: 10px 6px;
+
+th {
+            background: rgba(120, 120, 128, 0.06);
+            padding: 10px 8px;
             font-weight: 600;
             text-align: center;
-            border-bottom: 1.5px solid var(--border);
-            color: var(--primary);
-            font-size: 0.72rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.7rem;
             white-space: nowrap;
             position: sticky;
             top: 0;
             z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
-        td {
-            padding: 6px 4px;
+
+td {
+            padding: 8px 6px;
             text-align: center;
-            border-bottom: 0.5px solid rgba(0, 122, 255, 0.06);
+            border-bottom: 0.5px solid var(--border);
             vertical-align: middle;
             white-space: nowrap;
+            font-size: 0.82rem;
         }
-        .col-date { width: auto; min-width: 70px; }
-        .col-price { width: auto; min-width: 60px; }
-        .col-qty { width: auto; min-width: 60px; }
-        .col-notional { width: auto; min-width: 80px; }
-        .col-fee { width: auto; min-width: 85px; }
-        .col-pnl { width: auto; min-width: 90px; }
-        .col-action { width: 40px; min-width: 40px; }
 
-        /* 输入框 - 完全无框体自适应 */
-        .input-text {
+.col-date { width: auto; min-width: 70px; }
+
+.col-price { width: auto; min-width: 60px; }
+
+.col-qty { width: auto; min-width: 60px; }
+
+.col-notional { width: auto; min-width: 80px; }
+
+.col-fee { width: auto; min-width: 85px; }
+
+.col-pnl { width: auto; min-width: 90px; }
+
+.col-action { width: 40px; min-width: 40px; }
+
+/* ========== 输入框 ========== */
+
+.input-text {
             width: 100%;
             min-width: 40px;
             max-width: 100%;
-            padding: 2px 1px;
+            padding: 3px 2px;
             border: none;
             border-radius: 0;
             text-align: center;
             font-family: 'SF Mono', 'Courier New', monospace;
-            font-size: 13px;
+            font-size: 0.82rem;
+            font-weight: 500;
             background: transparent;
-            color: #1C1C1E;
+            color: var(--text-primary);
             -webkit-appearance: none;
             appearance: none;
             height: auto;
-            line-height: 1.4;
+            line-height: 1.5;
         }
-        .input-text:focus {
-            outline: none;
-            background: transparent;
-        }
-        input[type="date"].input-text {
-            min-width: 70px;
+
+.input-text:focus { outline: none; background: transparent; }
+
+input[type="date"].input-text {
+            min-width: 80px;
             font-size: 0.72rem;
-            padding: 4px 2px;
-            /* 隐藏浏览器默认日期图标 */
+            padding: 4px 6px;
+            letter-spacing: 0.02em;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-weight: 500;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
             background: transparent;
             cursor: pointer;
             position: relative;
+            text-align: center;
+            caret-color: transparent;
         }
-        /* 显示日期选择器图标，点击可弹出日历 */
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            display: block;
-            cursor: pointer;
-            opacity: 0.6;
-        }
-        /* Firefox */
-        input[type="date"]::-moz-calendar-picker-indicator {
-            display: block;
-            cursor: pointer;
-            opacity: 0.6;
-        }
-        /* 日期输入框悬停效果 */
-        input[type="date"].input-text:hover {
-            background: rgba(30, 58, 95, 0.04);
-        }
-        .readonly-numeric {
+
+input[type="date"]::-webkit-calendar-picker-indicator { display: none; opacity: 0; width: 0; height: 0; }
+
+input[type="date"]::-moz-calendar-picker-indicator { display: none; opacity: 0; width: 0; height: 0; }
+
+input[type="date"].input-text:hover { background: rgba(120, 120, 128, 0.08); border-radius: 6px; }
+
+[data-theme="dark"] input[type="date"].input-text:hover, [data-theme="bloomberg"] input[type="date"].input-text:hover { background: rgba(255,255,255,0.04); }
+
+.readonly-numeric {
             font-family: 'SF Mono', 'Courier New', monospace;
             font-weight: 600;
-            font-size: 0.78rem;
-            color: #1C1C1E;
+            font-size: 0.82rem;
+            color: var(--text-primary);
         }
-        .del-btn {
+
+/* ========== 删除按钮 ========== */
+
+.del-btn {
             background: transparent;
             color: var(--text-tertiary);
-            border: 0.5px solid rgba(128, 128, 128, 0.25);
+            border: 0.5px solid var(--border);
             padding: 0;
             width: 28px;
             height: 28px;
@@ -681,105 +1229,127 @@
             opacity: 0.45;
             transition: all 0.2s ease;
         }
-        .del-btn:hover {
+
+.del-btn:hover {
             opacity: 1;
             color: var(--danger);
             border-color: var(--danger);
-            background: rgba(255, 59, 48, 0.08);
+            background: rgba(255, 59, 48, 0.06);
         }
-        .del-btn:active { transform: scale(0.9); opacity: 0.8; }
 
-        /* 绩效卡片网格 - iOS 26 玻璃拟态 */
-        .performance-grid {
+.del-btn:active { transform: scale(0.9); opacity: 0.8; }
+
+/* ========== 绩效卡片 ========== */
+
+.performance-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 12px;
             margin-bottom: 20px;
         }
-        .perf-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+
+.perf-card {
+            background: #FFFFFF;
             border-radius: var(--radius-xl);
             padding: 16px;
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
-        .perf-card h3 {
-            font-size: 0.88rem;
-            font-weight: 700;
-            margin-bottom: 14px;
-            border-left: 3px solid var(--primary);
-            padding-left: 12px;
-            color: var(--primary);
-            letter-spacing: -0.01em;
+
+.perf-card h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-left: 0;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
         }
-        .perf-row {
+
+.perf-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 0.82rem;
-            padding: 6px 0;
-            border-bottom: 0.5px solid rgba(0, 122, 255, 0.06);
-            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 0.88rem;
+            padding: 8px 0;
+            border-bottom: 0.5px solid var(--border);
+            gap: 12px;
         }
-        .perf-row:last-child { border-bottom: none; margin-bottom: 0; }
-        .perf-label { color: rgba(0, 0, 0, 0.5); flex-shrink: 0; }
-        .perf-value {
+
+.perf-row:last-child { border-bottom: none; margin-bottom: 0; }
+
+.perf-label { color: var(--text-secondary); flex-shrink: 0; font-weight: 500; font-size: 0.82rem; }
+
+.perf-value {
             font-weight: 700;
             font-family: 'SF Mono', 'Courier New', monospace;
             text-align: right;
             word-break: break-all;
-            color: #1C1C1E;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            letter-spacing: -0.01em;
         }
-        .positive { color: var(--data-positive); }
-        .negative { color: var(--data-negative); }
 
-        .footnote {
-            margin-top: 16px;
+/* 校验通过：字号调小，与普通文本行对齐 */
+#checkHintCard {
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: -apple-system, 'SF Pro Text', 'PingFang SC', sans-serif;
+            letter-spacing: 0;
+        }
+
+.positive { color: var(--data-positive); }
+
+.negative { color: var(--data-negative); }
+
+/* ========== 脚注 ========== */
+
+.footnote {
+            margin-top: 20px;
             text-align: center;
-            font-size: 0.7rem;
-            color: rgba(0, 0, 0, 0.4);
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            font-size: 0.72rem;
+            color: var(--text-tertiary);
+            background: #FFFFFF;
             border-radius: var(--radius-lg);
-            padding: 12px 16px;
+            padding: 14px 18px;
             line-height: 1.6;
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            border: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
-        /* ====== 自定义确认弹框 (替代 confirm) - iOS 26 风格 ====== */
-        .modal-overlay {
+/* ========== 自定义确认弹框 ========== */
+
+.modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.5);
             z-index: 9999;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        .modal-overlay.active { display: flex; }
-        .modal-box {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+            background: #FFFFFF;
             border-radius: var(--radius-xl);
             padding: 24px 20px 20px;
             max-width: 320px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            border: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
-        .modal-icon { font-size: 2.4rem; margin-bottom: 12px; }
-        .modal-msg { font-size: 0.9rem; color: #1C1C1E; margin-bottom: 20px; line-height: 1.5; font-weight: 500; }
-        .modal-actions { display: flex; gap: 10px; justify-content: center; }
-        .modal-btn {
+
+.modal-icon { font-size: 2.4rem; margin-bottom: 12px; }
+
+.modal-msg { font-size: 0.95rem; color: var(--text-primary); margin-bottom: 22px; line-height: 1.5; font-weight: 500; }
+
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+.modal-btn {
             flex: 1;
             padding: 12px 16px;
             border: none;
@@ -790,106 +1360,97 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        .modal-btn:active { transform: scale(0.97); opacity: 0.9; }
-        .modal-btn-cancel { background: rgba(142, 142, 147, 0.12); color: var(--text-secondary); }
-        .modal-btn-confirm { background: var(--primary); color: #fff; }
 
-        /* ====== 自定义提示弹框 (替代 alert) - iOS 26 风格 ====== */
-        .toast-overlay {
+.modal-btn:active { transform: scale(0.97); opacity: 0.9; }
+
+.modal-btn-cancel { background: rgba(120, 120, 128, 0.08); color: var(--text-secondary); }
+
+.modal-btn-confirm { background: var(--primary); color: #FFFFFF; }
+
+/* ========== 自定义提示弹框 ========== */
+
+.toast-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.5);
             z-index: 10000;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        .toast-overlay.active { display: flex; }
-        .toast-box {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+
+.toast-overlay.active { display: flex; }
+
+.toast-box {
+            background: #FFFFFF;
             border-radius: var(--radius-xl);
             padding: 28px 24px 24px;
             max-width: 280px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-            border: 0.5px solid rgba(255, 255, 255, 0.5);
+            border: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
-        .toast-icon { font-size: 2.8rem; margin-bottom: 14px; }
-        .toast-msg { font-size: 0.95rem; color: #1C1C1E; margin-bottom: 24px; line-height: 1.5; font-weight: 600; }
-        .toast-btn {
-            background: #34C759;
-            color: #fff;
+
+.toast-icon { font-size: 2.8rem; margin-bottom: 14px; }
+
+.toast-msg { font-size: 1rem; color: var(--text-primary); margin-bottom: 24px; line-height: 1.5; font-weight: 600; }
+
+.toast-btn {
+            background: var(--primary);
+            color: #FFFFFF;
             border: none;
             padding: 12px 32px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(52, 199, 89, 0.3);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .toast-btn:active { transform: scale(0.97); opacity: 0.9; }
 
-        /* ====== iOS 26 响应式适配 ====== */
+.toast-btn:active { transform: scale(0.97); opacity: 0.9; }
 
-        /*
-         * 设备断点规划（CSS逻辑像素）：
-         * ─────────────────────────────────────────────────
-         * iPhone 17        : 393pt × 852pt  → 393px
-         * iPhone 17 Pro    : 402pt × 874pt  → 402px
-         * iPhone 17 Pro Max: 440pt × 956pt  → 440px
-         * iPad mini 6      : 744pt × 1133pt → 744px
-         * iPad Pro 11      : 834pt × 1194pt → 834px
-         * ─────────────────────────────────────────────────
-         */
+/* ========== 响应式适配 ========== */
 
-        /* ── iPad Pro 11寸 (≥834px) ── */
-        @media (min-width: 834px) {
+@media (min-width: 834px) {
             .container { max-width: 1100px; }
             .dashboard-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
             .analytics-grid { grid-template-columns: repeat(3, 1fr); }
             .performance-grid { grid-template-columns: repeat(2, 1fr); }
-            .rates-panel { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+            .rates-panel { grid-template-columns: repeat(5, 1fr); }
             .page-title { font-size: 1.3rem; }
             .stat-val { font-size: 1.4rem; }
             .stat-label { font-size: 0.72rem; }
+            .rate-item label { font-size: 0.72rem; }
             .analytics-val { font-size: 1.15rem; }
             .analytics-label { font-size: 0.62rem; }
-            .blotter-section { padding: 20px 18px; }
             .perf-card { padding: 18px; }
             table { font-size: 0.8rem; }
-            .input-text { font-size: 0.8rem; }
-            .header-row h2 { font-size: 1.05rem; }
+            .input-text { font-size: 0.88rem; }
             .action-btn { width: 32px; height: 32px; font-size: 1.3rem; }
         }
 
-        /* ── iPad mini 6 (744px ~ 833px) ── */
-        @media (min-width: 744px) and (max-width: 833px) {
+@media (min-width: 744px) and (max-width: 833px) {
             .container { max-width: 960px; }
             .dashboard-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
             .analytics-grid { grid-template-columns: repeat(3, 1fr); }
             .performance-grid { grid-template-columns: repeat(2, 1fr); }
-            .rates-panel { grid-template-columns: repeat(2, 1fr); }
+            .rates-panel { grid-template-columns: repeat(5, 1fr); }
             .page-title { font-size: 1.2rem; }
             .stat-val { font-size: 1.3rem; }
             .stat-label { font-size: 0.68rem; }
+            .rate-item label { font-size: 0.68rem; }
             .analytics-val { font-size: 1.05rem; }
             .analytics-label { font-size: 0.58rem; }
-            .blotter-section { padding: 18px 14px; }
             .perf-card { padding: 16px; }
             table { font-size: 0.78rem; }
-            .input-text { font-size: 0.78rem; }
+            .input-text { font-size: 0.82rem; }
         }
 
-        /* ── iPhone 17 Pro Max (≤440px) ── */
-        @media (max-width: 440px) {
+@media (max-width: 440px) {
             .container { padding: 0 2px; }
             .dashboard-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .analytics-grid { grid-template-columns: repeat(3, 1fr); }
@@ -898,33 +1459,34 @@
             .stat-card { padding: 14px 10px; }
             .stat-val { font-size: 1.1rem; }
             .stat-label { font-size: 0.58rem; }
-            .rates-panel { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-            .rate-item { padding: 5px 10px; }
-            .rate-item label { font-size: 0.62rem; }
-            .rate-item input { width: 60px; font-size: 0.72rem; }
+            .rates-panel { grid-template-columns: repeat(5, 1fr); gap: 0; }
+            .rate-item { padding: 3px 6px; }
+            .rate-item label { font-size: 0.58rem; }
+            .rate-item:not(.editing):has(.rate-display.is-placeholder) label { font-size: 0.66rem; }
+            .rate-display, .rate-edit, .currency-prefix, .currency-suffix { font-size: 0.92rem; }
             .performance-grid { grid-template-columns: 1fr; }
-            .blotter-section { padding: 14px 10px; border-radius: 18px; }
             .perf-card { padding: 14px 12px; }
             .perf-card h3 { font-size: 0.8rem; }
             .perf-row { font-size: 0.72rem; }
             table { font-size: 0.72rem; }
-            .input-text { font-size: 0.72rem; padding: 2px 0; }
+            .input-text { font-size: 0.76rem; padding: 2px 0; }
             th { padding: 6px 3px; font-size: 0.65rem; }
             td { padding: 6px 3px; }
-            .header-row h2 { font-size: 0.9rem; }
+            .section-heading { font-size: 0.8rem; }
             .action-btn { width: 30px; height: 30px; font-size: 1.2rem; }
             .del-btn { width: 24px; height: 24px; font-size: 0.7rem; }
             .page-title { font-size: 1rem; }
             .page-header-actions { gap: 6px; }
             .glass-menu-btn, .theme-toggle-btn { padding: 6px 10px; min-width: 38px; min-height: 38px; font-size: 1rem; }
+            .action-group { padding: 4px 6px; gap: 8px; }
+            .action-group .glass-menu-btn { width: 30px; height: 30px; }
             .top-dropdown-content { min-width: 150px; }
             .top-dropdown-item { padding: 10px 14px; font-size: 0.8rem; }
             .modal-box { padding: 24px 20px; }
             .modal-msg { font-size: 0.88rem; }
         }
 
-        /* ── iPhone 17 Pro (≤402px) ── */
-        @media (max-width: 402px) {
+@media (max-width: 402px) {
             .dashboard-grid { gap: 8px; }
             .stat-card { padding: 12px 8px; }
             .stat-val { font-size: 1rem; }
@@ -932,20 +1494,19 @@
             .analytics-grid { gap: 6px; }
             .analytics-val { font-size: 0.85rem; }
             .analytics-label { font-size: 0.48rem; }
-            .rates-panel { gap: 6px; }
-            .rate-item { padding: 4px 8px; }
-            .rate-item label { font-size: 0.58rem; }
-            .rate-item input { width: 55px; font-size: 0.68rem; }
-            .blotter-section { padding: 12px 8px; }
+            .rates-panel { grid-template-columns: repeat(5, 1fr); gap: 0; }
+            .rate-item { padding: 3px 5px; }
+            .rate-item label { font-size: 0.55rem; }
+            .rate-item:not(.editing):has(.rate-display.is-placeholder) label { font-size: 0.61rem; }
+            .rate-display, .rate-edit, .currency-prefix, .currency-suffix { font-size: 0.85rem; }
             .perf-card { padding: 12px 10px; }
             table { font-size: 0.68rem; }
-            .input-text { font-size: 0.68rem; }
+            .input-text { font-size: 0.72rem; }
             th { font-size: 0.6rem; }
             .page-title { font-size: 0.95rem; }
         }
 
-        /* ── iPhone 17 (≤393px) ── */
-        @media (max-width: 393px) {
+@media (max-width: 393px) {
             .dashboard-grid { gap: 6px; }
             .stat-card { padding: 10px 6px; border-radius: 14px; }
             .stat-val { font-size: 0.95rem; }
@@ -954,91 +1515,163 @@
             .analytics-card { padding: 10px 6px; border-radius: 14px; }
             .analytics-val { font-size: 0.8rem; }
             .analytics-label { font-size: 0.45rem; }
-            .rates-panel { gap: 5px; }
-            .rate-item { padding: 4px 6px; }
-            .rate-item label { font-size: 0.55rem; }
-            .rate-item input { width: 50px; font-size: 0.65rem; }
-            .blotter-section { padding: 10px 6px; border-radius: 16px; }
+            .rates-panel { grid-template-columns: repeat(5, 1fr); gap: 0; }
+            .rate-item { padding: 2px 4px; }
+            .rate-item label { font-size: 0.52rem; }
+            .rate-item:not(.editing):has(.rate-display.is-placeholder) label { font-size: 0.58rem; }
+            .rate-display, .rate-edit, .currency-prefix, .currency-suffix { font-size: 0.78rem; }
             .perf-card { padding: 10px 8px; }
             .perf-row { font-size: 0.68rem; }
             table { font-size: 0.65rem; }
-            .input-text { font-size: 0.65rem; }
+            .input-text { font-size: 0.68rem; }
             th { padding: 5px 2px; font-size: 0.58rem; }
             td { padding: 5px 2px; }
-            .header-row h2 { font-size: 0.85rem; }
             .action-btn { width: 28px; height: 28px; font-size: 1.1rem; }
             .page-title { font-size: 0.9rem; }
             .glass-menu-btn, .theme-toggle-btn { padding: 5px 8px; min-width: 36px; min-height: 36px; font-size: 0.95rem; }
+            .action-group .glass-menu-btn { width: 28px; height: 28px; }
             .top-dropdown-item { padding: 9px 12px; font-size: 0.75rem; }
             .modal-box { padding: 20px 16px; margin: 0 10px; }
             .modal-msg { font-size: 0.82rem; }
         }
 
-        /* ── 小屏兜底 (iPhone SE / 极小设备 ≤374px) ── */
-        @media (max-width: 374px) {
+@media (max-width: 374px) {
             body { padding: 10px; padding-top: max(10px, var(--safe-top)); }
             .dashboard-grid { gap: 5px; }
             .stat-card { padding: 8px 5px; }
             .stat-val { font-size: 0.88rem; }
-            .rates-panel { grid-template-columns: 1fr; }
-            .blotter-section { padding: 8px 5px; }
+            .rates-panel { grid-template-columns: repeat(3, 1fr); }
             .perf-card { padding: 8px 6px; }
             .page-title { font-size: 0.85rem; }
         }
 
-        /* ── iPad 横屏优化 ── */
-        @media (min-width: 744px) and (orientation: landscape) {
+@media (min-width: 744px) and (orientation: landscape) {
             .dashboard-grid { grid-template-columns: repeat(4, 1fr); }
             .analytics-grid { grid-template-columns: repeat(3, 1fr); }
             .performance-grid { grid-template-columns: repeat(2, 1fr); }
-            .rates-panel { grid-template-columns: repeat(4, 1fr); }
+            .rates-panel { grid-template-columns: repeat(5, 1fr); }
         }
 
-        /* ── iPhone 横屏优化 ── */
-        @media (max-width: 743px) and (orientation: landscape) {
+@media (max-width: 743px) and (orientation: landscape) {
             .dashboard-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
             .stat-card { padding: 10px 8px; }
             .stat-val { font-size: 1rem; }
             .stat-label { font-size: 0.55rem; }
+            .rate-item label { font-size: 0.55rem; }
             .analytics-grid { grid-template-columns: repeat(3, 1fr); }
-            .rates-panel { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+            .rates-panel { grid-template-columns: repeat(5, 1fr); gap: 0; }
             .performance-grid { grid-template-columns: repeat(2, 1fr); }
             body { padding-top: max(8px, var(--safe-top)); padding-bottom: max(8px, var(--safe-bottom)); }
         }
 
-        /* iOS 触摸优化 */
-        button { min-height: 36px; }
-        input[type="text"], input[type="number"], input[type="date"] {
-            min-height: 36px;
-        }
+/* ========== iOS 触摸优化 ========== */
 
-        /* 隐藏数字输入框的上下箭头 */
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
+button { min-height: 36px; }
 
-        /* iOS 26: 优化滚动条在暗色区域的表现 */
-        .table-scroll-wrapper::-webkit-scrollbar {
-            height: 3px;
-        }
-        .table-scroll-wrapper::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .table-scroll-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(30,58,95,0.15);
-            border-radius: 2px;
-        }
+input[type="text"], input[type="number"], input[type="date"] { min-height: 36px; }
 
-        /* iOS 26: 防止页面弹性滚动时的背景色泄露 */
-        html {
-            background-color: var(--bg);
+input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+input[type="number"] { -moz-appearance: textfield; }
+
+/* ========== 滚动条 ========== */
+
+.table-scroll-wrapper::-webkit-scrollbar { height: 4px; }
+
+.table-scroll-wrapper::-webkit-scrollbar-track { background: transparent; }
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(120, 120, 128, 0.3); border-radius: 2px; }
+    
+/* ========== Bloomberg 暗色终端组件覆盖 (DIN字体) ========== */
+[data-theme="bloomberg"] body { background: #060B14; font-family: var(--font-bloomberg); }
+[data-theme="bloomberg"] .stat-val,
+[data-theme="bloomberg"] .analytics-val,
+[data-theme="bloomberg"] .perf-value,
+[data-theme="bloomberg"] .readonly-numeric,
+[data-theme="bloomberg"] .input-text,
+[data-theme="bloomberg"] td.numeric,
+[data-theme="bloomberg"] th.numeric { font-family: var(--font-bloomberg-mono); font-feature-settings: 'tnum' 1; font-variant-numeric: tabular-nums; }
+[data-theme="bloomberg"] .stat-card { background: #0D1520; border: 1px solid rgba(201,168,76,0.2); box-shadow: none; }
+[data-theme="bloomberg"] .stat-label { color: var(--text-secondary); }
+[data-theme="bloomberg"] .stat-val { color: var(--text-primary); }
+[data-theme="bloomberg"] .analytics-section { background: #0D1520; border: 1px solid rgba(201,168,76,0.2); box-shadow: none; }
+[data-theme="bloomberg"] .analytics-card { background: #0A1120; border: 1px solid rgba(201,168,76,0.08); }
+[data-theme="bloomberg"] .analytics-label { color: var(--text-secondary); }
+[data-theme="bloomberg"] .analytics-val { color: var(--text-primary); }
+[data-theme="bloomberg"] .analytics-val.positive { color: var(--data-positive); }
+[data-theme="bloomberg"] .analytics-val.negative { color: var(--data-negative); }
+[data-theme="bloomberg"] .analytics-header { border-bottom-color: rgba(201,168,76,0.15); }
+[data-theme="bloomberg"] .section-heading { color: var(--text-primary); }
+[data-theme="bloomberg"] .page-title { color: var(--text-primary); }
+[data-theme="bloomberg"] .perf-card { background: #0D1520; border: 1px solid rgba(201,168,76,0.2); box-shadow: none; }
+[data-theme="bloomberg"] .perf-card h3 { color: var(--text-primary); }
+[data-theme="bloomberg"] .perf-label { color: var(--text-secondary); }
+[data-theme="bloomberg"] .perf-value { color: var(--text-primary); }
+[data-theme="bloomberg"] .perf-value.positive { color: var(--data-positive); }
+[data-theme="bloomberg"] .perf-value.negative { color: var(--data-negative); }
+[data-theme="bloomberg"] .blotter-section,
+[data-theme="bloomberg"] .section { background: #0D1520; border: 1px solid rgba(201,168,76,0.2); box-shadow: none; }
+[data-theme="bloomberg"] .footnote { background: #0D1520; border: 1px solid rgba(201,168,76,0.12); color: var(--text-secondary); box-shadow: none; }
+[data-theme="bloomberg"] .modal-box { background: #0D1520; border: 1px solid rgba(201,168,76,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+[data-theme="bloomberg"] .modal-msg { color: var(--text-primary); }
+[data-theme="bloomberg"] .toast-box { background: #0D1520; border: 1px solid rgba(201,168,76,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+[data-theme="bloomberg"] .toast-msg { color: var(--text-primary); }
+[data-theme="bloomberg"] .undo-toast { background: #0D1520; border: 1px solid rgba(201,168,76,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+[data-theme="bloomberg"] .undo-toast-msg { color: var(--text-primary); }
+[data-theme="bloomberg"] .undo-toast-countdown { color: var(--text-tertiary); }
+[data-theme="bloomberg"] .del-btn { border-color: rgba(201,168,76,0.15); opacity: 0.4; background: transparent; color: var(--text-tertiary); }
+[data-theme="bloomberg"] .del-btn:hover { opacity: 1; color: var(--danger); border-color: var(--danger); background: rgba(229,83,61,0.1); }
+[data-theme="bloomberg"] .reset-btn { background: rgba(229,83,61,0.12); color: var(--danger); }
+[data-theme="bloomberg"] .header-row { border-bottom-color: rgba(201,168,76,0.4); }
+[data-theme="bloomberg"] .top-dropdown-content { background: rgba(13,21,32,0.98); border-color: rgba(201,168,76,0.14); box-shadow: 0 4px 24px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(201,168,76,0.08); }
+[data-theme="bloomberg"] .top-dropdown-item { color: var(--text-primary); }
+[data-theme="bloomberg"] .top-dropdown-item:hover { background: rgba(201,168,76,0.08); }
+[data-theme="bloomberg"] .top-dropdown-item.theme-active { color: #C9A84C; font-weight: 600; background: rgba(201,168,76,0.12); }
+[data-theme="bloomberg"] .top-dropdown-divider { background: rgba(201,168,76,0.12); }
+[data-theme="bloomberg"] .theme-toggle-btn { background: transparent; border-color: transparent; color: var(--text-secondary); box-shadow: none; opacity: 0.4; }
+[data-theme="bloomberg"] .theme-toggle-btn:hover { background: rgba(201,168,76,0.06); opacity: 0.7; }
+[data-theme="bloomberg"] .theme-toggle-btn.bloomberg-active { color: #C9A84C; opacity: 1; background: rgba(201,168,76,0.12); }
+[data-theme="bloomberg"] .glass-menu-btn { background: rgba(201,168,76,0.08); border-color: transparent; color: var(--text-secondary); box-shadow: none; }
+[data-theme="bloomberg"] .glass-menu-btn:hover { background: rgba(201,168,76,0.06); }
+[data-theme="bloomberg"] .warning-bar {
+            background: rgba(201,168,76,0.08);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            backdrop-filter: blur(20px) saturate(1.8);
+            color: #D4B96A;
+            border: 1px solid rgba(201,168,76,0.2);
+            box-shadow: 0 1px 0 rgba(201,168,76,0.08) inset, 0 4px 16px rgba(0,0,0,0.4);
         }
-    </style>
+[data-theme="bloomberg"] .rates-panel { background: transparent; }
+[data-theme="bloomberg"] .rate-item { background: transparent; border-right: none; }
+[data-theme="bloomberg"] .rate-item:last-child { border-right: none; }
+[data-theme="bloomberg"] .rate-item:hover { opacity: 0.75; }
+[data-theme="bloomberg"] .rate-item.editing { opacity: 1; }
+[data-theme="bloomberg"] th { background: #0A1120; color: var(--text-secondary); border-bottom-color: rgba(201,168,76,0.15); }
+[data-theme="bloomberg"] td { border-bottom-color: rgba(201,168,76,0.06); }
+[data-theme="bloomberg"] .input-text { background: transparent; color: var(--text-primary); border-color: transparent; }
+[data-theme="bloomberg"] .input-text:hover { border-bottom: 1px solid rgba(201,168,76,0.1); }
+[data-theme="bloomberg"] .input-text:focus { border-color: transparent; box-shadow: none; }
+[data-theme="bloomberg"] .rate-edit.error { color: var(--danger); }
+[data-theme="bloomberg"] .save-indicator { background: #0D1520; color: var(--text-primary); border: 1px solid rgba(201,168,76,0.2); }
+[data-theme="bloomberg"] .readonly-numeric { color: var(--text-primary); }
+[data-theme="bloomberg"] .glass-menu-btn:hover { background: rgba(201,168,76,0.06); }
+[data-theme="bloomberg"] .glass-menu-btn:active { background: rgba(201,168,76,0.1); }
+[data-theme="bloomberg"] .theme-toggle-btn:hover { background: rgba(201,168,76,0.06); }
+[data-theme="bloomberg"] .theme-toggle-btn:active { background: rgba(201,168,76,0.1); }
+[data-theme="bloomberg"] .modal-btn-cancel { background: rgba(201,168,76,0.08); color: var(--text-secondary); }
+[data-theme="bloomberg"] .toast-btn { background: #C9A84C; color: #060B14; }
+[data-theme="bloomberg"] .modal-btn-confirm { background: #C9A84C; color: #060B14; }
+[data-theme="bloomberg"] .perf-row { border-bottom-color: rgba(201,168,76,0.08); }
+[data-theme="bloomberg"] .rate-display { color: var(--text-primary); }
+[data-theme="bloomberg"] .rate-edit { color: var(--text-primary); }
+[data-theme="bloomberg"] .rate-edit::placeholder { color: var(--text-tertiary); }
+[data-theme="bloomberg"] .rate-item label { color: var(--text-secondary); opacity: 0.65; }
+[data-theme="bloomberg"] .currency-prefix,
+[data-theme="bloomberg"] .currency-suffix { color: var(--text-secondary); opacity: 0.85; }
+[data-theme="bloomberg"] input[type="date"].input-text:hover { background: rgba(201,168,76,0.04); }
+
+</style>
 </head>
 <body>
 <div class="container">
@@ -1046,22 +1679,47 @@
     <div class="page-header">
         <h2 class="page-title">证券交易终端 · 组合资产监控</h2>
         <div class="page-header-actions">
-            <button id="themeToggleBtn" class="theme-toggle-btn" title="切换主题">◐</button>
-            <div class="top-dropdown">
-                <button id="topMenuBtn" class="glass-menu-btn" title="功能菜单">···</button>
-                <div class="top-dropdown-content" id="topDropdownContent">
-                    <!-- 导入导出组 -->
-                    <button id="importBtn" class="top-dropdown-item">导入数据</button>
-                    <button id="exportBtn" class="top-dropdown-item">导出数据</button>
-                    <button id="exportCsvBtn" class="top-dropdown-item">导出CSV</button>
-                    <div class="top-dropdown-divider"></div>
-                    <!-- 粘贴导入组 -->
-                    <button id="smartPasteBtn" class="top-dropdown-item">智能粘贴</button>
-                    <button id="pasteBuyBtn" class="top-dropdown-item">粘贴建仓</button>
-                    <button id="pasteSellBtn" class="top-dropdown-item">粘贴平仓</button>
-                    <div class="top-dropdown-divider"></div>
-                    <!-- 危险操作组 -->
-                    <button id="resetAllBtn" class="top-dropdown-item" style="color: #dc2626;">初始化组合</button>
+            <div class="action-group">
+                <!-- 分享菜单 -->
+                <div class="top-dropdown">
+                    <button id="shareMenuBtn" class="glass-menu-btn" title="分享">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="12" rx="2.5"/><line x1="12" y1="16" x2="12" y2="4"/><polyline points="8 7 12 3 16 7"/></svg>
+                    </button>
+                    <div class="top-dropdown-content" id="shareDropdownContent">
+                        <button id="shareFullPageBtn" class="top-dropdown-item">📸 截图整页</button>
+                        <button id="shareCardBtn" class="top-dropdown-item">🃏 生成分享卡片</button>
+                        <div class="top-dropdown-divider"></div>
+                        <button id="shareCopyBtn" class="top-dropdown-item">📋 复制文本摘要</button>
+                    </div>
+                </div>
+                <!-- 更多菜单 -->
+                <div class="top-dropdown">
+                    <button id="topMenuBtn" class="glass-menu-btn" title="更多功能">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2.8"/><circle cx="12" cy="12" r="2.8"/><circle cx="12" cy="19" r="2.8"/></svg>
+                    </button>
+                    <div class="top-dropdown-content" id="topDropdownContent">
+                        <!-- 系统主题 -->
+                        <button class="top-dropdown-item submenu-parent" data-submenu="themeSub">系统主题</button>
+                        <div class="top-dropdown-sub" id="themeSub">
+                            <button class="top-dropdown-item theme-item" data-theme="light">◐ 浅色模式</button>
+                            <button class="top-dropdown-item theme-item" data-theme="dark">◑ 深色模式</button>
+                            <button class="top-dropdown-item theme-item" data-theme="bloomberg-light">◇ Bloomberg 亮色</button>
+                            <button class="top-dropdown-item theme-item" data-theme="bloomberg">◆ Bloomberg 暗色</button>
+                        </div>
+                        <!-- 数据备份 -->
+                        <button class="top-dropdown-item submenu-parent" data-submenu="backupSub">数据备份</button>
+                        <div class="top-dropdown-sub" id="backupSub">
+                            <button id="importBtn" class="top-dropdown-item">导入数据</button>
+                            <button id="exportBtn" class="top-dropdown-item">导出数据</button>
+                            <button id="exportCsvBtn" class="top-dropdown-item">导出CSV</button>
+                            <button id="smartPasteBtn" class="top-dropdown-item">智能粘贴</button>
+                            <button id="pasteBuyBtn" class="top-dropdown-item">粘贴建仓</button>
+                            <button id="pasteSellBtn" class="top-dropdown-item">粘贴平仓</button>
+                        </div>
+                        <!-- 分隔线 -->
+                        <div class="top-dropdown-divider"></div>
+                        <button id="resetAllBtn" class="top-dropdown-item" style="color: var(--danger);">初始化组合</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1084,7 +1742,7 @@
     <!-- 统计分析 -->
     <div class="analytics-section">
         <div class="analytics-header">
-            <span class="analytics-title">统计分析</span>
+            <h3 class="section-heading">统计分析</h3>
         </div>
         <div class="analytics-grid">
             <div class="analytics-card">
@@ -1104,11 +1762,11 @@
 
     <!-- 费率参数 -->
     <div class="rates-panel">
-        <div class="rate-item"><label>股票代码</label><input type="text" id="tickerInput" placeholder="输入代码"></div>
-        <div class="rate-item"><label>现价</label><input type="number" id="currentPriceInput" inputmode="decimal" step="0.01" placeholder="市价"></div>
-        <div class="rate-item"><label>佣金%</label><input type="number" id="commissionRate" inputmode="decimal" step="0.001" value="0.025"></div>
-        <div class="rate-item"><label>印花税%</label><input type="number" id="stampTaxRate" inputmode="decimal" step="0.01" value="0.1"></div>
-        <div class="rate-item"><label>最低佣</label><input type="number" id="minCommission" inputmode="decimal" step="0.5" value="5"></div>
+        <div class="rate-item" data-rate-key="tickerInput"><label><span class="label-cn">代码</span><span class="label-en">TICKER</span></label><span class="rate-display is-placeholder">输入代码</span><input type="text" id="tickerInput" placeholder="输入代码" class="rate-edit"></div>
+        <div class="rate-item" data-rate-key="currentPriceInput"><label><span class="label-cn">现价</span><span class="label-en">PRICE</span></label><span class="rate-display is-placeholder">市价</span><input type="number" id="currentPriceInput" inputmode="decimal" step="0.01" placeholder="市价" class="rate-edit"></div>
+        <div class="rate-item" data-rate-key="commissionRate" data-suffix="%"><label><span class="label-cn">佣金</span><span class="label-en">COMM</span></label><span class="rate-display">0.025%</span><input type="number" id="commissionRate" inputmode="decimal" step="0.001" value="0.025" class="rate-edit"></div>
+        <div class="rate-item" data-rate-key="stampTaxRate" data-suffix="%"><label><span class="label-cn">印花税</span><span class="label-en">STAMP</span></label><span class="rate-display">0.1%</span><input type="number" id="stampTaxRate" inputmode="decimal" step="0.01" value="0.1" class="rate-edit"></div>
+        <div class="rate-item" data-rate-key="minCommission" data-currency="¥"><label><span class="label-cn">最低佣</span><span class="label-en">MIN COMM</span></label><span class="rate-display is-placeholder">最低佣金</span><span class="rate-edit-row"><span class="currency-prefix"></span><input type="number" id="minCommission" inputmode="decimal" step="0.5" value="0" class="rate-edit"><span class="currency-suffix"></span></span></div>
     </div>
 
     <!-- 自定义确认弹框 -->
@@ -1132,15 +1790,23 @@
         </div>
     </div>
 
+    <!-- 撤销提示条 - 轻量 inline toast -->
+    <div id="undoToast" class="undo-toast">
+        <span class="undo-toast-icon">🗑</span>
+        <span id="undoToastMsg" class="undo-toast-msg"></span>
+        <span id="undoToastCountdown" class="undo-toast-countdown"></span>
+        <button id="undoToastBtn" class="undo-toast-btn">撤销</button>
+    </div>
+
     <!-- 建仓流水 -->
     <div class="section">
-        <div class="header-row"><h2>建仓流水</h2><button id="addBuyBtn" class="action-btn" title="新增">+</button></div>
+        <div class="header-row"><h3 class="section-heading">建仓流水</h3><button id="addBuyBtn" class="action-btn" title="新增">+</button></div>
         <div class="table-scroll-wrapper" id="buyTableWrapper"></div>
     </div>
 
     <!-- 平仓流水 -->
     <div class="section">
-        <div class="header-row"><h2>平仓流水</h2><button id="addSellBtn" class="action-btn" title="新增">+</button></div>
+        <div class="header-row"><h3 class="section-heading">平仓流水</h3><button id="addSellBtn" class="action-btn" title="新增">+</button></div>
         <div class="table-scroll-wrapper" id="sellTableWrapper"></div>
     </div>
 
@@ -1275,7 +1941,7 @@ class DataService {
             nextSellId: 2,
             commissionRate: 0.025,
             stampTaxRate: 0.1,
-            minCommission: 5,
+            minCommission: 0,
             currentPrice: 20,
             ticker: ''
         };
@@ -1528,7 +2194,11 @@ class ViewRenderer {
             resetAllBtn: document.getElementById('resetAllBtn'),
             topMenuBtn: document.getElementById('topMenuBtn'),
             topDropdownContent: document.getElementById('topDropdownContent'),
-            themeToggleBtn: document.getElementById('themeToggleBtn'),
+            shareMenuBtn: document.getElementById('shareMenuBtn'),
+            shareDropdownContent: document.getElementById('shareDropdownContent'),
+            shareFullPageBtn: document.getElementById('shareFullPageBtn'),
+            shareCardBtn: document.getElementById('shareCardBtn'),
+            shareCopyBtn: document.getElementById('shareCopyBtn'),
         };
     }
 
@@ -1571,7 +2241,7 @@ class ViewRenderer {
                 <td class="col-qty"><input type="text" inputmode="numeric" class="input-text sell-shares" value="${sell.shares ? Utils.formatNumberWithComma(sell.shares) : ''}" placeholder="数量"></td>
                 <td class="col-notional readonly-numeric sell-amount">${Utils.formatMoney(amount)}</td>
                 <td class="col-pnl sell-pnl">${pnlHtml}</td>
-                <td class="col-fee sell-fee">${Utils.formatMoney(totalFee)}<br><span style="font-size:0.55rem; color:#6f8eaa;">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span></td>
+                <td class="col-fee sell-fee">${Utils.formatMoney(totalFee)}<br><span style="font-size:0.6rem; color:var(--text-tertiary);">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span></td>
                 <td class="col-action"><button class="del-btn sell-del" title="删除">×</button></td>
             </tr>`;
         }
@@ -1601,7 +2271,7 @@ class ViewRenderer {
         let amountCell = row.querySelector('.sell-amount');
         let feeCell = row.querySelector('.sell-fee');
         if (amountCell) amountCell.innerText = Utils.formatMoney(amount);
-        if (feeCell) feeCell.innerHTML = `${Utils.formatMoney(totalFee)}<br><span style="font-size:0.6rem; color:#6f8eaa;">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span>`;
+        if (feeCell) feeCell.innerHTML = `${Utils.formatMoney(totalFee)}<br><span style="font-size:0.6rem; color:var(--text-tertiary);">(佣${Utils.formatMoney(comm)}+印${Utils.formatMoney(stamp)})</span>`;
     }
 
     updateDashboard(stats, market) {
@@ -1647,7 +2317,12 @@ class ViewRenderer {
         let totalLoss = Math.abs(pnls.filter(p => p < 0).reduce((a, b) => a + b, 0));
         let pf = totalLoss > 0 ? (totalGain / totalLoss).toFixed(2) : (totalGain > 0 ? '∞' : '0');
         pfEl.innerText = pf;
-        pfEl.className = 'analytics-val ' + (parseFloat(pf) >= 1 || pf === '∞' ? 'positive' : 'negative');
+        // ∞使用主题中性色，不跟随涨跌色
+        if (pf === '∞') {
+            pfEl.className = 'analytics-val';
+        } else {
+            pfEl.className = 'analytics-val ' + (parseFloat(pf) >= 1 ? 'positive' : 'negative');
+        }
 
         // 最大回撤
         let running = 0, peak = 0, mdd = 0;
@@ -1657,8 +2332,13 @@ class ViewRenderer {
             let dd = peak - running;
             if (dd > mdd) mdd = dd;
         });
-        mddEl.innerText = mdd.toFixed(2);
-        mddEl.className = 'analytics-val ' + (mdd === 0 ? 'positive' : 'negative');
+        mddEl.innerText = Utils.formatNumberWithComma(mdd.toFixed(2));
+        // 最大回撤为0或接近0时使用主题中性色，否则遵循涨跌逻辑
+        if (Math.abs(mdd) < 0.005) {
+            mddEl.className = 'analytics-val';
+        } else {
+            mddEl.className = 'analytics-val ' + (mdd > 0 ? 'negative' : 'positive');
+        }
     }
 
     updatePerformanceCards(stats) {
@@ -1680,14 +2360,13 @@ class ViewRenderer {
         this.els.geoAnnual.innerText = Utils.formatPercent(stats.geoAnnual) + (stats.geoAnnualShortTerm ? ' ⚠' : '');
         this.els.geoAnnual.className = `perf-value ${stats.geoAnnual >= 0 ? 'positive' : 'negative'}`;
         this.els.geoAnnual.title = stats.geoAnnualShortTerm ? '持仓不足一年，年化收益率仅供参考' : '几何年化收益率 (CAGR)';
-        this.els.geoAnnual.className = `perf-value ${stats.geoAnnual >= 0 ? 'positive' : 'negative'}`;
 
         this.els.totalDays.innerText = stats.totalDays + " 天";
         this.els.weightedDays.innerText = stats.weightedAvgDays.toFixed(1) + " 天";
         this.els.diffPrice.innerText = stats.diffPrice.toFixed(4);
         this.els.assistDiff.innerText = Utils.formatMoney(stats.assistDiff);
         this.els.checkHint.innerText = stats.checkValid ? "✅ 校验通过" : "数据误差";
-        this.els.checkHint.style.color = stats.checkValid ? "#0f8b5e" : "#e67e22";
+        this.els.checkHint.style.color = stats.checkValid ? "var(--success)" : "var(--danger)";
     }
 
     updateWarning(warningMessages) {
@@ -1722,6 +2401,8 @@ class TradingTerminal {
         this.ticker = this.data.ticker ?? '';
         this.lastSellPnLMap = {};
         this.currentMarket = 'cn'; // cn=中国A股/港股, us=美股
+        this._undoTimer = null;
+        this._undoInterval = null;
 
         // 防抖函数
         this._debouncedFullUpdate = Utils.debounce(() => {
@@ -1748,31 +2429,180 @@ class TradingTerminal {
         this._initConfirmModal();
         this._initToastModal();
         this._initTheme();
+        this._initRateCardEdit();
+    }
+
+    /* ===== 费率卡片：点击编辑模式 ===== */
+    _initRateCardEdit() {
+        const els = this.view.els;
+        // rate card DOM refs for display syncing
+        this._rateCards = {};
+        document.querySelectorAll('.rate-item[data-rate-key]').forEach(card => {
+            const key = card.dataset.rateKey;
+            const display = card.querySelector('.rate-display');
+            const input = card.querySelector('.rate-edit');
+            this._rateCards[key] = { card, display, input };
+        });
+
+        // click card → enter edit mode
+        document.querySelectorAll('.rate-item').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // don't trigger if clicking input itself
+                if (e.target.classList.contains('rate-edit')) return;
+                const input = card.querySelector('.rate-edit');
+                if (input && !card.classList.contains('editing')) {
+                    card.classList.add('editing');
+                    // minCommission: always hide currency symbols during edit
+                    if (card.dataset.rateKey === 'minCommission') {
+                        const cur = this._getCurrencySymbol();
+                        const prefix = card.querySelector('.currency-prefix');
+                        const suffix = card.querySelector('.currency-suffix');
+                        if (prefix) { prefix.textContent = cur.prefix; prefix.classList.add('hide-in-edit'); }
+                        if (suffix) { suffix.textContent = cur.suffix; suffix.classList.add('hide-in-edit'); }
+                    }
+                    const len = input.value.length;
+                    input.focus();
+                    input.setSelectionRange(len, len);
+                }
+            });
+        });
+
+        // blur input → exit edit mode, sync display
+        document.querySelectorAll('.rate-edit').forEach(input => {
+            input.addEventListener('blur', () => {
+                const card = input.closest('.rate-item');
+                if (card) {
+                    // validate: clear error on valid, set error on invalid
+                    const raw = input.value.trim();
+                    const num = parseFloat(raw);
+                    if (raw !== '' && (isNaN(num) || num < 0)) {
+                        input.classList.add('error');
+                        card.classList.add('error-flash');
+                        setTimeout(() => { input.classList.remove('error'); card.classList.remove('error-flash'); }, 600);
+                        input.focus();
+                        return;
+                    }
+                    card.classList.remove('editing');
+                    this._syncOneDisplay(card, input);
+                    // trigger rate change if applicable
+                    this._onRateInputChange(input);
+                }
+            });
+            // Enter key → blur
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+            });
+            // user typed something → mark as no longer placeholder
+            input.addEventListener('input', () => {
+                const card = input.closest('.rate-item');
+                const display = card ? card.querySelector('.rate-display') : null;
+                if (display && input.value !== '') {
+                    display.classList.remove('is-placeholder');
+                }
+            });
+        });
+
+        // initial sync
+        this.syncRateDisplays();
+    }
+
+    _syncOneDisplay(card, input) {
+        const display = card.querySelector('.rate-display');
+        if (!display) return;
+        const suffix = card.dataset.suffix || '';
+        const currency = card.dataset.rateKey === 'minCommission' ? this._getCurrencySymbol() : { prefix: '', suffix: '' };
+        let val = input.value.trim();
+        if (val === '' || val === '0' && input.type === 'number') {
+            display.textContent = '';
+            display.classList.add('is-placeholder');
+        } else {
+            display.textContent = currency.prefix + val + currency.suffix + suffix;
+            display.classList.remove('is-placeholder');
+        }
+    }
+
+    _getCurrencySymbol() {
+        switch (this.currentMarket) {
+            case 'us': return { prefix: '', suffix: '$' };
+            case 'hk': return { prefix: 'HK', suffix: '$' };
+            default:  return { prefix: '', suffix: '¥' };
+        }
+    }
+
+    syncRateDisplays() {
+        document.querySelectorAll('.rate-item[data-rate-key]').forEach(card => {
+            const input = card.querySelector('.rate-edit');
+            if (input) this._syncOneDisplay(card, input);
+        });
+    }
+
+    _onRateInputChange(input) {
+        // delegate to the existing input event handlers
+        // these fire the bound change listeners
+        const event = new Event('change', { bubbles: true });
+        input.dispatchEvent(event);
     }
 
     _initTheme() {
-        // 从localStorage读取主题设置，默认亮色模式
-        const savedTheme = localStorage.getItem('PortfolioTheme') || 'light';
-        this.setTheme(savedTheme);
+        const savedBase = localStorage.getItem('PortfolioTheme') || 'light';
+        const savedBloomberg = localStorage.getItem('PortfolioBloomberg') || 'off';
+        this._baseTheme = savedBase;
+        this._bloombergMode = savedBloomberg;
+        this._applyTheme();
     }
 
-    setTheme(theme) {
-        this.currentTheme = theme;
+    _applyTheme() {
         const html = document.documentElement;
-        const btn = this.view.els.themeToggleBtn;
-        if (theme === 'dark') {
+        html.removeAttribute('data-theme');
+        if (this._bloombergMode === 'light') {
+            html.setAttribute('data-theme', 'bloomberg-light');
+        } else if (this._bloombergMode === 'dark') {
+            html.setAttribute('data-theme', 'bloomberg');
+        } else if (this._baseTheme === 'dark') {
             html.setAttribute('data-theme', 'dark');
-            if (btn) btn.innerText = '◑';
-        } else {
-            html.removeAttribute('data-theme');
-            if (btn) btn.innerText = '◐';
         }
-        localStorage.setItem('PortfolioTheme', theme);
+        localStorage.setItem('PortfolioTheme', this._baseTheme);
+        localStorage.setItem('PortfolioBloomberg', this._bloombergMode);
+        // 更新主题菜单中的选中状态
+        this._updateThemeDropdown();
     }
 
     toggleTheme() {
-        const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
-        this.setTheme(newTheme);
+        this._baseTheme = this._baseTheme === 'dark' ? 'light' : 'dark';
+        this._bloombergMode = 'off';
+        this._applyTheme();
+    }
+
+    toggleBloomberg() {
+        const cycle = { off: 'light', light: 'dark', dark: 'off' };
+        this._bloombergMode = cycle[this._bloombergMode] || 'off';
+        this._applyTheme();
+    }
+
+    _setThemeMode(mode) {
+        if (mode === 'light' || mode === 'dark') {
+            this._baseTheme = mode;
+            this._bloombergMode = 'off';
+        } else if (mode === 'bloomberg-light') {
+            this._bloombergMode = 'light';
+        } else if (mode === 'bloomberg') {
+            this._bloombergMode = 'dark';
+        }
+        this._applyTheme();
+    }
+
+    _updateThemeDropdown() {
+        const items = this.view.els.topDropdownContent.querySelectorAll('.theme-item');
+        const activeTheme = this._bloombergMode === 'light' ? 'bloomberg-light'
+            : this._bloombergMode === 'dark' ? 'bloomberg'
+            : this._baseTheme;
+        items.forEach(item => {
+            if (item.dataset.theme === activeTheme) {
+                item.classList.add('theme-active');
+            } else {
+                item.classList.remove('theme-active');
+            }
+        });
     }
 
     _initConfirmModal() {
@@ -1821,6 +2651,15 @@ class TradingTerminal {
             currentPrice: this.currentPrice,
             ticker: this.ticker
         });
+        this._flashSaveIndicator();
+    }
+
+    _flashSaveIndicator() {
+        const el = document.getElementById('saveIndicator');
+        if (!el) return;
+        el.classList.add('show');
+        clearTimeout(this._saveIndicatorTimer);
+        this._saveIndicatorTimer = setTimeout(() => el.classList.remove('show'), 1500);
     }
 
     calculateFIFO() {
@@ -1863,35 +2702,93 @@ class TradingTerminal {
     }
 
     deleteBuy(id) {
-        const buy = this.buys.find(b => b.id == id);
+        const idx = this.buys.findIndex(b => b.id == id);
+        if (idx === -1) return;
+        const buy = this.buys[idx];
         const hasData = buy && (buy.date || buy.price || buy.shares);
         if (hasData) {
             this.showConfirm("确定删除该笔建仓记录？", () => {
-                this.buys = this.buys.filter(b => b.id != id);
-                this.refresh();
-                this.persist();
+                this._softDeleteBuy(idx);
             });
         } else {
-            this.buys = this.buys.filter(b => b.id != id);
-            this.refresh();
-            this.persist();
+            this._softDeleteBuy(idx);
         }
     }
 
+    _softDeleteBuy(idx) {
+        const removed = this.buys.splice(idx, 1)[0];
+        this.refresh();
+        this.persist();
+        this._showUndoToast('买入', () => {
+            this.buys.splice(idx, 0, removed);
+            this.refresh();
+            this.persist();
+        });
+    }
+
     deleteSell(id) {
-        const sell = this.sells.find(s => s.id == id);
+        const idx = this.sells.findIndex(s => s.id == id);
+        if (idx === -1) return;
+        const sell = this.sells[idx];
         const hasData = sell && (sell.date || sell.price || sell.shares);
         if (hasData) {
             this.showConfirm("确定删除该笔平仓记录？", () => {
-                this.sells = this.sells.filter(s => s.id != id);
-                this.refresh();
-                this.persist();
+                this._softDeleteSell(idx);
             });
         } else {
-            this.sells = this.sells.filter(s => s.id != id);
+            this._softDeleteSell(idx);
+        }
+    }
+
+    _softDeleteSell(idx) {
+        const removed = this.sells.splice(idx, 1)[0];
+        this.refresh();
+        this.persist();
+        this._showUndoToast('卖出', () => {
+            this.sells.splice(idx, 0, removed);
             this.refresh();
             this.persist();
-        }
+        });
+    }
+
+    _showUndoToast(type, onUndo) {
+        const el = document.getElementById('undoToast');
+        const msg = document.getElementById('undoToastMsg');
+        const countdown = document.getElementById('undoToastCountdown');
+        const btn = document.getElementById('undoToastBtn');
+
+        // 清除之前的定时器
+        if (this._undoTimer) clearTimeout(this._undoTimer);
+        if (this._undoInterval) clearInterval(this._undoInterval);
+
+        msg.innerText = `已删除${type}记录`;
+        let sec = 3;
+        countdown.innerText = `${sec} 秒后自动清除`;
+
+        btn.onclick = () => {
+            el.classList.remove('active');
+            clearTimeout(this._undoTimer);
+            clearInterval(this._undoInterval);
+            onUndo();
+        };
+
+        el.classList.add('active');
+
+        // 每秒倒计时
+        this._undoInterval = setInterval(() => {
+            sec--;
+            if (sec > 0) {
+                countdown.innerText = `${sec} 秒后自动清除`;
+            } else {
+                countdown.innerText = '已清除';
+            }
+        }, 1000);
+
+        // 3秒后自动关闭
+        this._undoTimer = setTimeout(() => {
+            el.classList.remove('active');
+            clearInterval(this._undoInterval);
+        }, 3000);
     }
 
     // 根据股票代码自动识别市场
@@ -1921,15 +2818,38 @@ class TradingTerminal {
         this.view.updateDashboard(stats, this.currentMarket);
     }
 
+    _getMarketDefaults(market) {
+        switch (market) {
+            case 'us': return { commissionRate: 0.005, stampTaxRate: 0, minCommission: 0 };
+            case 'hk': return { commissionRate: 0.0025, stampTaxRate: 0.13, minCommission: 100 };
+            default:   return { commissionRate: 0.025, stampTaxRate: 0.1, minCommission: 5 };
+        }
+    }
+
+    _applyMarketRates(market) {
+        const def = this._getMarketDefaults(market);
+        const marketNames = { us: '美股', hk: '港股', cn: 'A股' };
+        this.commissionRate = def.commissionRate;
+        this.stampTaxRate = def.stampTaxRate;
+        this.minCommission = def.minCommission;
+        const els = this.view.els;
+        if (els.commissionInput) els.commissionInput.value = def.commissionRate;
+        if (els.stampInput) els.stampInput.value = def.stampTaxRate;
+        if (els.minCommissionInput) els.minCommissionInput.value = def.minCommission;
+        this.syncRateDisplays();
+        this._debouncedFullUpdate();
+    }
+
     resetAll() {
         this.showConfirm("确定要清空所有交易记录吗？此操作不可逆转！", () => {
             this.buys = [];
             this.sells = [];
             this.nextBuyId = 1;
             this.nextSellId = 1;
-            this.commissionRate = 0.025;
-            this.stampTaxRate = 0.1;
-            this.minCommission = 5;
+            const def = this._getMarketDefaults('cn');
+            this.commissionRate = def.commissionRate;
+            this.stampTaxRate = def.stampTaxRate;
+            this.minCommission = def.minCommission;
             this.currentPrice = null;
             this.ticker = '';
             let els = this.view.els;
@@ -1938,9 +2858,11 @@ class TradingTerminal {
             if (els.minCommissionInput) els.minCommissionInput.value = this.minCommission;
             if (els.currentPriceInput) els.currentPriceInput.value = '';
             if (els.tickerInput) els.tickerInput.value = '';
+            this.syncRateDisplays();
             // 重置市场配色为默认 A 股模式
             this.currentMarket = this.detectMarket('');
             this.applyMarketColors();
+            this.syncRateDisplays();
             this.refresh();
             this.persist();
         });
@@ -1958,12 +2880,12 @@ class TradingTerminal {
         // 费率参数输入（防抖）
         els.commissionInput.oninput = () => {
             let val = Utils.parseNum(els.commissionInput.value);
-            if (val > 0) this.commissionRate = val;
+            if (val >= 0) this.commissionRate = val;
             this._debouncedFullUpdate();
         };
         els.stampInput.oninput = () => {
             let val = Utils.parseNum(els.stampInput.value);
-            if (val > 0) this.stampTaxRate = val;
+            if (val >= 0) this.stampTaxRate = val;
             this._debouncedFullUpdate();
         };
         els.minCommissionInput.oninput = () => {
@@ -1987,22 +2909,270 @@ class TradingTerminal {
         els.tickerInput.oninput = () => {
             this.ticker = els.tickerInput.value;
             // 自动识别市场并更新涨跌配色
-            this.currentMarket = this.detectMarket(this.ticker);
-            this.applyMarketColors();
+            const newMarket = this.detectMarket(this.ticker);
+            if (newMarket !== this.currentMarket) {
+                this.currentMarket = newMarket;
+                this.applyMarketColors();
+                this._applyMarketRates(newMarket);
+            }
+            this.syncRateDisplays();
             this.persist();
         };
 
-        // 顶部下拉菜单控制
+        // 顶部下拉菜单控制 - 两个菜单独立管理
+        const allDropdowns = [els.topDropdownContent, els.shareDropdownContent];
+        function closeAllDropdowns() {
+            allDropdowns.forEach(d => d.classList.remove('show'));
+        }
+        document.addEventListener('click', () => closeAllDropdowns());
+
+        // 更多菜单（二级嵌套：系统主题 / 数据备份）
         els.topMenuBtn.onclick = function(e) {
             e.stopPropagation();
+            closeAllDropdowns();
             els.topDropdownContent.classList.toggle('show');
         };
-        document.addEventListener('click', function() {
-            els.topDropdownContent.classList.remove('show');
+        // 更多菜单内的点击事件：处理子菜单展开和主题选择
+        els.topDropdownContent.addEventListener('click', (e) => {
+            // 子菜单父项：展开/折叠
+            const subParent = e.target.closest('.submenu-parent');
+            if (subParent) {
+                e.stopPropagation();
+                const subId = subParent.dataset.submenu;
+                const sub = document.getElementById(subId);
+                if (sub) {
+                    const isOpen = sub.classList.contains('open');
+                    // 先关闭同一级的所有子菜单
+                    els.topDropdownContent.querySelectorAll('.top-dropdown-sub').forEach(s => s.classList.remove('open'));
+                    els.topDropdownContent.querySelectorAll('.submenu-parent').forEach(p => p.classList.remove('expanded'));
+                    // 如果之前没开，则打开
+                    if (!isOpen) {
+                        sub.classList.add('open');
+                        subParent.classList.add('expanded');
+                    }
+                }
+                return;
+            }
+            // 主题选项：切换主题并关闭
+            const themeItem = e.target.closest('.theme-item');
+            if (themeItem) {
+                const mode = themeItem.dataset.theme;
+                if (mode) this._setThemeMode(mode);
+                closeAllDropdowns();
+                return;
+            }
+            // 其他 menu item（如初始化组合）：关闭菜单，让原有的事件处理
         });
 
-        // 主题切换
-        els.themeToggleBtn.onclick = () => this.toggleTheme();
+        // 分享菜单
+        els.shareMenuBtn.onclick = function(e) {
+            e.stopPropagation();
+            closeAllDropdowns();
+            els.shareDropdownContent.classList.toggle('show');
+        };
+
+        // ============================================================
+        // 分享功能：整页截图、分享卡片、文本复制
+        // ============================================================
+        const st = (msg, icon) => this.showToast(msg, icon);
+
+        els.shareFullPageBtn.addEventListener('click', () => { closeAllDropdowns(); shareFullPage(); });
+        els.shareCardBtn.addEventListener('click', () => { closeAllDropdowns(); shareCard(); });
+        els.shareCopyBtn.addEventListener('click', () => { closeAllDropdowns(); copyShareText(); });
+
+        async function shareFullPage() {
+            const container = document.querySelector('.container');
+            if (!container) return;
+            try {
+                // 临时修复滚动：让容器完整展开以便 html2canvas 捕获全部内容
+                const origOverflow = container.style.overflow;
+                const origMaxHeight = container.style.maxHeight;
+                const origHeight = container.style.height;
+                container.style.overflow = 'visible';
+                container.style.maxHeight = 'none';
+                container.style.height = 'auto';
+
+                const canvas = await html2canvas(container, {
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: null,
+                    scale: 2,
+                    logging: false,
+                });
+
+                // 恢复样式
+                container.style.overflow = origOverflow;
+                container.style.maxHeight = origMaxHeight;
+                container.style.height = origHeight;
+
+                // 触发下载
+                const link = document.createElement('a');
+                link.download = '证券交易终端_截图_' + new Date().toISOString().slice(0, 10) + '.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                st('整页截图已保存！', '📸');
+            } catch (err) {
+                st('截图失败：' + err.message, '!');
+            }
+        }
+
+        async function shareCard() {
+            const cardCanvas = document.createElement('canvas');
+            const dpr = 2;
+            cardCanvas.width = 750 * dpr;
+            cardCanvas.height = 400 * dpr;
+            const ctx = cardCanvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            // 获取当前主题
+            const isDark = document.documentElement.dataset.theme === 'dark' || document.documentElement.dataset.theme === 'bloomberg';
+            const isBloomberg = document.documentElement.dataset.theme === 'bloomberg' || document.documentElement.dataset.theme === 'bloomberg-light';
+
+            // 背景
+            if (isBloomberg) {
+                ctx.fillStyle = '#0C0C0C';
+            } else if (isDark) {
+                ctx.fillStyle = '#000000';
+            } else {
+                ctx.fillStyle = '#F2F2F7';
+            }
+            ctx.fillRect(0, 0, 750, 400);
+
+            // 圆角裁剪
+            ctx.beginPath();
+            ctx.roundRect(0, 0, 750, 400, 20);
+            ctx.clip();
+            if (isBloomberg) {
+                ctx.fillStyle = '#0C0C0C';
+            } else if (isDark) {
+                ctx.fillStyle = '#000000';
+            } else {
+                ctx.fillStyle = '#F2F2F7';
+            }
+            ctx.fillRect(0, 0, 750, 400);
+
+            // 标题
+            ctx.fillStyle = isBloomberg ? '#C9A84C' : (isDark ? '#0A84FF' : '#007AFF');
+            ctx.font = 'bold 22px "Source Han Sans CN", -apple-system, sans-serif';
+            ctx.fillText('证券交易终端 · 组合资产监控', 30, 50);
+
+            // 分隔线
+            ctx.strokeStyle = isBloomberg ? '#C9A84C' : (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)');
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(30, 70);
+            ctx.lineTo(720, 70);
+            ctx.stroke();
+
+            // 读取仪表盘数据
+            const getText = (id) => document.getElementById(id)?.innerText || '-';
+            const mv = getText('mv');
+            const upl = getText('upl');
+            const rpl = getText('rpl');
+            const yieldVal = getText('yield');
+            const winRate = getText('winRate');
+            const profitFactor = getText('profitFactor');
+            const maxDrawdown = getText('maxDrawdown');
+
+            const textColor = isDark || isBloomberg ? '#F2F2F7' : '#1C1C1E';
+            const subColor = isDark || isBloomberg ? '#8A8A8E' : '#8A8A8E';
+            const posColor = '#dc2626';
+            const negColor = '#059669';
+
+            // 数据两列布局
+            const items = [
+                { label: '持仓市值', value: mv, y: 110 },
+                { label: '浮动盈亏', value: upl, y: 110, x: 380 },
+                { label: '已实现盈亏', value: rpl, y: 170 },
+                { label: '组合总收益率', value: yieldVal, y: 170, x: 380 },
+                { label: '胜率', value: winRate, y: 230 },
+                { label: '盈亏比', value: profitFactor, y: 230, x: 380 },
+                { label: '最大回撤', value: maxDrawdown, y: 290 },
+            ];
+
+            items.forEach(item => {
+                const x = item.x || 30;
+                // Label
+                ctx.fillStyle = subColor;
+                ctx.font = '13px "Source Han Sans CN", -apple-system, sans-serif';
+                ctx.fillText(item.label, x, item.y);
+                // Value
+                let valColor = textColor;
+                const val = item.value;
+                if (val.includes('+') || (val.startsWith('¥') && !val.includes('-'))) {
+                    valColor = posColor;
+                } else if (val.includes('-') && val !== '-') {
+                    valColor = negColor;
+                }
+                ctx.fillStyle = valColor;
+                ctx.font = 'bold 22px "Source Han Sans CN", -apple-system, sans-serif';
+                ctx.fillText(item.value, x, item.y + 28);
+            });
+
+            // 底部生成时间
+            ctx.fillStyle = subColor;
+            ctx.font = '11px -apple-system, sans-serif';
+            ctx.fillText('生成时间：' + new Date().toLocaleString('zh-CN'), 30, 370);
+
+            // 触发下载
+            const link = document.createElement('a');
+            link.download = '证券交易终端_分享卡片_' + new Date().toISOString().slice(0, 10) + '.png';
+            link.href = cardCanvas.toDataURL('image/png');
+            link.click();
+            st('分享卡片已生成！', '🃏');
+        }
+
+        function copyShareText() {
+            const getText = (id) => document.getElementById(id)?.innerText || '-';
+            const mv = getText('mv');
+            const upl = getText('upl');
+            const rpl = getText('rpl');
+            const yieldVal = getText('yield');
+            const winRate = getText('winRate');
+            const profitFactor = getText('profitFactor');
+            const maxDrawdown = getText('maxDrawdown');
+
+            const summary = `📊 证券交易终端 · 组合资产监控
+━━━━━━━━━━━━━━━━━━
+📌 持仓市值：${mv}
+📈 浮动盈亏：${upl}
+💰 已实现盈亏：${rpl}
+📊 组合总收益率：${yieldVal}
+━━━━━━━━━━━━━━━━━━
+🎯 胜率：${winRate}
+📐 盈亏比：${profitFactor}
+📉 最大回撤：${maxDrawdown}
+━━━━━━━━━━━━━━━━━━
+⏰ 数据时间：${new Date().toLocaleString('zh-CN')}`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(summary).then(() => {
+                    st('文本摘要已复制到剪贴板！', '📋');
+                }).catch(() => {
+                    fallbackCopy(summary);
+                });
+            } else {
+                fallbackCopy(summary);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            try {
+                document.execCommand('copy');
+                st('文本摘要已复制到剪贴板！', '📋');
+            } catch (e) {
+                st('复制失败，请手动复制。', '!');
+            }
+            document.body.removeChild(ta);
+        }
 
         // 买入表格事件委托
         els.buyTableWrapper.addEventListener('input', (e) => {
@@ -2068,12 +3238,15 @@ class TradingTerminal {
             }
         });
 
-        // 买入删除
+        // 买入删除 + 日期点击触发原生选择器
         els.buyTableWrapper.addEventListener('click', (e) => {
             if (e.target.classList.contains('buy-del')) {
                 let row = e.target.closest('tr');
                 let buyId = row.getAttribute('data-buy-id');
                 this.deleteBuy(buyId);
+            }
+            if (e.target.classList.contains('buy-date')) {
+                e.target.showPicker();
             }
         });
 
@@ -2141,12 +3314,15 @@ class TradingTerminal {
             }
         });
 
-        // 卖出删除
+        // 卖出删除 + 日期点击触发原生选择器
         els.sellTableWrapper.addEventListener('click', (e) => {
             if (e.target.classList.contains('sell-del')) {
                 let row = e.target.closest('tr');
                 let sellId = row.getAttribute('data-sell-id');
                 this.deleteSell(sellId);
+            }
+            if (e.target.classList.contains('sell-date')) {
+                e.target.showPicker();
             }
         });
 
@@ -2178,7 +3354,7 @@ class TradingTerminal {
             for (let buy of this.buys) {
                 let amount = (buy.price || 0) * (buy.shares || 0);
                 let comm = this.calcService.calcBuyFee(amount, this.commissionRate, this.minCommission);
-                csvLines.push(`买入,${buy.date || ''},${buy.price || 0},${buy.shares || 0},${amount.toFixed(2)},-,-,${comm.toFixed(2)},0,`);
+                csvLines.push(`买入,${buy.date || ''},${buy.price || 0},${buy.shares || 0},${amount.toFixed(2)},-,-,${comm.toFixed(2)},0`);
             }
 
             for (let sell of this.sells) {
@@ -2187,7 +3363,7 @@ class TradingTerminal {
                 let pnlData = pnlMap[sell.id];
                 let pnl = pnlData ? pnlData.netPnL.toFixed(2) : '-';
                 let buyCost = pnlData ? pnlData.buyCost.toFixed(2) : '-';
-                csvLines.push(`卖出,${sell.date || ''},${sell.price || 0},${sell.shares || 0},${amount.toFixed(2)},${buyCost},${pnl},${comm.toFixed(2)},${stamp.toFixed(2)},`);
+                csvLines.push(`卖出,${sell.date || ''},${sell.price || 0},${sell.shares || 0},${amount.toFixed(2)},${buyCost},${pnl},${comm.toFixed(2)},${stamp.toFixed(2)}`);
             }
 
             let csvContent = csvLines.join('\n');
@@ -2226,6 +3402,7 @@ class TradingTerminal {
                     if (els.minCommissionInput) els.minCommissionInput.value = this.minCommission;
                     if (els.currentPriceInput) els.currentPriceInput.value = (this.currentPrice===null||this.currentPrice===0) ? '' : this.currentPrice;
                     if (els.tickerInput) els.tickerInput.value = this.ticker || '';
+                    this.syncRateDisplays();
                     this.refresh();
                     this.persist();
                     this.showToast('数据导入成功！', '✅');
@@ -2287,7 +3464,7 @@ class TradingTerminal {
                 }
                 const date = parts[0] || Utils.getToday();
                 const price = parseFloat(parts[1]);
-                const shares = parseFloat(parts[2]);
+                const shares = parseInt(parts[2], 10);
                 if (isNaN(price) || isNaN(shares) || price <= 0 || shares <= 0) {
                     errorCount++;
                     return;
@@ -2407,5 +3584,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.tradingTerminal = new TradingTerminal();
 });
 </script>
+    <div class="save-indicator" id="saveIndicator">已自动保存</div>
 </body>
 </html>
